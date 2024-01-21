@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v7.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="video_player_box">
+        <video id='my_video' width="550" height="320" autoplay>
+            <source src="sample_scene.mp4">
+        </video>
+        <div id="video_controls_bar">
+            <button id="play/pausebutton">Pause</button>
+            <input id="seekslider" type="range" min="0" max="100" value="0" step="1">
+            <span id="curtimetext"></span>/<span id="durtimetext"></span>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+
+</body>
+
+
+
+</html>
