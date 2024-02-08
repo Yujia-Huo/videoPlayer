@@ -177,3 +177,81 @@ function drawVisualization() {
     });
   });
 }
+
+// Assuming your data is stored in a variable called `movements`
+
+const movementDescriptions = {
+  1: {
+    type: "truck",
+    direction: "left to right",
+    start: [50, 50],
+    end: [100, 50],
+  },
+  2: {
+    type: "truck",
+    direction: "right to left",
+    start: [50, 50],
+    end: [0, 50],
+  },
+  3: { type: "dolly", direction: "forwards", start: [50, 50], end: [50, 0] },
+  4: { type: "dolly", direction: "backwards", start: [50, 50], end: [50, 100] },
+};
+
+const movements = [
+  { timeStart: 0, timeEnd: 2, movementId: "1" },
+  { timeStart: 3, timeEnd: 10, movementId: "2" },
+  { timeStart: 11, timeEnd: 13, movementId: "4" },
+  { timeStart: 14, timeEnd: 20, movementId: "3" },
+  { timeStart: 20, timeEnd: 23, movementId: "1" },
+  { timeStart: 23, timeEnd: 30, movementId: "4" },
+  { timeStart: 30, timeEnd: 34, movementId: "4" },
+  { timeStart: 34, timeEnd: 40, movementId: "2" }, // Assuming these refer to the same type of movement as in `movementDescriptions`
+];
+
+function combineMovementData(movements, descriptions) {
+  return movements.map((movement) => {
+    const description = descriptions[movement.movementId];
+    // Combine the time-based record with its corresponding description
+    return { ...movement, ...description };
+  });
+}
+
+const combinedMovements = combineMovementData(movements, movementDescriptions);
+
+// Calculate duration for each movement
+combinedMovements.forEach((movement) => {
+  movement.duration = (movement.timeEnd - movement.timeStart) * 1000; // Convert to milliseconds if needed
+});
+
+let svg2 = d3.select("#drawlines").attr("width", 800).attr("height", 600);
+
+// Create a scale for line thickness based on duration
+const thicknessScale = d3
+  .scaleLinear()
+  .domain([
+    d3.min(combinedMovements, (d) => d.duration),
+    d3.max(combinedMovements, (d) => d.duration),
+  ])
+  .range([1, 5]); // Adjust the range for min and max thickness as needed
+
+// Assuming d3 is already included in your environment
+
+// Adjusted to add a delay based on timeStart
+combinedMovements.forEach((movement) => {
+  const delay = movement.timeStart * 1000; // Convert to milliseconds if necessary
+
+  svg2
+    .append("line")
+    .attr("x1", movement.start[0])
+    .attr("y1", movement.start[1])
+    .attr("x2", movement.start[0]) // Start with x2 and y2 at the initial position
+    .attr("y2", movement.start[1])
+    .attr("stroke", "black")
+    .attr("stroke-width", thicknessScale(movement.duration))
+    .attr("stroke-opacity", 0.3) // Adjust as needed for visual distinction
+    .transition()
+    .delay(delay) // Delay the start of the animation based on timeStart
+    .duration(movement.duration) // Use the calculated duration for the transition
+    .attr("x2", movement.end[0]) // Animate to the final position
+    .attr("y2", movement.end[1]);
+});
