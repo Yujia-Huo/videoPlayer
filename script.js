@@ -1,4 +1,5 @@
 var vid, playbtn, seekslider, curtimetext, durtimetext;
+var movements = []; // This will hold the parsed data once it's loaded
 
 function initializePlayer() {
   vid = document.getElementById("my_video");
@@ -15,6 +16,27 @@ window.onload = function () {
   initializePlayer();
   drawVisualization();
 };
+
+function onDataLoaded() {
+  // Code that depends on `globalMovements` goes here
+  console.log(movements); // Now it's safe to use the data
+  initializePlayer();
+}
+
+d3.csv("./data/camera_movement_data.csv").then(function (data) {
+  movements = data.map((d) => ({
+    Movement: +d.Movement,
+    start_time: +d.start_time,
+    end_time: +d.end_time,
+    Type: d.Type,
+    Distance: +d.Distance,
+    Direction: d.Direction,
+    Scene: +d.Scene,
+  }));
+  onDataLoaded();
+});
+
+console.log(movements);
 
 function playPause() {
   if (vid.paused) {
@@ -46,6 +68,8 @@ function seektimeupdate() {
   }
   curtimetext.innerHTML = curmins + ":" + cursecs;
   durtimetext.innerHTML = durmins + ":" + dursecs;
+
+  updateAnimation(vid.currentTime);
 
   var shotDataMap = new Map(); // Global map to hold shot data with colors
 
@@ -178,80 +202,362 @@ function drawVisualization() {
   });
 }
 
-// Assuming your data is stored in a variable called `movements`
+// function updateAnimation(currentTime) {
+//   // Find the current movement based on the video's currentTime
+//   var currentMovement = movements.find(
+//     (movement) =>
+//       currentTime >= movement.start_time && currentTime <= movement.end_time
+//   );
 
-const movementDescriptions = {
-  1: {
-    type: "truck",
-    direction: "left to right",
-    start: [50, 50],
-    end: [100, 50],
-  },
-  2: {
-    type: "truck",
-    direction: "right to left",
-    start: [50, 50],
-    end: [0, 50],
-  },
-  3: { type: "dolly", direction: "forwards", start: [50, 50], end: [50, 0] },
-  4: { type: "dolly", direction: "backwards", start: [50, 50], end: [50, 100] },
+//   if (currentMovement) {
+//     // If a current movement is found, apply its transformation
+//     applyTransformation(currentMovement, 0); // The delay is 0 because we're syncing directly with the video time
+//   } else {
+//     // Optionally, reset or handle the case when no movement matches the current time
+//     // This could involve setting the rectangle to a default position or state
+//   }
+// }
+// d3.csv("./data/camera_movement_data.csv").then(function (data) {
+//   // Assuming your data is loaded into a variable `data`
+//   // This could be loaded via d3.csv or another method
+
+//   var svg3 = d3.select("#movement");
+
+//   var movements = [
+//     {
+//       Movement: 1,
+//       start_time: 32,
+//       end_time: 44,
+//       Type: "Boom",
+//       Distance: 1,
+//       Direction: "down",
+//       Scene: 1,
+//     },
+//     {
+//       Movement: 2,
+//       start_time: 57,
+//       end_time: 66,
+//       Type: "Dolly",
+//       Distance: 1.5,
+//       Direction: "out",
+//       Scene: 3,
+//     },
+//     {
+//       Movement: 3,
+//       start_time: 66,
+//       end_time: 77,
+//       Type: "Pan",
+//       Distance: 1.5,
+//       Direction: "left",
+//       Scene: 3,
+//     },
+//     // Add other movements as needed
+//   ];
+
+//   // Add other movements as needed
+
+//   movements.sort((a, b) => a.start_time - b.start_time);
+
+//   // Append a rectangle to the SVG container
+//   svg3
+//     .append("rect")
+//     .attr("id", "rectangle")
+//     .attr("x", 100) // Starting x position
+//     .attr("y", 100) // Starting y position
+//     .attr("width", 100) // Width of the rectangle
+//     .attr("height", 100) // Height of the rectangle
+//     .attr("fill", "steelblue"); // Fill color of the rectangle
+
+//   // Initialize a state for the rectangle's transformation
+//   var rectState = {
+//     scaleX: 1,
+//     scaleY: 1,
+//     translateX: 100, // Initial x position
+//     translateY: 100, // Initial y position
+//     rotate: 0,
+//   };
+
+//   function applyTransformation(movement, delay) {
+//     var rect = d3.select("#rectangle");
+//     var duration = (movement.end_time - movement.start_time) * 200; // Adjust time scale as needed
+
+//     // Calculate original center of the rectangle
+//     var originalCenterX = rectState.translateX * rectState.scaleX; // Assuming 50 is the width of the rectangle
+//     var originalCenterY = rectState.translateY * rectState.scaleY; // Assuming 50 is the height of the rectangle
+
+//     switch (movement.Type) {
+//       case "Boom":
+//         var scaleAmount = movement.Direction === "down" ? 0.5 : 1.5;
+//         // Adjust scale
+//         rectState.scaleX *= scaleAmount;
+//         rectState.scaleY *= scaleAmount;
+
+//         // Calculate new center based on the updated scale
+//         var newCenterX = rectState.translateX + (100 / 2) * rectState.scaleX;
+//         var newCenterY = rectState.translateY + (100 / 2) * rectState.scaleY;
+
+//         // Adjust translation to keep the center stationary
+//         rectState.translateX += originalCenterX - newCenterX;
+//         rectState.translateY += originalCenterY - newCenterY;
+//         break;
+//       case "Dolly":
+//         var dollyTranslation = movement.Direction === "out" ? 100 : -100;
+//         rectState.translateY += dollyTranslation;
+//         break;
+//       case "Pan":
+//         var rotation = movement.Direction === "left" ? -45 : 45;
+//         rectState.rotate += rotation;
+//         break;
+//       // Add cases for other Types if necessary
+//     }
+
+//     // Construct the transform attribute with the updated state
+//     var transform = `translate(${rectState.translateX}, ${rectState.translateY}) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+
+//     // If there's rotation, append the rotation transform
+//     if (rectState.rotate !== 0) {
+//       transform += ` rotate(${rectState.rotate}, ${originalCenterX}, ${originalCenterY})`;
+//     }
+
+//     rect
+//       .transition()
+//       .delay(delay)
+//       .duration(duration)
+//       .attr("transform", transform);
+//   }
+
+//   // Sequential animation
+//   var initialStartTime = movements[0].start_time * 200; // Adjust time scale as needed
+
+//   movements.forEach((movement, index) => {
+//     var startTime = movement.start_time * 200; // Adjust time scale as needed
+//     var delay = startTime - initialStartTime; // Calculate delay based on actual start time
+
+//     applyTransformation(movement, delay);
+//   });
+// });
+
+// var movements = [
+//   {
+//     Movement: 1,
+//     start_time: 32,
+//     end_time: 44,
+//     Type: "Boom",
+//     Distance: 0.5,
+//     Direction: "down",
+//     Scene: 1,
+//   },
+//   {
+//     Movement: 2,
+//     start_time: 57,
+//     end_time: 66,
+//     Type: "Dolly",
+//     Distance: 1.5,
+//     Direction: "out",
+//     Scene: 3,
+//   },
+//   {
+//     Movement: 3,
+//     start_time: 66,
+//     end_time: 70,
+//     Type: "Pan",
+//     Distance: 1.5,
+//     Direction: "left",
+//     Scene: 3,
+//   },
+// ];
+
+var svg3 = d3.select("#movement");
+
+svg3
+  .append("rect")
+  .attr("id", "rectangle")
+  .attr("x", 150) // Starting x position
+  .attr("y", 300) // Starting y position
+  .attr("width", 50) // Width of the rectangle
+  .attr("height", 50) // Height of the rectangle
+  .attr("fill", "steelblue"); // Fill color of the rectangle
+
+// var rectState = {
+//   scaleX: 1,
+//   scaleY: 1,
+//   translateX: 100,
+//   translateY: 20,
+//   rotate: 0,
+// };
+// var traceLayer = d3.select("#movement").append("g").attr("id", "traceLayer");
+var traceLayer = svg3.append("g").attr("id", "traceLayer");
+
+var rectState = {
+  // Initial state and current scene
+  x: 150,
+  y: 300,
+  initialTranslateX: 0,
+  initialTranslateY: 0,
+  initialScaleX: 1,
+  initialScaleY: 1,
+  width: 50,
+  height: 50,
+  scaleX: 1,
+  scaleY: 1,
+  initialRotate: 0,
+  translateX: 0,
+  translateY: 0,
+  currentScene: null,
+  currentMovement: null,
 };
 
-const movements = [
-  { timeStart: 0, timeEnd: 2, movementId: "1" },
-  { timeStart: 3, timeEnd: 10, movementId: "2" },
-  { timeStart: 11, timeEnd: 13, movementId: "4" },
-  { timeStart: 14, timeEnd: 20, movementId: "3" },
-  { timeStart: 20, timeEnd: 23, movementId: "1" },
-  { timeStart: 23, timeEnd: 30, movementId: "4" },
-  { timeStart: 30, timeEnd: 34, movementId: "4" },
-  { timeStart: 34, timeEnd: 40, movementId: "2" }, // Assuming these refer to the same type of movement as in `movementDescriptions`
-];
+function resetTransformationsForNewScene() {
+  // Reset transformation state for a new scene
+  rectState.scaleX = 1;
+  rectState.scaleY = 1;
+  rectState.rotate = 0;
+  rectState.translateX = 0;
+  rectState.translateY = 0;
 
-function combineMovementData(movements, descriptions) {
-  return movements.map((movement) => {
-    const description = descriptions[movement.movementId];
-    // Combine the time-based record with its corresponding description
-    return { ...movement, ...description };
-  });
+  // Optionally reset position
+  rectState.x = 150; // Or any scene-specific starting position
+  rectState.y = 300; // Or any scene-specific starting position
+
+  // Apply reset transformations to the rectangle
+  var rect = d3.select("#rectangle");
+  rect.attr("transform", "");
+  // Optionally, update position if changed
+  rect.attr("x", rectState.x).attr("y", rectState.y);
 }
 
-const combinedMovements = combineMovementData(movements, movementDescriptions);
+function recordAndDrawRectangle() {
+  var rect = d3.select("#rectangle");
+  var transform = rect.attr("transform");
 
-// Calculate duration for each movement
-combinedMovements.forEach((movement) => {
-  movement.duration = (movement.timeEnd - movement.timeStart) * 1000; // Convert to milliseconds if needed
-});
+  // Parse the current transformation of the rectangle
+  // Note: This assumes the transform attribute is directly applicable to a <rect>.
+  // For more complex transformations, you might need to parse and calculate the absolute position.
 
-let svg2 = d3.select("#drawlines").attr("width", 800).attr("height", 600);
+  // Create a new rectangle in the trace layer with the same transformation
+  traceLayer
+    .append("rect")
+    .attr("x", rect.attr("x"))
+    .attr("y", rect.attr("y"))
+    .attr("width", rect.attr("width"))
+    .attr("height", rect.attr("height"))
+    .attr("transform", transform)
+    .style("fill", "none") // Set to none or a light color to distinguish traces
+    .style("stroke", "red");
+}
 
-// Create a scale for line thickness based on duration
-const thicknessScale = d3
-  .scaleLinear()
-  .domain([
-    d3.min(combinedMovements, (d) => d.duration),
-    d3.max(combinedMovements, (d) => d.duration),
-  ])
-  .range([1, 5]); // Adjust the range for min and max thickness as needed
+var recordInterval = setInterval(recordAndDrawRectangle, 2000);
 
-// Assuming d3 is already included in your environment
+function applyTransformation(movement, progress) {
+  var rect = d3.select("#rectangle");
+  var rectWidth = 50; // Width of the rectangle
+  var rectHeight = 50; // Height of the rectangle
 
-// Adjusted to add a delay based on timeStart
-combinedMovements.forEach((movement) => {
-  const delay = movement.timeStart * 1000; // Convert to milliseconds if necessary
+  if (rectState.currentScene !== movement.Scene) {
+    resetTransformationsForNewScene(); // Reset if new scene
+    rectState.currentScene = movement.Scene;
+  }
 
-  svg2
-    .append("line")
-    .attr("x1", movement.start[0])
-    .attr("y1", movement.start[1])
-    .attr("x2", movement.start[0]) // Start with x2 and y2 at the initial position
-    .attr("y2", movement.start[1])
-    .attr("stroke", "black")
-    .attr("stroke-width", thicknessScale(movement.duration))
-    .attr("stroke-opacity", 0.3) // Adjust as needed for visual distinction
-    .transition()
-    .delay(delay) // Delay the start of the animation based on timeStart
-    .duration(movement.duration) // Use the calculated duration for the transition
-    .attr("x2", movement.end[0]) // Animate to the final position
-    .attr("y2", movement.end[1]);
-});
+  switch (movement.Type) {
+    case "Boom":
+      // Calculate the current scale factor based on the movement's progress
+      var targetScale = movement.Distance;
+      var currentScale =
+        rectState.initialScaleX +
+        (targetScale - rectState.initialScaleX) * progress;
+
+      // Update the rectState scale
+      rectState.scaleX = currentScale;
+      rectState.scaleY = currentScale;
+
+      // Center calculations should consider the current transformed position
+      // No need for additional translation adjustments specifically for "Boom"
+      // if the transformations are applied correctly in getTransformationString
+      break;
+
+    case "Dolly":
+      if (
+        rectState.currentScene !== movement.Scene ||
+        rectState.currentMovement !== movement.Movement
+      ) {
+        // Capture the initial translation state at the start of the movement
+        rectState.initialTranslateX = rectState.translateX;
+        rectState.initialTranslateY = rectState.translateY;
+        rectState.currentMovement = movement.Movement;
+      }
+
+      // Calculate the total intended translation based on the movement's Distance
+      var totalTranslation = movement.Distance * 100; // Adjust multiplier as needed for your scale
+      var translationDirectionMultiplier =
+        movement.Direction === "out" ? 1 : -1;
+      var currentTranslation =
+        totalTranslation * translationDirectionMultiplier * progress;
+
+      // Apply the translation based on progress from the initial state
+      rectState.translateY = rectState.initialTranslateY + currentTranslation;
+      break;
+
+    case "Pan":
+      if (
+        rectState.currentScene !== movement.Scene ||
+        rectState.currentMovement !== movement.Movement
+      ) {
+        // This is a new movement or scene, so capture the initial rotation state
+        rectState.initialRotate = rectState.rotate;
+        rectState.currentMovement = movement.Movement; // Track the current movement ID if not already present in rectState
+      }
+
+      // Calculate total rotation desired by the end of the movement
+      var totalRotation =
+        movement.Distance * (movement.Direction === "left" ? -45 : 45);
+
+      // Calculate the rotation amount for the current progress
+      var currentRotation = rectState.initialRotate + totalRotation * progress;
+
+      // Apply only the difference needed to achieve the currentRotation
+      rectState.rotate = currentRotation;
+
+      break;
+    case "stat":
+      // Do nothing for the "Stay" case, leaving the rectangle as is
+      break;
+  }
+  rect.attr("transform", getTransformationString());
+}
+
+function getTransformationString() {
+  // Construct the transformation string from the current state
+  return `translate(${rectState.translateX}, ${rectState.translateY}) rotate(${
+    rectState.rotate
+  }, ${rectState.x + rectState.width / 2}, ${
+    rectState.y + rectState.height / 2
+  }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+}
+
+function updateAnimation(currentTime) {
+  let movementFound = false;
+
+  movements.forEach((movement) => {
+    if (currentTime >= movement.start_time && currentTime < movement.end_time) {
+      let progress =
+        (currentTime - movement.start_time) /
+        (movement.end_time - movement.start_time);
+      applyTransformation(movement, progress);
+      movementFound = true;
+    }
+  });
+
+  if (!movementFound) {
+    resetToInitialState();
+    // console.log("static");
+  }
+}
+
+function resetToInitialState() {
+  var rect = d3.select("#rectangle");
+  // Reset the rectangle to its initial attributes and transformation
+  rect.attr("transform", "translate(150, 300)"); // Assuming these are the initial x and y positions
+  // You may also reset scale and rotation if they've been changed from the initial state
+  // For example, if you initially had a scale or rotation applied:
+  // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");
+}

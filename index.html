@@ -8,9 +8,10 @@
 <body>
     <div id="video_player_box">
         <div id="shot_type_text">Shot Type: None</div>
-        <video id='my_video' width="700" height="320" autoplay>
+        <video id='my_video' width="1200" height="700" autoplay>
             <source src="sample_scene.mp4">
         </video>
+        <svg width ='400' height = '600' id="movement"></svg>
         <div id="video_controls_bar">
             <button id="play/pausebutton">Pause</button>
             <div id="seek-bar-container" style="position: relative;">
@@ -23,6 +24,7 @@
     </div>
 
     <svg id="drawlines"></svg>
+
     <script src="./script.js"></script>
 
 </body>

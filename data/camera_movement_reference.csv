@@ -1,0 +1,11 @@
+Type,Direction,Distance,
+Boom,up,
+Boom,down,
+pan,left,
+pan,right,
+Dolly,in,
+Dolly,out,
+truck,left,
+truck,right,
+tilt,up,
+tilt,down

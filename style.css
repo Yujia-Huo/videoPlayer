@@ -4,9 +4,9 @@ div#video_controls_bar{
 }
 
 div#video_player_box{
-    width:1000px;
+    width:1700px;
     background-color: rgb(0, 0, 0);
-    padding:50px;
+    padding:40px;
     margin:0px auto;
 }
 
