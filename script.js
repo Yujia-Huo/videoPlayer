@@ -201,8 +201,6 @@ function drawVisualization() {
     });
   });
 }
-
-// function updateAnimation(currentTime) {
 //   // Find the current movement based on the video's currentTime
 //   var currentMovement = movements.find(
 //     (movement) =>
@@ -405,6 +403,9 @@ var rectState = {
   translateY: 0,
   currentScene: null,
   currentMovement: null,
+  currentMovementType: null, // Add this line
+  postScaleTranslateX: 0,
+  postScaleTranslateY: 0,
 };
 
 function resetTransformationsForNewScene() {
@@ -424,6 +425,8 @@ function resetTransformationsForNewScene() {
   rect.attr("transform", "");
   // Optionally, update position if changed
   rect.attr("x", rectState.x).attr("y", rectState.y);
+
+  traceLayer.selectAll("*").remove(); // This line clears the traceLayer
 }
 
 function recordAndDrawRectangle() {
@@ -446,12 +449,12 @@ function recordAndDrawRectangle() {
     .style("stroke", "red");
 }
 
-var recordInterval = setInterval(recordAndDrawRectangle, 2000);
+var recordInterval = setInterval(recordAndDrawRectangle, 1500);
 
 function applyTransformation(movement, progress) {
+  rectState.currentMovementType = movement.Type;
+
   var rect = d3.select("#rectangle");
-  var rectWidth = 50; // Width of the rectangle
-  var rectHeight = 50; // Height of the rectangle
 
   if (rectState.currentScene !== movement.Scene) {
     resetTransformationsForNewScene(); // Reset if new scene
@@ -526,12 +529,24 @@ function applyTransformation(movement, progress) {
 }
 
 function getTransformationString() {
-  // Construct the transformation string from the current state
-  return `translate(${rectState.translateX}, ${rectState.translateY}) rotate(${
-    rectState.rotate
-  }, ${rectState.x + rectState.width / 2}, ${
-    rectState.y + rectState.height / 2
-  }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+  let transform;
+
+  if (rectState.currentMovementType === "Boom") {
+    // Adjusted transformation for "Boom"
+    var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
+    var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
+      rectState.scaleY
+    }) translate(${-centerX}, ${-centerY})`;
+  } else {
+    // Default transformation for "Dolly", "Pan", and others
+    transform = `translate(${rectState.translateX}, ${
+      rectState.translateY
+    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
+      rectState.y + rectState.height / 2 + 20
+    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+  }
+  return transform;
 }
 
 function updateAnimation(currentTime) {

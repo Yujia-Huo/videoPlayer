@@ -14,3 +14,5 @@ Movement,start_time,end_time,Type,Distance,Direction,Scene
 6,110,112,Tilt,0.5,down,8
 6,112,129,stat,0,n,9
 7,129,131,Pan,2,left,9
+2,131,136,stat,0,n,9
+2,136,142,stat,0,n,10
