@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <script src="https://d3js.org/d3.v7.js"></script>
     <link rel="stylesheet" href="./style.css">
@@ -9,16 +10,16 @@
     <div id="video_player_box">
         <div id="shot_type_text">Shot Type: None</div>
         <video id='my_video' width="1200" height="700" autoplay>
-            <source src="sample_scene.mp4">
+            <source src="sample_scene_1.mp4">
         </video>
-        <svg width ='400' height = '600' id="movement"></svg>
+        <svg width='400' height='600' id="movement"></svg>
         <div id="video_controls_bar">
             <button id="play/pausebutton">Pause</button>
             <div id="seek-bar-container" style="position: relative;">
                 <input id="seekslider" type="range" min="0" max="100" value="0" step="0.01">
                 <!-- Visualization SVG -->
                 <svg id="visualization"></svg>
-              </div>
+            </div>
             <span id="curtimetext"></span>/<span id="durtimetext"></span>
         </div>
     </div>

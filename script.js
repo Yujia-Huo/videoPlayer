@@ -201,169 +201,6 @@ function drawVisualization() {
     });
   });
 }
-//   // Find the current movement based on the video's currentTime
-//   var currentMovement = movements.find(
-//     (movement) =>
-//       currentTime >= movement.start_time && currentTime <= movement.end_time
-//   );
-
-//   if (currentMovement) {
-//     // If a current movement is found, apply its transformation
-//     applyTransformation(currentMovement, 0); // The delay is 0 because we're syncing directly with the video time
-//   } else {
-//     // Optionally, reset or handle the case when no movement matches the current time
-//     // This could involve setting the rectangle to a default position or state
-//   }
-// }
-// d3.csv("./data/camera_movement_data.csv").then(function (data) {
-//   // Assuming your data is loaded into a variable `data`
-//   // This could be loaded via d3.csv or another method
-
-//   var svg3 = d3.select("#movement");
-
-//   var movements = [
-//     {
-//       Movement: 1,
-//       start_time: 32,
-//       end_time: 44,
-//       Type: "Boom",
-//       Distance: 1,
-//       Direction: "down",
-//       Scene: 1,
-//     },
-//     {
-//       Movement: 2,
-//       start_time: 57,
-//       end_time: 66,
-//       Type: "Dolly",
-//       Distance: 1.5,
-//       Direction: "out",
-//       Scene: 3,
-//     },
-//     {
-//       Movement: 3,
-//       start_time: 66,
-//       end_time: 77,
-//       Type: "Pan",
-//       Distance: 1.5,
-//       Direction: "left",
-//       Scene: 3,
-//     },
-//     // Add other movements as needed
-//   ];
-
-//   // Add other movements as needed
-
-//   movements.sort((a, b) => a.start_time - b.start_time);
-
-//   // Append a rectangle to the SVG container
-//   svg3
-//     .append("rect")
-//     .attr("id", "rectangle")
-//     .attr("x", 100) // Starting x position
-//     .attr("y", 100) // Starting y position
-//     .attr("width", 100) // Width of the rectangle
-//     .attr("height", 100) // Height of the rectangle
-//     .attr("fill", "steelblue"); // Fill color of the rectangle
-
-//   // Initialize a state for the rectangle's transformation
-//   var rectState = {
-//     scaleX: 1,
-//     scaleY: 1,
-//     translateX: 100, // Initial x position
-//     translateY: 100, // Initial y position
-//     rotate: 0,
-//   };
-
-//   function applyTransformation(movement, delay) {
-//     var rect = d3.select("#rectangle");
-//     var duration = (movement.end_time - movement.start_time) * 200; // Adjust time scale as needed
-
-//     // Calculate original center of the rectangle
-//     var originalCenterX = rectState.translateX * rectState.scaleX; // Assuming 50 is the width of the rectangle
-//     var originalCenterY = rectState.translateY * rectState.scaleY; // Assuming 50 is the height of the rectangle
-
-//     switch (movement.Type) {
-//       case "Boom":
-//         var scaleAmount = movement.Direction === "down" ? 0.5 : 1.5;
-//         // Adjust scale
-//         rectState.scaleX *= scaleAmount;
-//         rectState.scaleY *= scaleAmount;
-
-//         // Calculate new center based on the updated scale
-//         var newCenterX = rectState.translateX + (100 / 2) * rectState.scaleX;
-//         var newCenterY = rectState.translateY + (100 / 2) * rectState.scaleY;
-
-//         // Adjust translation to keep the center stationary
-//         rectState.translateX += originalCenterX - newCenterX;
-//         rectState.translateY += originalCenterY - newCenterY;
-//         break;
-//       case "Dolly":
-//         var dollyTranslation = movement.Direction === "out" ? 100 : -100;
-//         rectState.translateY += dollyTranslation;
-//         break;
-//       case "Pan":
-//         var rotation = movement.Direction === "left" ? -45 : 45;
-//         rectState.rotate += rotation;
-//         break;
-//       // Add cases for other Types if necessary
-//     }
-
-//     // Construct the transform attribute with the updated state
-//     var transform = `translate(${rectState.translateX}, ${rectState.translateY}) scale(${rectState.scaleX}, ${rectState.scaleY})`;
-
-//     // If there's rotation, append the rotation transform
-//     if (rectState.rotate !== 0) {
-//       transform += ` rotate(${rectState.rotate}, ${originalCenterX}, ${originalCenterY})`;
-//     }
-
-//     rect
-//       .transition()
-//       .delay(delay)
-//       .duration(duration)
-//       .attr("transform", transform);
-//   }
-
-//   // Sequential animation
-//   var initialStartTime = movements[0].start_time * 200; // Adjust time scale as needed
-
-//   movements.forEach((movement, index) => {
-//     var startTime = movement.start_time * 200; // Adjust time scale as needed
-//     var delay = startTime - initialStartTime; // Calculate delay based on actual start time
-
-//     applyTransformation(movement, delay);
-//   });
-// });
-
-// var movements = [
-//   {
-//     Movement: 1,
-//     start_time: 32,
-//     end_time: 44,
-//     Type: "Boom",
-//     Distance: 0.5,
-//     Direction: "down",
-//     Scene: 1,
-//   },
-//   {
-//     Movement: 2,
-//     start_time: 57,
-//     end_time: 66,
-//     Type: "Dolly",
-//     Distance: 1.5,
-//     Direction: "out",
-//     Scene: 3,
-//   },
-//   {
-//     Movement: 3,
-//     start_time: 66,
-//     end_time: 70,
-//     Type: "Pan",
-//     Distance: 1.5,
-//     Direction: "left",
-//     Scene: 3,
-//   },
-// ];
 
 var svg3 = d3.select("#movement");
 
@@ -394,7 +231,7 @@ svg3
   .attr("y", 300) // Starting y position
   .attr("width", 50) // Width of the rectangle
   .attr("height", 50) // Height of the rectangle
-  .attr("fill", "#a97c50"); // Fill color of the rectangle
+  .attr("fill", "#B2B2B2"); // Fill color of the rectangle
 
 // After setting up the rectangle
 startBlinkingEffect();
@@ -580,16 +417,13 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
-      rectState.scaleY
-    }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
+      }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${
-      rectState.translateY
-    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
-      rectState.y + rectState.height / 2 + 20
-    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${rectState.translateY
+      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
+      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
