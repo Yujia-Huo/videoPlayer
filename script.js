@@ -367,6 +367,26 @@ function drawVisualization() {
 
 var svg3 = d3.select("#movement");
 
+function startBlinkingEffect() {
+  var rect = d3.select("#rectangle");
+
+  // Function to toggle the opacity
+  function blink() {
+    rect
+      .transition()
+      .duration(800) // Duration of one phase of the blinking, in milliseconds
+      .attr("opacity", 0) // Make the rectangle fully transparent
+      .transition()
+      .duration(800)
+      .attr("opacity", 1) // Make the rectangle fully opaque
+      .on("end", blink); // When one cycle completes, start the next
+  }
+
+  blink(); // Start the blinking effect
+}
+
+var traceLayer = svg3.append("g").attr("id", "traceLayer");
+
 svg3
   .append("rect")
   .attr("id", "rectangle")
@@ -374,7 +394,10 @@ svg3
   .attr("y", 300) // Starting y position
   .attr("width", 50) // Width of the rectangle
   .attr("height", 50) // Height of the rectangle
-  .attr("fill", "steelblue"); // Fill color of the rectangle
+  .attr("fill", "#a97c50"); // Fill color of the rectangle
+
+// After setting up the rectangle
+startBlinkingEffect();
 
 // var rectState = {
 //   scaleX: 1,
@@ -384,7 +407,6 @@ svg3
 //   rotate: 0,
 // };
 // var traceLayer = d3.select("#movement").append("g").attr("id", "traceLayer");
-var traceLayer = svg3.append("g").attr("id", "traceLayer");
 
 var rectState = {
   // Initial state and current scene
@@ -408,6 +430,19 @@ var rectState = {
   postScaleTranslateY: 0,
 };
 
+// Define an offset for the text to appear above the rectangle
+var textOffsetY = -10;
+var textOffsetX = -80;
+
+var movementText = svg3
+  .append("text")
+  .attr("x", rectState.x + textOffsetX) // Initial X position, same as rectangle
+  .attr("y", rectState.y + textOffsetY) // Initial Y position, offset to be above the rectangle
+  .attr("id", "movementText") // Assign an ID for easy selection later
+  .style("font-size", "16px") // Set font size
+  .style("fill", "white") // Set text color
+  .text("Movement: None"); // Initial text
+
 function resetTransformationsForNewScene() {
   // Reset transformation state for a new scene
   rectState.scaleX = 1;
@@ -425,6 +460,7 @@ function resetTransformationsForNewScene() {
   rect.attr("transform", "");
   // Optionally, update position if changed
   rect.attr("x", rectState.x).attr("y", rectState.y);
+  d3.select("#movementText").text("Movement: None"); // Reset text
 
   traceLayer.selectAll("*").remove(); // This line clears the traceLayer
 }
@@ -445,14 +481,18 @@ function recordAndDrawRectangle() {
     .attr("width", rect.attr("width"))
     .attr("height", rect.attr("height"))
     .attr("transform", transform)
+    .attr("opacity", 0.3)
     .style("fill", "none") // Set to none or a light color to distinguish traces
-    .style("stroke", "red");
+    .style("stroke", "white");
 }
 
 var recordInterval = setInterval(recordAndDrawRectangle, 1500);
 
 function applyTransformation(movement, progress) {
   rectState.currentMovementType = movement.Type;
+
+  var movementTypeText = "Movement: " + movement.Type;
+  d3.select("#movementText").text(movementTypeText);
 
   var rect = d3.select("#rectangle");
 
@@ -525,6 +565,11 @@ function applyTransformation(movement, progress) {
       // Do nothing for the "Stay" case, leaving the rectangle as is
       break;
   }
+
+  d3.select("#movementText")
+    .attr("x", rectState.translateX + rectState.x + textOffsetX) // Update X to match rectangle's new position
+    .attr("y", rectState.translateY + rectState.y + textOffsetY); // Update Y, considering offset
+
   rect.attr("transform", getTransformationString());
 }
 
