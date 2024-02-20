@@ -3,18 +3,25 @@
 
 <head>
     <script src="https://d3js.org/d3.v7.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <div id="video_player_box">
-        <div id="shot_type_text">Shot Type: None</div>
-        <video id='my_video' width="1100" height="700" autoplay>
-            <source src="sample_scene_2.mp4">
-        </video>
-        <!-- <svg width='400' height='100' id="color"></svg> -->
-        <!-- <canvas id="movementCanvas" width="400" height="500"></canvas> -->
-        <svg width='400' height='500' id="movement"></svg>
+        <div id="video_player_box">
+            <div id="video_container">
+                <div id="shot_type_text">Shot Type: None</div>
+                <video id='my_video' width="1100" height="600" autoplay>
+                    <source src="sample_scene_2.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div id="visualizations_container">
+                <svg width='400' height='200' id="color">Color</svg>
+                <svg width='400' height='500' id="movement">Movement</svg>
+            </div>
+        </div>
+
         <div id="video_controls_bar">
             <button id="play/pausebutton">Pause</button>
             <div id="seek-bar-container" style="position: relative;">
@@ -22,9 +29,9 @@
                 <!-- Visualization SVG -->
                 <svg id="visualization"></svg>
             </div>
-            <span id="curtimetext"></span>/<span id="durtimetext"></span>
+            <span id="curtimetext">00:00</span>/<span id="durtimetext">00
         </div>
-    </div>
+                
 
     <script src="./script.js"></script>
 

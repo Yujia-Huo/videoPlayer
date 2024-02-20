@@ -1,13 +1,6 @@
 div#video_controls_bar{
-    background-color: rgb(0, 0, 0);
-    padding:10px;
-}
-
-div#video_player_box{
-    width:1700px;
-    background-color: rgb(0, 0, 0);
-    padding:40px;
-    margin:0px auto;
+    /* background-color: rgb(0, 0, 0); */
+    margin-right: 200px;
 }
 
 #seekslider {
@@ -27,4 +20,39 @@ div#video_player_box{
 #shot_type_text {
     color: aliceblue;
     margin-bottom: 10px;
+}
+
+body {
+    background-color: rgb(10, 10, 10);
+    margin-left: 50px;
+}
+#video_player_box {
+    /* background-color: rgb(0, 0, 0); */
+    display: flex;
+    flex-wrap: wrap; /* Wrap the elements if not enough space */
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1700px; /* Set a max-width for the video player box */
+    margin: 0px; /* Add some margin */
+    gap: 20px;
+}
+#video_container {
+    flex: 1; /* Allow it to grow */
+    text-align: left; /* Center video horizontally */
+    padding: 20px; /* Add some padding */
+}
+video {
+    width: 100%; /* Make video responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+
+#visualizations_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+ #movement {
+    border: 1px solid #ccc;
+    /* background-color: lavender; */
 }

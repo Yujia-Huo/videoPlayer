@@ -1,5 +1,6 @@
 var vid, playbtn, seekslider, curtimetext, durtimetext;
 var movements = []; // This will hold the parsed data once it's loaded
+var colorData = []; // To hold color data
 
 function initializePlayer() {
   vid = document.getElementById("my_video");
@@ -36,6 +37,22 @@ d3.csv("./data/camera_movement_data.csv").then(function (data) {
   onDataLoaded();
 });
 
+// Load color data
+d3.csv("./data/color_data.csv").then(function (data) {
+  colorData = data.map((d) => ({
+    start_time: +d["Start Time"],
+    end_time: +d["End Time"],
+    colors: [
+      d["Dominant Color"],
+      d["Color 1"],
+      d["Color 2"],
+      d["Color 3"],
+      d["Color 4"],
+    ],
+  }));
+  // No need for an onDataLoaded call here unless you need to initialize something specific to color data
+});
+
 console.log(movements);
 
 function playPause() {
@@ -70,6 +87,7 @@ function seektimeupdate() {
   durtimetext.innerHTML = durmins + ":" + dursecs;
 
   updateAnimation(vid.currentTime);
+  updateColorVisualization(vid.currentTime);
 
   var shotDataMap = new Map(); // Global map to hold shot data with colors
 
@@ -474,4 +492,34 @@ function resetToInitialState() {
   // You may also reset scale and rotation if they've been changed from the initial state
   // For example, if you initially had a scale or rotation applied:
   // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");
+}
+
+function updateColorVisualization(currentTime) {
+  var svg = d3.select("#color");
+  svg.selectAll("*").remove(); // Clear existing visualization
+
+  var currentColorData = colorData.find(
+    (d) => currentTime >= d.start_time && currentTime < d.end_time
+  );
+  if (currentColorData) {
+    // Draw dominant color circle
+    svg
+      .append("circle")
+      .attr("cx", 50)
+      .attr("cy", 100)
+      .attr("r", 40)
+      .style("stroke", "white")
+      .style("fill", currentColorData.colors[0]);
+
+    // Draw smaller circles for other colors
+    currentColorData.colors.slice(1).forEach((color, index) => {
+      svg
+        .append("circle")
+        .attr("cx", 150 + index * 60)
+        .attr("cy", 100)
+        .attr("r", 20)
+        .style("stroke", "white")
+        .style("fill", color);
+    });
+  }
 }
