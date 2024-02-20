@@ -1,8 +1,8 @@
-Shot Type,Color
-Extreme Long Shot,#00aeef
-Long Shot,#00a651
-Medium Long Shot,#00ab88
-Medium,#d7df23
-Medium Closeup,#fbb040
-Closeup,#f42b00
-Extreme Closeup,#ee08ff
+Shot Type,Color,size
+Extreme Long Shot,#00aeef,120
+Long Shot,#00a651,100
+Medium Long Shot,#00ab88,80
+Medium,#d7df23,60
+Medium Closeup,#fbb040,40
+Closeup,#f42b00,20
+Extreme Closeup,#ee08ff,5

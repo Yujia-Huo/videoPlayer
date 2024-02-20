@@ -78,18 +78,22 @@ function seektimeupdate() {
     d3.csv("./data/shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
   ]).then(function ([sceneData, shotTypeData, colorData]) {
-    // Create the color mapping
-    var shotTypeColors = {};
+    // Create the color and size mapping
+    var shotTypeDetails = {};
     colorData.forEach(function (d) {
-      shotTypeColors[d["Shot Type"]] = d["Color"];
+      shotTypeDetails[d["Shot Type"]] = { color: d["Color"], size: +d["size"] };
     });
 
-    // Map each scene to its shot type and color
+    // Create a map for quick lookup of shot types to scene numbers
+    var shotDataMap = new Map();
+
+    // Map each scene to its shot type, color, and size
     shotTypeData.forEach(function (d) {
-      var color = shotTypeColors[d["Shot Type"]];
+      var details = shotTypeDetails[d["Shot Type"]];
       shotDataMap.set(d["Scene Number"], {
         type: d["Shot Type"],
-        color: color,
+        color: details.color,
+        size: details.size,
       });
     });
 
@@ -108,16 +112,20 @@ function seektimeupdate() {
       var sceneNumber = currentScene["Scene Number"];
       var shotInfo = shotDataMap.get(sceneNumber);
       if (shotInfo) {
-        videoElement.style.border = `4px solid ${shotInfo.color}`;
+        var strokeSize = shotInfo.size || 4; // Default to 4 if size is not defined
+        // videoElement.style.border = `${strokeSize / 2}px solid ${
+        //   shotInfo.color
+        // }`;
         shotTextElement.textContent = `Shot Type: ${shotInfo.type}`;
-        shotTextElement.style.color = shotInfo.color;
+        // shotTextElement.style.color = shotInfo.color;
       }
     } else {
-      videoElement.style.border = "4px solid transparent";
+      // videoElement.style.border = "none";
       shotTextElement.textContent = "Shot Type: None";
-      shotTextElement.style.color = "initial";
+      // shotTextElement.style.color = "initial";
     }
   });
+
   d3.csv("./data/sample_scene-Scenes.csv").then(function (data) {
     //Highlight the shot bar if the current time is within the shot's range
     data.forEach((d, i) => {
@@ -139,25 +147,28 @@ function seektimeupdate() {
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth;
+  var svgHeight = 200;
   var svg = d3
     .select("#visualization")
     .attr("width", seekBarWidth)
-    .attr("height", 20); // Set a fixed height for the SVG
+    .attr("height", svgHeight); // Set a fixed height for the SVG
 
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
     d3.csv("./data/shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
   ]).then(function ([sceneData, shotTypeData, colorData]) {
-    // Process the color data into a mapping
-    var shotTypeColors = {};
+    // Process the color and size data into a mapping
+    var shotTypeInfo = {};
     colorData.forEach(function (d) {
-      shotTypeColors[d["Shot Type"]] = d["Color"];
+      shotTypeInfo[d["Shot Type"]] = { color: d["Color"], size: +d["size"] };
     });
 
-    // Add color info to shotTypeData
+    // Add color and size info to shotTypeData
     shotTypeData.forEach(function (shot) {
-      shot.color = shotTypeColors[shot["Shot Type"]];
+      var info = shotTypeInfo[shot["Shot Type"]];
+      shot.color = info ? info.color : "#C49A6C"; // Default color if not found
+      shot.size = info ? info.size : 20; // Default size if not found
     });
 
     // Create a map for quick lookup
@@ -175,6 +186,7 @@ function drawVisualization() {
       .scaleLinear()
       .domain([0, maxEndTime])
       .range([0, seekBarWidth]);
+
     // Now draw the visualization using the xScale for the x-axis
     sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
@@ -182,19 +194,21 @@ function drawVisualization() {
       const sceneWidth = xScale(endTime - startTime);
       const xOffset = xScale(startTime);
 
-      // Get color based on shot type
+      // Get color and size based on shot type
       const shotInfo = shotDataMap.get(d["Scene Number"]);
       const color = shotInfo ? shotInfo.color : "#C49A6C"; // Default color if not found
+      const height = shotInfo ? shotInfo.size : 20; // Use size for height
 
+      const yOffset = (svgHeight - height) / 2; // Centers the rectangle
       // Append a bar for each scene
       svg
         .append("rect")
         .attr("id", "shot-bar-" + i)
         .attr("x", xOffset)
-        .attr("y", 0)
+        .attr("y", yOffset)
         .attr("width", sceneWidth)
-        .attr("height", 50)
-        .attr("fill", color)
+        .attr("height", height)
+        .attr("fill", "white")
         .attr("stroke", "black")
         .attr("opacity", 1)
         .attr("stroke-width", 1);
@@ -202,28 +216,28 @@ function drawVisualization() {
   });
 }
 
-var svg3 = d3.select("#movement")
+var svg3 = d3
+  .select("#movement")
   .style("border", "0.5px solid white") // Set the border color and width
   .style("border-radius", "4px");
 
+// function startBlinkingEffect() {
+//   var rect = d3.select("#rectangle");
 
-function startBlinkingEffect() {
-  var rect = d3.select("#rectangle");
+//   // Function to toggle the opacity
+//   function blink() {
+//     rect
+//       .transition()
+//       .duration(800) // Duration of one phase of the blinking, in milliseconds
+//       .attr("opacity", 0) // Make the rectangle fully transparent
+//       .transition()
+//       .duration(800)
+//       .attr("opacity", 1) // Make the rectangle fully opaque
+//       .on("end", blink); // When one cycle completes, start the next
+//   }
 
-  // Function to toggle the opacity
-  function blink() {
-    rect
-      .transition()
-      .duration(800) // Duration of one phase of the blinking, in milliseconds
-      .attr("opacity", 0) // Make the rectangle fully transparent
-      .transition()
-      .duration(800)
-      .attr("opacity", 1) // Make the rectangle fully opaque
-      .on("end", blink); // When one cycle completes, start the next
-  }
-
-  blink(); // Start the blinking effect
-}
+//   blink(); // Start the blinking effect
+// }
 
 var traceLayer = svg3.append("g").attr("id", "traceLayer");
 
@@ -234,10 +248,10 @@ svg3
   .attr("y", 180) // Starting y position
   .attr("width", 50) // Width of the rectangle
   .attr("height", 50) // Height of the rectangle
-  .attr("fill", "#B2B2B2"); // Fill color of the rectangle
+  .attr("fill", "white"); // Fill color of the rectangle
 
 // After setting up the rectangle
-startBlinkingEffect();
+// startBlinkingEffect();
 
 // var rectState = {
 //   scaleX: 1,
@@ -326,7 +340,7 @@ function recordAndDrawRectangle() {
     .style("stroke", "white");
 }
 
-var recordInterval = setInterval(recordAndDrawRectangle, 1500);
+var recordInterval = setInterval(recordAndDrawRectangle, 1000);
 
 function applyTransformation(movement, progress) {
   rectState.currentMovementType = movement.Type;
@@ -420,13 +434,16 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
-      }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
+      rectState.scaleY
+    }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${rectState.translateY
-      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
-      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${
+      rectState.translateY
+    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
+      rectState.y + rectState.height / 2 + 20
+    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
