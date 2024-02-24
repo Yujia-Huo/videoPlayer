@@ -234,11 +234,18 @@ function drawVisualization() {
   });
 }
 
-var svg3 = d3
-  .select("#movement")
-  .style("border", "0.5px solid white") // Set the border color and width
-  .style("border-radius", "4px");
+var svgWidth = +d3.select("#movement").attr("width");
+var svgHeight = +d3.select("#movement").attr("height");
 
+var bgRect = d3
+  .select("#movement")
+  .insert("rect", ":first-child") // Ensure the rectangle is the first child of the SVG
+  .attr("width", svgWidth)
+  .attr("height", svgHeight)
+  .attr("fill", "black") // Set your desired background color here
+  .style("fill-opacity", 0.5); // Set the opacity here (range: 0 to 1)
+
+var svg3 = d3.select("#movement");
 // function startBlinkingEffect() {
 //   var rect = d3.select("#rectangle");
 
@@ -262,10 +269,10 @@ var traceLayer = svg3.append("g").attr("id", "traceLayer");
 svg3
   .append("rect")
   .attr("id", "rectangle")
-  .attr("x", 150) // Starting x position
-  .attr("y", 180) // Starting y position
-  .attr("width", 50) // Width of the rectangle
-  .attr("height", 50) // Height of the rectangle
+  .attr("x", 130) // Starting x position
+  .attr("y", 150) // Starting y position
+  .attr("width", 30) // Width of the rectangle
+  .attr("height", 30) // Height of the rectangle
   .attr("fill", "white"); // Fill color of the rectangle
 
 // After setting up the rectangle
@@ -282,14 +289,14 @@ svg3
 
 var rectState = {
   // Initial state and current scene
-  x: 150,
-  y: 180,
+  x: 130,
+  y: 150,
   initialTranslateX: 0,
   initialTranslateY: 0,
   initialScaleX: 1,
   initialScaleY: 1,
-  width: 50,
-  height: 50,
+  width: 30,
+  height: 30,
   scaleX: 1,
   scaleY: 1,
   initialRotate: 0,
@@ -324,8 +331,8 @@ function resetTransformationsForNewScene() {
   rectState.translateY = 0;
 
   // Optionally reset position
-  rectState.x = 150; // Or any scene-specific starting position
-  rectState.y = 180; // Or any scene-specific starting position
+  rectState.x = 130; // Or any scene-specific starting position
+  rectState.y = 150; // Or any scene-specific starting position
 
   // Apply reset transformations to the rectangle
   var rect = d3.select("#rectangle");
@@ -402,7 +409,7 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 100; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 50; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "out" ? 1 : -1;
       var currentTranslation =
@@ -488,7 +495,7 @@ function updateAnimation(currentTime) {
 function resetToInitialState() {
   var rect = d3.select("#rectangle");
   // Reset the rectangle to its initial attributes and transformation
-  rect.attr("transform", "translate(150, 180)"); // Assuming these are the initial x and y positions
+  rect.attr("transform", "translate(130, 150)"); // Assuming these are the initial x and y positions
   // You may also reset scale and rotation if they've been changed from the initial state
   // For example, if you initially had a scale or rotation applied:
   // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");

@@ -14,18 +14,20 @@
                 <video id='my_video' width="1100" height="600" autoplay>
                     <source src="sample_scene_2.mp4" type="video/mp4">
                 </video>
+                <svg width='300' height='300' id="movement">Movement</svg>
             </div>
 
-            <div id="visualizations_container">
+            <!-- <div id="visualizations_container">
                 <svg width='400' height='200' id="color">Color</svg>
                 <svg width='400' height='500' id="movement">Movement</svg>
-            </div>
+            </div> -->
         </div>
 
         <div id="video_controls_bar">
             <button id="play/pausebutton">Pause</button>
             <div id="seek-bar-container" style="position: relative;">
                 <input id="seekslider" type="range" min="0" max="100" value="0" step="0.01">
+                <img src="./combined_sorted_image.png" alt="Description of image">
                 <!-- Visualization SVG -->
                 <svg id="visualization"></svg>
             </div>

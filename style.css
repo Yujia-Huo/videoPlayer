@@ -40,6 +40,7 @@ body {
     flex: 1; /* Allow it to grow */
     text-align: left; /* Center video horizontally */
     padding: 20px; /* Add some padding */
+    position: relative; /* Establishes a positioning context for absolute positioning inside */
 }
 video {
     width: 100%; /* Make video responsive */
@@ -56,3 +57,19 @@ video {
     border: 1px solid #ccc;
     /* background-color: lavender; */
 }
+
+#seek-bar-container {
+    width: 100%; /* or any specific width */
+  }
+
+  #seekslider, #seek-bar-container img, #visualization {
+    width: 100%;
+    height: auto; /* for the image, to maintain aspect ratio */
+  }
+
+  #movement {
+    position: absolute;
+    bottom: 0; /* Aligns the SVG to the top edge of the container */
+    right: 0; /* Aligns the SVG to the right edge of the container */
+    z-index: 10; /* Ensures the SVG is layered above the video */
+  }
