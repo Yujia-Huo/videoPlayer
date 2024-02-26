@@ -246,23 +246,21 @@ var bgRect = d3
   .style("fill-opacity", 0.5); // Set the opacity here (range: 0 to 1)
 
 var svg3 = d3.select("#movement");
-// function startBlinkingEffect() {
-//   var rect = d3.select("#rectangle");
 
-//   // Function to toggle the opacity
-//   function blink() {
-//     rect
-//       .transition()
-//       .duration(800) // Duration of one phase of the blinking, in milliseconds
-//       .attr("opacity", 0) // Make the rectangle fully transparent
-//       .transition()
-//       .duration(800)
-//       .attr("opacity", 1) // Make the rectangle fully opaque
-//       .on("end", blink); // When one cycle completes, start the next
-//   }
+d3.xml("./camera.svg").then((data) => {
+  // var externalSVG = data.documentElement; // Get the root element of the SVG file
 
-//   blink(); // Start the blinking effect
-// }
+  var camera = svg3.node().appendChild(data.documentElement.cloneNode(true));
+  // .attr("id", "camera");
+
+  // Apply initial transformations to match your desired position and size
+  d3.select(camera)
+    .attr("id", "camera")
+    .attr("width", rectState.width) // Match the rectangle's width
+    .attr("height", rectState.height) // Match the rectangle's height
+    .attr("x", rectState.x) // Match the rectangle's x position
+    .attr("y", rectState.y); // Match the rectangle's y position
+});
 
 var traceLayer = svg3.append("g").attr("id", "traceLayer");
 
@@ -273,19 +271,7 @@ svg3
   .attr("y", 150) // Starting y position
   .attr("width", 30) // Width of the rectangle
   .attr("height", 30) // Height of the rectangle
-  .attr("fill", "white"); // Fill color of the rectangle
-
-// After setting up the rectangle
-// startBlinkingEffect();
-
-// var rectState = {
-//   scaleX: 1,
-//   scaleY: 1,
-//   translateX: 100,
-//   translateY: 20,
-//   rotate: 0,
-// };
-// var traceLayer = d3.select("#movement").append("g").attr("id", "traceLayer");
+  .attr("fill", "black"); // Fill color of the rectangle
 
 var rectState = {
   // Initial state and current scene
@@ -339,6 +325,11 @@ function resetTransformationsForNewScene() {
   rect.attr("transform", "");
   // Optionally, update position if changed
   rect.attr("x", rectState.x).attr("y", rectState.y);
+
+  var camera = d3.select("#camera");
+  camera.attr("transform", "");
+  // Optionally, update position if changed
+  camera.attr("x", rectState.x).attr("y", rectState.y);
   d3.select("#movementText").text("Movement: None"); // Reset text
 
   traceLayer.selectAll("*").remove(); // This line clears the traceLayer
@@ -374,6 +365,7 @@ function applyTransformation(movement, progress) {
   d3.select("#movementText").text(movementTypeText);
 
   var rect = d3.select("#rectangle");
+  var camera = d3.select("#camera");
 
   if (rectState.currentScene !== movement.Scene) {
     resetTransformationsForNewScene(); // Reset if new scene
@@ -450,6 +442,11 @@ function applyTransformation(movement, progress) {
     .attr("y", rectState.translateY + rectState.y + textOffsetY); // Update Y, considering offset
 
   rect.attr("transform", getTransformationString());
+  camera
+    .attr("x", rectState.translateX + rectState.x) // Update X to match rectangle's new position
+    .attr("y", rectState.translateY + rectState.y)
+    .attr("transform", `scale(${rectState.scaleX},${rectState.scaleY})`);
+  // Update Y, considering offset
 }
 
 function getTransformationString() {
@@ -494,8 +491,10 @@ function updateAnimation(currentTime) {
 
 function resetToInitialState() {
   var rect = d3.select("#rectangle");
+  var camera = d3.select("#camera");
   // Reset the rectangle to its initial attributes and transformation
   rect.attr("transform", "translate(130, 150)"); // Assuming these are the initial x and y positions
+  camera.attr("transform", "translate(130, 150)"); // Assuming these are the initial x and y positions
   // You may also reset scale and rotation if they've been changed from the initial state
   // For example, if you initially had a scale or rotation applied:
   // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");
