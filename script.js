@@ -248,18 +248,18 @@ var bgRect = d3
 var svg3 = d3.select("#movement");
 
 d3.xml("./camera.svg").then((data) => {
-  // var externalSVG = data.documentElement; // Get the root element of the SVG file
+  var externalSVG = data.documentElement; // Get the root element of the SVG file
 
-  var camera = svg3.node().appendChild(data.documentElement.cloneNode(true));
-  // .attr("id", "camera");
+  // Modify the SVG's width and height
+  d3.select(externalSVG)
+    .attr("width", rectState.width) // Set desired width
+    .attr("height", rectState.height) // Set desired height
+    .attr("x", rectState.x) // Initial X position, same as rectangle
+    .attr("y", rectState.y); // Initial Y position, offset to be above the rectangle
 
-  // Apply initial transformations to match your desired position and size
-  d3.select(camera)
-    .attr("id", "camera")
-    .attr("width", rectState.width) // Match the rectangle's width
-    .attr("height", rectState.height) // Match the rectangle's height
-    .attr("x", rectState.x) // Match the rectangle's x position
-    .attr("y", rectState.y); // Match the rectangle's y position
+  // Append the modified SVG to a <g> element within your main SVG
+  var cameraGroup = svg3.append("g").attr("id", "camera");
+  cameraGroup.node().appendChild(externalSVG.cloneNode(true));
 });
 
 var traceLayer = svg3.append("g").attr("id", "traceLayer");
@@ -269,9 +269,9 @@ svg3
   .attr("id", "rectangle")
   .attr("x", 130) // Starting x position
   .attr("y", 150) // Starting y position
-  .attr("width", 30) // Width of the rectangle
-  .attr("height", 30) // Height of the rectangle
-  .attr("fill", "black"); // Fill color of the rectangle
+  .attr("width", 40) // Width of the rectangle
+  .attr("height", 40) // Height of the rectangle
+  .attr("fill", "none"); // Fill color of the rectangle
 
 var rectState = {
   // Initial state and current scene
@@ -281,8 +281,8 @@ var rectState = {
   initialTranslateY: 0,
   initialScaleX: 1,
   initialScaleY: 1,
-  width: 30,
-  height: 30,
+  width: 40,
+  height: 40,
   scaleX: 1,
   scaleY: 1,
   initialRotate: 0,
@@ -301,8 +301,8 @@ var textOffsetX = -80;
 
 var movementText = svg3
   .append("text")
-  .attr("x", rectState.x + textOffsetX) // Initial X position, same as rectangle
-  .attr("y", rectState.y + textOffsetY) // Initial Y position, offset to be above the rectangle
+  .attr("x", 10) // Initial X position, same as rectangle
+  .attr("y", 290) // Initial Y position, offset to be above the rectangle
   .attr("id", "movementText") // Assign an ID for easy selection later
   .style("font-size", "16px") // Set font size
   .style("fill", "white") // Set text color
@@ -343,17 +343,38 @@ function recordAndDrawRectangle() {
   // Note: This assumes the transform attribute is directly applicable to a <rect>.
   // For more complex transformations, you might need to parse and calculate the absolute position.
 
-  // Create a new rectangle in the trace layer with the same transformation
-  traceLayer
-    .append("rect")
-    .attr("x", rect.attr("x"))
-    .attr("y", rect.attr("y"))
-    .attr("width", rect.attr("width"))
-    .attr("height", rect.attr("height"))
-    .attr("transform", transform)
-    .attr("opacity", 0.3)
-    .style("fill", "none") // Set to none or a light color to distinguish traces
-    .style("stroke", "white");
+  // // Create a new rectangle in the trace layer with the same transformation
+  // traceLayer
+  //   .append("rect")
+  //   .attr("x", rect.attr("x"))
+  //   .attr("y", rect.attr("y"))
+  //   .attr("width", rect.attr("width"))
+  //   .attr("height", rect.attr("height"))
+  //   .attr("transform", transform)
+  //   .attr("opacity", 0.3)
+  //   .style("fill", "none") // Set to none or a light color to distinguish traces
+  //   .style("stroke", "white");
+
+  d3.xml("./camera_trace.svg").then((data) => {
+    var externalSVG = data.documentElement; // Get the root element of the SVG file
+
+    // Modify the SVG's width and height
+    d3.select(externalSVG)
+      .attr("x", rect.attr("x"))
+      .attr("y", rect.attr("y"))
+      .attr("width", rect.attr("width"))
+      .attr("height", rect.attr("height"))
+      // .style("fill", "red") // Set text color
+      .style("stroke-width", "0pt")
+      .attr("fill-opacity", 0.3);
+
+    // Append the modified SVG to a <g> element within your main SVG
+    cameraGroup = traceLayer
+      .append("g")
+      .attr("id", "cameraTrace")
+      .attr("transform", transform);
+    cameraGroup.node().appendChild(externalSVG.cloneNode(true));
+  });
 }
 
 var recordInterval = setInterval(recordAndDrawRectangle, 1000);
@@ -437,15 +458,8 @@ function applyTransformation(movement, progress) {
       break;
   }
 
-  d3.select("#movementText")
-    .attr("x", rectState.translateX + rectState.x + textOffsetX) // Update X to match rectangle's new position
-    .attr("y", rectState.translateY + rectState.y + textOffsetY); // Update Y, considering offset
-
   rect.attr("transform", getTransformationString());
-  camera
-    .attr("x", rectState.translateX + rectState.x) // Update X to match rectangle's new position
-    .attr("y", rectState.translateY + rectState.y)
-    .attr("transform", `scale(${rectState.scaleX},${rectState.scaleY})`);
+  camera.attr("transform", getTransformationString());
   // Update Y, considering offset
 }
 
