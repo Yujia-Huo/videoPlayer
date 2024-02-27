@@ -32,7 +32,7 @@ d3.csv("./data/camera_movement_data.csv").then(function (data) {
     Type: d.Type,
     Distance: +d.Distance,
     Direction: d.Direction,
-    Scene: +d.Scene,
+    Scene: +d.Shot,
   }));
   onDataLoaded();
 });
@@ -108,7 +108,7 @@ function seektimeupdate() {
     // Map each scene to its shot type, color, and size
     shotTypeData.forEach(function (d) {
       var details = shotTypeDetails[d["Shot Type"]];
-      shotDataMap.set(d["Scene Number"], {
+      shotDataMap.set(d["Shot Number"], {
         type: d["Shot Type"],
         color: details.color,
         size: details.size,
@@ -127,7 +127,7 @@ function seektimeupdate() {
     var videoElement = document.getElementById("my_video");
 
     if (currentScene) {
-      var sceneNumber = currentScene["Scene Number"];
+      var sceneNumber = currentScene["Shot Number"];
       var shotInfo = shotDataMap.get(sceneNumber);
       if (shotInfo) {
         var strokeSize = shotInfo.size || 4; // Default to 4 if size is not defined
@@ -191,7 +191,7 @@ function drawVisualization() {
 
     // Create a map for quick lookup
     var shotDataMap = new Map(
-      shotTypeData.map((shot) => [shot["Scene Number"], shot])
+      shotTypeData.map((shot) => [shot["Shot Number"], shot])
     );
 
     // Compute the maximum end time to scale the width of the bars
@@ -213,7 +213,7 @@ function drawVisualization() {
       const xOffset = xScale(startTime);
 
       // Get color and size based on shot type
-      const shotInfo = shotDataMap.get(d["Scene Number"]);
+      const shotInfo = shotDataMap.get(d["Shot Number"]);
       const color = shotInfo ? shotInfo.color : "#C49A6C"; // Default color if not found
       const height = shotInfo ? shotInfo.size : 20; // Use size for height
 

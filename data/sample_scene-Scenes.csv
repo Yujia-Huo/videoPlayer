@@ -1,4 +1,4 @@
-Scene Number,Start Frame,Start Timecode,Start Time (seconds),End Frame,End Timecode,End Time (seconds),Length (frames),Length (timecode),Length (seconds)
+Shot Number,Start Frame,Start Timecode,Start Time (seconds),End Frame,End Timecode,End Time (seconds),Length (frames),Length (timecode),Length (seconds)
 1,1,00:00:00.000,0.000,1157,00:00:48.257,48.257,1157,00:00:48.257,48.257
 2,1158,00:00:48.257,48.257,1322,00:00:55.138,55.138,165,00:00:06.882,6.882
 3,1323,00:00:55.138,55.138,1493,00:01:02.271,81.164,171,00:00:07.132,7.132
