@@ -1,6 +1,8 @@
 var vid, playbtn, seekslider, curtimetext, durtimetext;
 var movements = []; // This will hold the parsed data once it's loaded
 var colorData = []; // To hold color data
+var currentTimeLine;
+var xScale; // Ensure xScale is accessible in seektimeupdate
 
 function initializePlayer() {
   vid = document.getElementById("my_video");
@@ -87,9 +89,13 @@ function seektimeupdate() {
   durtimetext.innerHTML = durmins + ":" + dursecs;
 
   updateAnimation(vid.currentTime);
-  updateColorVisualization(vid.currentTime);
 
   var shotDataMap = new Map(); // Global map to hold shot data with colors
+
+  var currentTime = vid.currentTime;
+  var xPos = xScale(currentTime); // Use xScale to get the new x position
+
+  // Update the position of the current time indicator line
 
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
@@ -160,16 +166,32 @@ function seektimeupdate() {
       }
     });
   });
+
+  currentTimeLine.attr("x1", xPos).attr("x2", xPos);
 }
 
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth;
-  var svgHeight = 200;
+  var svgHeight = 300;
   var svg = d3
     .select("#visualization")
     .attr("width", seekBarWidth)
     .attr("height", svgHeight); // Set a fixed height for the SVG
+
+  svg
+    .append("image")
+    .attr("x", 0) // The x position of the image within the SVG
+    .attr("y", 0) // The y position of the image within the SVG
+    .attr("width", seekBarWidth) // The width of the image
+    .attr("height", 80) // The height of the image
+    .attr("xlink:href", "./combined_sorted_image.png") // The path to your PNG image
+    .attr("preserveAspectRatio", "none"); // This will stretch the image
+  const maxEndTime = Math.max(
+    ...movements.map((d) => d.end_time) // Use movements data for maxEndTime
+  );
+
+  xScale = d3.scaleLinear().domain([0, maxEndTime]).range([0, seekBarWidth]);
 
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
@@ -231,6 +253,41 @@ function drawVisualization() {
         .attr("opacity", 1)
         .attr("stroke-width", 1);
     });
+
+    currentTimeLine = svg
+      .append("line")
+      .attr("id", "current-time-line")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", svgHeight)
+      .attr("stroke", "red") // Red line for visibility
+      .attr("stroke-width", 2);
+
+    drawMovements(svg, movements, xScale, svgHeight);
+  });
+}
+
+function drawMovements(svg, movements, xScale, svgHeight) {
+  // Loop through the movements data to draw lines
+  movements.forEach(function (movement) {
+    // Use the xScale to determine the start and end points on the x-axis
+    var startX = xScale(movement.start_time);
+    var endX = xScale(movement.end_time);
+
+    // Set the stroke-dasharray based on whether the camera is moving or static
+    var strokeDasharray = movement.Type === "stat" ? "0" : "5, 5"; // "5, 5" is a pattern of dashes
+
+    // Draw the line on the SVG canvas
+    svg
+      .append("line")
+      .attr("x1", startX)
+      .attr("y1", svgHeight / 2) // Position the line in the middle of the SVG height
+      .attr("x2", endX)
+      .attr("y2", svgHeight / 2) // Keep the line horizontal
+      .attr("stroke", movement.Type === "stat" ? "black" : "grey") // Color the line differently if it's moving
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", strokeDasharray);
   });
 }
 
@@ -338,22 +395,6 @@ function resetTransformationsForNewScene() {
 function recordAndDrawRectangle() {
   var rect = d3.select("#rectangle");
   var transform = rect.attr("transform");
-
-  // Parse the current transformation of the rectangle
-  // Note: This assumes the transform attribute is directly applicable to a <rect>.
-  // For more complex transformations, you might need to parse and calculate the absolute position.
-
-  // // Create a new rectangle in the trace layer with the same transformation
-  // traceLayer
-  //   .append("rect")
-  //   .attr("x", rect.attr("x"))
-  //   .attr("y", rect.attr("y"))
-  //   .attr("width", rect.attr("width"))
-  //   .attr("height", rect.attr("height"))
-  //   .attr("transform", transform)
-  //   .attr("opacity", 0.3)
-  //   .style("fill", "none") // Set to none or a light color to distinguish traces
-  //   .style("stroke", "white");
 
   d3.xml("./camera_trace.svg").then((data) => {
     var externalSVG = data.documentElement; // Get the root element of the SVG file
@@ -512,34 +553,4 @@ function resetToInitialState() {
   // You may also reset scale and rotation if they've been changed from the initial state
   // For example, if you initially had a scale or rotation applied:
   // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");
-}
-
-function updateColorVisualization(currentTime) {
-  var svg = d3.select("#color");
-  svg.selectAll("*").remove(); // Clear existing visualization
-
-  var currentColorData = colorData.find(
-    (d) => currentTime >= d.start_time && currentTime < d.end_time
-  );
-  if (currentColorData) {
-    // Draw dominant color circle
-    svg
-      .append("circle")
-      .attr("cx", 50)
-      .attr("cy", 100)
-      .attr("r", 40)
-      .style("stroke", "white")
-      .style("fill", currentColorData.colors[0]);
-
-    // Draw smaller circles for other colors
-    currentColorData.colors.slice(1).forEach((color, index) => {
-      svg
-        .append("circle")
-        .attr("cx", 150 + index * 60)
-        .attr("cy", 100)
-        .attr("r", 20)
-        .style("stroke", "white")
-        .style("fill", color);
-    });
-  }
 }
