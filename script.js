@@ -169,6 +169,7 @@ function seektimeupdate() {
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
 }
+//////////Timeline Visualization(shot, script, movement)////////////////////////////////
 
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
@@ -197,7 +198,8 @@ function drawVisualization() {
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
     d3.csv("./data/shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
-  ]).then(function ([sceneData, shotTypeData, colorData]) {
+    d3.csv("./data/script_data.csv"), // Load scene data
+  ]).then(function ([sceneData, shotTypeData, colorData, scriptData]) {
     // Process the color and size data into a mapping
     var shotTypeInfo = {};
     colorData.forEach(function (d) {
@@ -207,7 +209,6 @@ function drawVisualization() {
     // Add color and size info to shotTypeData
     shotTypeData.forEach(function (shot) {
       var info = shotTypeInfo[shot["Shot Type"]];
-      shot.color = info ? info.color : "#C49A6C"; // Default color if not found
       shot.size = info ? info.size : 20; // Default size if not found
     });
 
@@ -236,7 +237,6 @@ function drawVisualization() {
 
       // Get color and size based on shot type
       const shotInfo = shotDataMap.get(d["Shot Number"]);
-      const color = shotInfo ? shotInfo.color : "#C49A6C"; // Default color if not found
       const height = shotInfo ? shotInfo.size : 20; // Use size for height
 
       const yOffset = (svgHeight - height) / 2; // Centers the rectangle
@@ -251,6 +251,29 @@ function drawVisualization() {
         .attr("fill", "white")
         .attr("stroke", "black")
         .attr("opacity", 1)
+        .attr("stroke-width", 1);
+    });
+
+    scriptData.forEach((event, i) => {
+      const startTime = parseFloat(event["start_time"]);
+      const endTime = parseFloat(event["end_time"]);
+      const eventWidth = xScale(endTime - startTime);
+      const xOffset = xScale(startTime);
+
+      const defaultColor = "#9803fc"; // Default color
+      const defaultHeight = 10; // Default height
+      const yOffset = (svgHeight - defaultHeight) / 2; // Adjust position to not overlap with other visual elements
+
+      // Append a rectangle for each event in the new dataset
+      svg
+        .append("rect")
+        .attr("x", xOffset)
+        .attr("y", yOffset)
+        .attr("width", eventWidth)
+        .attr("height", defaultHeight)
+        .attr("fill", defaultColor)
+        .attr("stroke", "black")
+        .attr("opacity", 0.75) // Slightly transparent
         .attr("stroke-width", 1);
     });
 
@@ -282,14 +305,16 @@ function drawMovements(svg, movements, xScale, svgHeight) {
     svg
       .append("line")
       .attr("x1", startX)
-      .attr("y1", svgHeight / 2) // Position the line in the middle of the SVG height
+      .attr("y1", svgHeight / 3.3) // Position the line in the middle of the SVG height
       .attr("x2", endX)
-      .attr("y2", svgHeight / 2) // Keep the line horizontal
-      .attr("stroke", movement.Type === "stat" ? "black" : "grey") // Color the line differently if it's moving
+      .attr("y2", svgHeight / 3.3) // Keep the line horizontal
+      .attr("stroke", movement.Type === "stat" ? "White" : "White") // Color the line differently if it's moving
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", strokeDasharray);
   });
 }
+
+//////////Camera Movement Visualization////////////////////////////////
 
 var svgWidth = +d3.select("#movement").attr("width");
 var svgHeight = +d3.select("#movement").attr("height");

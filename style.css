@@ -77,3 +77,13 @@ video {
     right: 0; /* Aligns the SVG to the right edge of the container */
     z-index: 10; /* Ensures the SVG is layered above the video */
   }
+
+
+  #script {
+    position: absolute;
+    bottom: 0; /* Adjust these values as needed */
+    left: 0; /* Adjust these values as needed */
+    width: 300px; /* Your SVG width */
+    height: 300px; /* Your SVG height */
+    background-color: rgba(255, 255, 255, 0.5); /* Optional: adds a semi-transparent background */
+}

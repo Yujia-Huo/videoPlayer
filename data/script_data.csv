@@ -1,0 +1,14 @@
+part,scene,set,time,location,location_2,content,start_time,end_time
+1,1,INT,DAY,SEMI-BASEMENT ,None,"KI-WOO, 24, runs from corner to corner searching desperately for a Wi-Fi signal. Various networks pop up, but they're all password-protected.",30,55
+2,1,INT,DAY,SEMI-BASEMENT ,ADJACENT ROOM ,"Lying on the floor of the narrow room, KI-JUNG, 23, barely moves her lips -- 'Fuck.'",62,68
+3,1,INT,DAY,SEMI-BASEMENT ,ANOTHER ROOM,"Also lying on the floor, CHUNG-SOOK, 49, the mother, scoffs at their collective misery.",69,76
+4,1,INT,DAY,SEMI-BASEMENT ,ANOTHER ROOM,"She kicks KI-TEK, 49, who is sleeping at her feet.",76,80
+5,1,INT,DAY,SEMI-BASEMENT ,ANOTHER ROOM,She kicks him again.,80,82
+6,1,INT,DAY,SEMI-BASEMENT ,ANOTHER ROOM,"She treats Ki-Tek like shit, but it doesn't bother him. He rises with the most serene, enlightened smile, then plods over to the --",82,92
+7,1,INT,DAY,SEMI-BASEMENT ,LIVING ROOM SLASH KITCHEN,"Where he removes a bag of white bread from the sad, empty fridge. The bread is nearly gone too. Only the ends remain. Ki-Tek takes a piece and picks off the moldy parts. He chews on the bread as he watches his son's Wi-Fi dance.",96,99
+8,1,INT,DAY,SEMI-BASEMENT ,LIVING ROOM SLASH KITCHEN,He raises his hand high.,99,100
+9,1,INT,DAY,SEMI-BASEMENT ,LIVING ROOM SLASH KITCHEN,Ki-Woo raises the phone high as he heads into the -- ,100,106
+10,1,INT,DAY,SEMI-BASEMENT ,BATHROOM ,Ki-Woo walks in and climbs onto the toilet seat. He continues to fish for a signal when --,116,119
+11,1,INT,DAY,SEMI-BASEMENT ,BATHROOM ,Ki-Jung barges in and walks over with her phone held up.,119,128
+12,1,INT,DAY,SEMI-BASEMENT ,BATHROOM ,Ki-Jung climbs onto the altar and squeezes next to Ki-Woo. The siblings look ridiculous. Head touching the ceiling. Huddled on top of the toilet seat.,128,129
+13,1,INT,DAY,SEMI-BASEMENT ,BATHROOM ,Chung-Sook pops in.,129,136
