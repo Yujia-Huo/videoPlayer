@@ -1,3 +1,8 @@
+body {
+    font-family: 'Arial', sans-serif; /* Replace 'Arial' with your desired font */
+}
+
+
 div#video_controls_bar{
     /* background-color: rgb(0, 0, 0); */
     margin-right: 200px;
@@ -40,6 +45,7 @@ body {
     flex: 1; /* Allow it to grow */
     text-align: left; /* Center video horizontally */
     padding: 20px; /* Add some padding */
+    margin-left: 300px;
     position: relative; /* Establishes a positioning context for absolute positioning inside */
 }
 video {
@@ -53,37 +59,82 @@ video {
     gap: 20px;
 }
 
- #movement {
-    border: 1px solid #ccc;
-    /* background-color: lavender; */
-}
-
 #seek-bar-container {
     width: 100%; /* or any specific width */
   }
 
-  #seekslider, #visualization {
+#seekslider, #visualization {
     width: 100%;
     height: auto; /* for the image, to maintain aspect ratio */
   }
 
-  #seek-bar-container img{
+#seek-bar-container img{
     width: 100%;
     height: 70px; /* for the image, to maintain aspect ratio */
   }
-  #movement {
+#movement {
     position: absolute;
     bottom: 0; /* Aligns the SVG to the top edge of the container */
     right: 0; /* Aligns the SVG to the right edge of the container */
     z-index: 10; /* Ensures the SVG is layered above the video */
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+
   }
 
 
-  #script {
+#script {
+    width: 550px; /* Your SVG width */
+    height: 100px; /* Your SVG height */
+    background-color: #9803fc1e; /* Optional: adds a semi-transparent background */
+    border: 1px solid #9803fc8d;
+    border-radius: 5px;
+
+}
+
+#script_container{
     position: absolute;
     bottom: 0; /* Adjust these values as needed */
     left: 0; /* Adjust these values as needed */
-    width: 300px; /* Your SVG width */
-    height: 300px; /* Your SVG height */
-    background-color: rgba(255, 255, 255, 0.5); /* Optional: adds a semi-transparent background */
+    margin-bottom: 20px;
+    margin-left: 20px;
+
+}
+#scriptHeader{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+#set_text {
+    flex: 1;
+    top: -20px; /* Adjust as necessary to position above the SVG */
+    left: 0;
+    color: white; /* Set the text color */
+    background-color:#9803fc1e; /* Semi-transparent background */
+    border: 1px solid #9803fc8d;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#location_text{
+    flex: 2;
+    top: -20px; /* Adjust as necessary to position above the SVG */
+    left: 0;
+    color: white; /* Set the text color */
+    background-color:#9803fc1e; /* Semi-transparent background */
+    border: 1px solid #9803fc8d;
+    padding: 5px;
+    border-radius: 5px;
+}
+#location2_text{
+    flex: 3;
+    top: -20px; /* Adjust as necessary to position above the SVG */
+    left: 0;
+    color: white; /* Set the text color */
+    background-color:#9803fc1e; /* Semi-transparent background */
+    border: 1px solid #9803fc8d;
+    padding: 5px;
+    border-radius: 5px;
 }

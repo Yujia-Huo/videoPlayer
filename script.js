@@ -1,6 +1,7 @@
 var vid, playbtn, seekslider, curtimetext, durtimetext;
 var movements = []; // This will hold the parsed data once it's loaded
 var colorData = []; // To hold color data
+var scriptData = []; // This will hold the script data once it's loaded
 var currentTimeLine;
 var xScale; // Ensure xScale is accessible in seektimeupdate
 
@@ -23,6 +24,7 @@ window.onload = function () {
 function onDataLoaded() {
   // Code that depends on `globalMovements` goes here
   console.log(movements); // Now it's safe to use the data
+  console.log(scriptData);
   initializePlayer();
 }
 
@@ -57,6 +59,19 @@ d3.csv("./data/color_data.csv").then(function (data) {
 
 console.log(movements);
 
+d3.csv("./data/script_data.csv").then(function (data) {
+  scriptData = data.map((d) => ({
+    start_time: +d.start_time,
+    end_time: +d.end_time,
+    text_content: d.content,
+    location2: d.location_2,
+  }));
+  // Assuming onDataLoaded is a function that might use scriptData
+  onDataLoaded();
+});
+
+console.log(scriptData);
+
 function playPause() {
   if (vid.paused) {
     vid.play();
@@ -90,18 +105,41 @@ function seektimeupdate() {
 
   updateAnimation(vid.currentTime);
 
-  var shotDataMap = new Map(); // Global map to hold shot data with colors
+  var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
-  var currentTime = vid.currentTime;
-  var xPos = xScale(currentTime); // Use xScale to get the new x position
-
+  currentTimeLine.attr("x1", xPos).attr("x2", xPos);
   // Update the position of the current time indicator line
+
+  // Determine the script content to display based on the current video time
+  const currentScript = scriptData.find(
+    (script) =>
+      vid.currentTime >= script.start_time && vid.currentTime < script.end_time
+  );
+
+  // Select the SVG element meant for displaying the script
+  var scriptSVG = d3.select("#script");
+  // Ensure it's empty before appending new text content
+  var setTextElement = document.getElementById("location2_text");
+
+  if (currentScript) {
+    // Clear the previous content
+    scriptSVG.selectAll("*").remove();
+
+    // Call wrapText with the script content and desired width
+    wrapText(currentScript.text_content, 540); // Replace 300 with your actual width
+    setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
+  } else {
+    scriptSVG.selectAll("*").remove();
+    // If there's no script content for the current time, keep the script SVG empty
+    // This will effectively make the text disappear
+  }
 
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
     d3.csv("./data/shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
-  ]).then(function ([sceneData, shotTypeData, colorData]) {
+    d3.csv("./data/script_data.csv"), // Load scene data
+  ]).then(function ([sceneData, shotTypeData, colorData, scriptData]) {
     // Create the color and size mapping
     var shotTypeDetails = {};
     colorData.forEach(function (d) {
@@ -148,11 +186,8 @@ function seektimeupdate() {
       shotTextElement.textContent = "Shot Type: None";
       // shotTextElement.style.color = "initial";
     }
-  });
 
-  d3.csv("./data/sample_scene-Scenes.csv").then(function (data) {
-    //Highlight the shot bar if the current time is within the shot's range
-    data.forEach((d, i) => {
+    sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
       const endTime = parseFloat(d["End Time (seconds)"]);
       // Select the bar using a unique identifier, e.g., an ID
@@ -165,11 +200,46 @@ function seektimeupdate() {
         bar.attr("opacity", 0.3); // Revert to the original color if not active
       }
     });
-  });
 
-  currentTimeLine.attr("x1", xPos).attr("x2", xPos);
+    scriptData.forEach((d, i) => {
+      const startTime = parseFloat(d["start_time"]);
+      const endTime = parseFloat(d["end_time"]);
+      // Select the bar using a unique identifier, e.g., an ID
+      var bar = d3.select("#script-bar-" + i);
+
+      // Check if the current time is within the shot's range
+      if (vid.currentTime >= startTime && vid.currentTime <= endTime) {
+        bar.attr("opacity", 1); // Highlight the active shot bar
+      } else {
+        bar.attr("opacity", 0.3); // Revert to the original color if not active
+      }
+    });
+  });
 }
 //////////Timeline Visualization(shot, script, movement)////////////////////////////////
+function wrapText(text, width) {
+  var scriptSVG = d3.select("#script");
+  // Create a foreign object
+  var foreignObject = scriptSVG
+    .append("foreignObject")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", width)
+    .attr("height", 100); // Set height to a large enough value
+
+  // Append a div to the foreign object
+  var textDiv = foreignObject
+    .append("xhtml:div")
+    .style("font", "18px 'Arial'")
+    .style("color", "white")
+    .style("padding", "5px") // Optional: adds padding inside the text box
+    // You can add more styling as needed here
+    .html(text);
+
+  // Adjust the height of the foreign object to the size of its content
+  var divNode = textDiv.node();
+  foreignObject.attr("height", divNode.getBoundingClientRect().height);
+}
 
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
@@ -267,6 +337,7 @@ function drawVisualization() {
       // Append a rectangle for each event in the new dataset
       svg
         .append("rect")
+        .attr("id", "script-bar-" + i)
         .attr("x", xOffset)
         .attr("y", yOffset)
         .attr("width", eventWidth)
