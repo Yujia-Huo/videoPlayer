@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif; /* Replace 'Arial' with your desired font */
+    font-family: "Saira", sans-serif;
 }
 
 
@@ -45,7 +45,8 @@ body {
     flex: 1; /* Allow it to grow */
     text-align: left; /* Center video horizontally */
     padding: 20px; /* Add some padding */
-    margin-left: 300px;
+    margin-left:10vw;
+    margin-right:10vw;
     position: relative; /* Establishes a positioning context for absolute positioning inside */
 }
 video {
@@ -87,8 +88,7 @@ video {
 
 #script {
     width: 550px; /* Your SVG width */
-    height: 100px; /* Your SVG height */
-    background-color: #9803fc1e; /* Optional: adds a semi-transparent background */
+    background-color: #9803fc2f; /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     border-radius: 5px;
 
@@ -112,7 +112,7 @@ video {
     top: -20px; /* Adjust as necessary to position above the SVG */
     left: 0;
     color: white; /* Set the text color */
-    background-color:#9803fc1e; /* Semi-transparent background */
+    background-color: #9803fc2f; /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 5px;
     border-radius: 5px;
@@ -123,7 +123,7 @@ video {
     top: -20px; /* Adjust as necessary to position above the SVG */
     left: 0;
     color: white; /* Set the text color */
-    background-color:#9803fc1e; /* Semi-transparent background */
+    background-color: #9803fc2f; /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 5px;
     border-radius: 5px;
@@ -133,8 +133,12 @@ video {
     top: -20px; /* Adjust as necessary to position above the SVG */
     left: 0;
     color: white; /* Set the text color */
-    background-color:#9803fc1e; /* Semi-transparent background */
+    background-color: #9803fc2f; /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 5px;
     border-radius: 5px;
 }
+
+#script, foreignObject {
+    transition: width 0.5s, height 0.5s; /* Adjust the time as needed */
+  }

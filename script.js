@@ -128,8 +128,11 @@ function seektimeupdate() {
     // Call wrapText with the script content and desired width
     wrapText(currentScript.text_content, 540); // Replace 300 with your actual width
     setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
+
+    // Call this function after setting the text content
   } else {
     scriptSVG.selectAll("*").remove();
+    scriptSVG.attr("height", 20); // Collapse the SVG if there's no content
     // If there's no script content for the current time, keep the script SVG empty
     // This will effectively make the text disappear
   }
@@ -230,7 +233,8 @@ function wrapText(text, width) {
   // Append a div to the foreign object
   var textDiv = foreignObject
     .append("xhtml:div")
-    .style("font", "18px 'Arial'")
+    .attr("id", "textDiv")
+    .style("font-size", "18px")
     .style("color", "white")
     .style("padding", "5px") // Optional: adds padding inside the text box
     // You can add more styling as needed here
@@ -239,6 +243,31 @@ function wrapText(text, width) {
   // Adjust the height of the foreign object to the size of its content
   var divNode = textDiv.node();
   foreignObject.attr("height", divNode.getBoundingClientRect().height);
+
+  updateScriptBoxSize();
+}
+
+function updateScriptBoxSize() {
+  // Get the dimensions of the textDiv content
+  var textDiv = document.getElementById("textDiv"); // Make sure you have an ID for your text div
+  if (textDiv) {
+    // var width = textDiv.offsetWidth;
+    var height = textDiv.offsetHeight;
+
+    // Now set the SVG dimensions to fit the content
+    var scriptSVG = document.getElementById("script"); // Your SVG element
+    if (scriptSVG) {
+      // scriptSVG.setAttribute("width", width + 20); // You might want to add some padding
+      scriptSVG.setAttribute("height", height + 20);
+
+      // Also update the foreignObject dimensions if you're using it
+      var foreignObject = scriptSVG.querySelector("foreignObject");
+      if (foreignObject) {
+        // foreignObject.setAttribute("width", width);
+        foreignObject.setAttribute("height", height);
+      }
+    }
+  }
 }
 
 function drawVisualization() {
