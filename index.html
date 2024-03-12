@@ -12,6 +12,23 @@
 
 <body>
         <div id="video_player_box">
+
+            <div id="checkboxes">
+            <label for="scriptVisability">Show script:</label>
+            <input type="checkbox" id="scriptVisability" checked>
+
+            <label for="movementVisability">Show Camera Movement:</label>
+            <input type="checkbox" id="movementVisability" checked>
+
+            <label for="colorVisability">Show Color:</label>
+            <input type="checkbox" id="colorVisability" checked>
+
+            </div>
+
+
+
+
+
             <div id="video_container">
                 <div id="shot_type_text">Shot Type: None</div>
                 <video id='my_video' width="800" height="400" autoplay>
@@ -28,6 +45,8 @@
                     <svg width='300' height='300' id="script"></svg>
                 </div>
             </div>
+
+            
 
             <!-- <div id="visualizations_container">
                 <svg width='400' height='200' id="color">Color</svg>

@@ -281,12 +281,22 @@ function drawVisualization() {
 
   svg
     .append("image")
+    .attr("id", "colorViz")
     .attr("x", 0) // The x position of the image within the SVG
     .attr("y", 0) // The y position of the image within the SVG
     .attr("width", seekBarWidth) // The width of the image
     .attr("height", 80) // The height of the image
     .attr("xlink:href", "./combined_sorted_image.png") // The path to your PNG image
-    .attr("preserveAspectRatio", "none"); // This will stretch the image
+    .attr("preserveAspectRatio", "none") // This will stretch the image
+    .attr("opacity", 1);
+
+  var colorCheckbox = document.getElementById("colorVisability");
+  var colorviz = d3.select("#colorViz");
+
+  colorCheckbox.addEventListener("change", colorUpdateVisibility);
+
+  colorUpdateVisibility();
+
   const maxEndTime = Math.max(
     ...movements.map((d) => d.end_time) // Use movements data for maxEndTime
   );
@@ -389,6 +399,14 @@ function drawVisualization() {
 
     drawMovements(svg, movements, xScale, svgHeight);
   });
+
+  function colorUpdateVisibility() {
+    if (colorCheckbox.checked) {
+      colorviz.style("opacity", "1"); // Show the SVG
+    } else {
+      colorviz.style("opacity", "0"); // Hide the SVG
+    }
+  }
 }
 
 function drawMovements(svg, movements, xScale, svgHeight) {
@@ -679,3 +697,36 @@ function resetToInitialState() {
   // For example, if you initially had a scale or rotation applied:
   // rect.attr("transform", "translate(100, 50) scale(1) rotate(0)");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get the checkbox and the SVG element
+  var scriptCheckbox = document.getElementById("scriptVisability");
+  var scriptviz = document.getElementById("script_container");
+
+  var movementCheckbox = document.getElementById("movementVisability");
+  var movementviz = document.getElementById("movement");
+
+  // Function to update the SVG's opacity
+  function scriptUpdateVisibility() {
+    if (scriptCheckbox.checked) {
+      scriptviz.style.opacity = "1"; // Show the SVG
+    } else {
+      scriptviz.style.opacity = "0"; // Hide the SVG
+    }
+  }
+
+  function movementUpdateVisibility() {
+    if (movementCheckbox.checked) {
+      movementviz.style.opacity = "1"; // Show the SVG
+    } else {
+      movementviz.style.opacity = "0"; // Hide the SVG
+    }
+  }
+
+  // Event listener for the checkbox
+  scriptCheckbox.addEventListener("change", scriptUpdateVisibility);
+  movementCheckbox.addEventListener("change", movementUpdateVisibility);
+  // Initial visibility update
+  scriptUpdateVisibility();
+  movementUpdateVisibility();
+});
