@@ -173,22 +173,22 @@ function seektimeupdate() {
     var shotTextElement = document.getElementById("shot_type_text");
     var videoElement = document.getElementById("my_video");
 
-    if (currentScene) {
-      var sceneNumber = currentScene["Shot Number"];
-      var shotInfo = shotDataMap.get(sceneNumber);
-      if (shotInfo) {
-        var strokeSize = shotInfo.size || 4; // Default to 4 if size is not defined
-        // videoElement.style.border = `${strokeSize / 2}px solid ${
-        //   shotInfo.color
-        // }`;
-        shotTextElement.textContent = `Shot Type: ${shotInfo.type}`;
-        // shotTextElement.style.color = shotInfo.color;
-      }
-    } else {
-      // videoElement.style.border = "none";
-      shotTextElement.textContent = "Shot Type: None";
-      // shotTextElement.style.color = "initial";
-    }
+    // if (currentScene) {
+    //   var sceneNumber = currentScene["Shot Number"];
+    //   var shotInfo = shotDataMap.get(sceneNumber);
+    //   if (shotInfo) {
+    //     var strokeSize = shotInfo.size || 4; // Default to 4 if size is not defined
+    //     // videoElement.style.border = `${strokeSize / 2}px solid ${
+    //     //   shotInfo.color
+    //     // }`;
+    //     shotTextElement.textContent = `Shot Type: ${shotInfo.type}`;
+    //     // shotTextElement.style.color = shotInfo.color;
+    //   }
+    // } else {
+    //   // videoElement.style.border = "none";
+    //   shotTextElement.textContent = "Shot Type: None";
+    //   // shotTextElement.style.color = "initial";
+    // }
 
     sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
@@ -303,6 +303,8 @@ function drawVisualization() {
 
   xScale = d3.scaleLinear().domain([0, maxEndTime]).range([0, seekBarWidth]);
 
+  drawMovements(svg, movements, xScale, svgHeight);
+
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
     d3.csv("./data/shot_type.csv"), // Load shot type data
@@ -387,6 +389,7 @@ function drawVisualization() {
         .attr("stroke-width", 1);
     });
 
+
     currentTimeLine = svg
       .append("line")
       .attr("id", "current-time-line")
@@ -394,10 +397,9 @@ function drawVisualization() {
       .attr("y1", 0)
       .attr("x2", 0)
       .attr("y2", svgHeight)
-      .attr("stroke", "red") // Red line for visibility
+      .attr("stroke", "#a1a1a1") // Red line for visibility
       .attr("stroke-width", 2);
 
-    drawMovements(svg, movements, xScale, svgHeight);
   });
 
   function colorUpdateVisibility() {
@@ -407,6 +409,9 @@ function drawVisualization() {
       colorviz.style("opacity", "0"); // Hide the SVG
     }
   }
+
+
+
 }
 
 function drawMovements(svg, movements, xScale, svgHeight) {
@@ -654,16 +659,13 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
-      rectState.scaleY
-    }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
+      }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${
-      rectState.translateY
-    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
-      rectState.y + rectState.height / 2 + 20
-    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${rectState.translateY
+      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
+      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
