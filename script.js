@@ -108,6 +108,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
+  d3.select("#movement").attr("transform", `translate(${xPos - 50}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
@@ -389,7 +390,6 @@ function drawVisualization() {
         .attr("stroke-width", 1);
     });
 
-
     currentTimeLine = svg
       .append("line")
       .attr("id", "current-time-line")
@@ -399,7 +399,6 @@ function drawVisualization() {
       .attr("y2", svgHeight)
       .attr("stroke", "#a1a1a1") // Red line for visibility
       .attr("stroke-width", 2);
-
   });
 
   function colorUpdateVisibility() {
@@ -409,9 +408,6 @@ function drawVisualization() {
       colorviz.style("opacity", "0"); // Hide the SVG
     }
   }
-
-
-
 }
 
 function drawMovements(svg, movements, xScale, svgHeight) {
@@ -650,8 +646,20 @@ function applyTransformation(movement, progress) {
   rect.attr("transform", getTransformationString());
   camera.attr("transform", getTransformationString());
   // Update Y, considering offset
+  updateSvgBorderStyle(movement.Type);
 }
 
+function updateSvgBorderStyle(movementType) {
+  var svg3Border = d3.select("#movement"); // Assuming #movement is the ID of svg3
+
+  if (movementType === "stat") {
+    // If the camera is stationary, apply a solid border
+    svg3Border.style("border", "1px solid #ccc"); // Use 'none' or '0' to indicate a solid line
+  } else {
+    // If the camera is moving, apply a dashed border
+    svg3Border.style("border", "3px dashed #ccc"); // Example: a dashed line pattern
+  }
+}
 function getTransformationString() {
   let transform;
 
@@ -659,13 +667,16 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
-      }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
+      rectState.scaleY
+    }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${rectState.translateY
-      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
-      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${
+      rectState.translateY
+    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
+      rectState.y + rectState.height / 2 + 20
+    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }

@@ -92,16 +92,8 @@ video {
 }
 
 #movement {
-    position: absolute;
-    bottom: 0;
-    /* Aligns the SVG to the top edge of the container */
-    right: 0;
-    /* Aligns the SVG to the right edge of the container */
-    z-index: 10;
     /* Ensures the SVG is layered above the video */
     border: 1px solid #ccc;
-    margin-right: 20px;
-    margin-bottom: 20px;
     border-radius: 5px;
     transition: opacity 0.5s ease-in-out;
 
