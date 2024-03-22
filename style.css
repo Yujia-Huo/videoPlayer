@@ -101,7 +101,7 @@ video {
 
 
 #script {
-    width: 550px;
+    width: 1200px;
     /* Your SVG width */
     background-color: #9803fc2f;
     /* Optional: adds a semi-transparent background */
@@ -123,6 +123,7 @@ video {
 
 #scriptHeader {
     display: flex;
+    justify-content: flex-start;
     gap: 10px;
     margin-bottom: 5px;
 }

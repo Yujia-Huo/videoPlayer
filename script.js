@@ -57,8 +57,6 @@ d3.csv("./data/color_data.csv").then(function (data) {
   // No need for an onDataLoaded call here unless you need to initialize something specific to color data
 });
 
-console.log(movements);
-
 d3.csv("./data/script_data.csv").then(function (data) {
   scriptData = data.map((d) => ({
     start_time: +d.start_time,
@@ -69,8 +67,6 @@ d3.csv("./data/script_data.csv").then(function (data) {
   // Assuming onDataLoaded is a function that might use scriptData
   onDataLoaded();
 });
-
-console.log(scriptData);
 
 function playPause() {
   if (vid.paused) {
@@ -108,7 +104,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
-  d3.select("#movement").attr("transform", `translate(${xPos - 50}, 0)`); // Adjust y coordinate as needed
+  d3.select("#movement").attr("transform", `translate(${xPos - 150}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
@@ -119,21 +115,23 @@ function seektimeupdate() {
 
   // Select the SVG element meant for displaying the script
   var scriptSVG = d3.select("#script");
+  scriptSVG.attr("width", 600);
+
   // Ensure it's empty before appending new text content
   var setTextElement = document.getElementById("location2_text");
 
   if (currentScript) {
     // Clear the previous content
     scriptSVG.selectAll("*").remove();
-
     // Call wrapText with the script content and desired width
-    wrapText(currentScript.text_content, 540); // Replace 300 with your actual width
+    wrapText(currentScript.text_content, 1000); // Replace 300 with your actual width
     setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
 
     // Call this function after setting the text content
   } else {
+
     scriptSVG.selectAll("*").remove();
-    scriptSVG.attr("height", 20); // Collapse the SVG if there's no content
+    scriptSVG.attr("height", 80); // Collapse the SVG if there's no content
     // If there's no script content for the current time, keep the script SVG empty
     // This will effectively make the text disappear
   }
@@ -229,7 +227,7 @@ function wrapText(text, width) {
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", width)
-    .attr("height", 100); // Set height to a large enough value
+    .attr("height", 200); // Set height to a large enough value
 
   // Append a div to the foreign object
   var textDiv = foreignObject
@@ -241,11 +239,11 @@ function wrapText(text, width) {
     // You can add more styling as needed here
     .html(text);
 
-  // Adjust the height of the foreign object to the size of its content
-  var divNode = textDiv.node();
-  foreignObject.attr("height", divNode.getBoundingClientRect().height);
+  // // Adjust the height of the foreign object to the size of its content
+  // var divNode = textDiv.node();
+  // foreignObject.attr("height", divNode.getBoundingClientRect().height);
 
-  updateScriptBoxSize();
+  // updateScriptBoxSize();
 }
 
 function updateScriptBoxSize() {
@@ -667,16 +665,13 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
-      rectState.scaleY
-    }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
+      }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${
-      rectState.translateY
-    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
-      rectState.y + rectState.height / 2 + 20
-    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${rectState.translateY
+      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
+      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
