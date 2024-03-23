@@ -130,7 +130,9 @@ video {
 
 #set_text {
     text-align: center;
-    flex: 1.5;
+    flex-grow: 0;
+    flex-shrink: 0;
+    /* Prevents items from shrinking below their set width */
     top: -20px;
     /* Adjust as necessary to position above the SVG */
     left: 0;
@@ -141,11 +143,14 @@ video {
     border: 1px solid #9803fc8d;
     padding: 3px;
     border-radius: 5px;
+    width: 100px;
 }
 
 #location_text {
     text-align: center;
-    flex: 3;
+    flex-grow: 0;
+    flex-shrink: 0;
+    /* Prevents items from shrinking below their set width */
     top: -20px;
     /* Adjust as necessary to position above the SVG */
     left: 0;
@@ -156,11 +161,16 @@ video {
     border: 1px solid #9803fc8d;
     padding: 3px;
     border-radius: 5px;
+    width: 200px;
+
 }
 
 #location2_text {
     text-align: center;
-    flex: 4;
+    flex-grow: 0;
+    flex-shrink: 0;
+    /* Prevents items from shrinking below their set width */
+
     top: -20px;
     /* Adjust as necessary to position above the SVG */
     left: 0;
@@ -171,12 +181,17 @@ video {
     border: 1px solid #9803fc8d;
     padding: 3px;
     border-radius: 5px;
+    width: 250px;
+
 }
 
 #time {
     text-align: center;
-    flex: 1;
+    flex-grow: 0;
     top: -20px;
+    flex-shrink: 0;
+    /* Prevents items from shrinking below their set width */
+
     /* Adjust as necessary to position above the SVG */
     left: 0;
     color: white;
@@ -186,6 +201,8 @@ video {
     border: 1px solid #9803fc8d;
     padding: 3px;
     border-radius: 5px;
+    width: 100px;
+
 }
 
 #script,
