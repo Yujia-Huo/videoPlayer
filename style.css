@@ -92,16 +92,18 @@ video {
 }
 
 #movement {
+    position: absolute;
+    left: 0;
+    bottom: 25%;
     /* Ensures the SVG is layered above the video */
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: opacity 0.5s ease-in-out;
-
 }
 
 
 #script {
-    width: 1200px;
+    width: 320px;
     /* Your SVG width */
     background-color: #9803fc2f;
     /* Optional: adds a semi-transparent background */
@@ -112,20 +114,26 @@ video {
 
 #script_container {
     position: absolute;
-    bottom: 0;
+    top: 50%;
     /* Adjust these values as needed */
     left: 0;
     /* Adjust these values as needed */
     margin-bottom: 20px;
     margin-left: 20px;
+    transform: translateY(-50%);
     transition: opacity 0.5s ease-in-out;
 }
 
 #scriptHeader {
+    position: absolute;
+    top: 10%;
+    left: 0;
     display: flex;
     justify-content: flex-start;
     gap: 10px;
     margin-bottom: 5px;
+    margin-left: 20px;
+    transition: opacity 0.5s ease-in-out;
 }
 
 #set_text {
@@ -220,3 +228,77 @@ foreignObject {
     transition: opacity 0.5s ease-in-out;
     /* Animate opacity changes */
 }
+
+
+/* General styles for all browsers */
+#seekslider {
+    -webkit-appearance: none; /* Override default look for Chrome and Safari */
+    width: 100%; /* Full-width */
+    height: 5px; /* Specifying the height of the track */
+    background: grey; /* Background color for the track */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (cross-browser) */
+    transition: opacity 0.2s; /* Transition for when slider is hovered or focused */
+  }
+  
+  /* Mouse-over effect */
+  #seekslider:hover {
+    opacity: 1; /* Full opacity when hovered */
+  }
+  
+  /* The slider handle (cross-browser) */
+  #seekslider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look for Chrome and Safari */
+    appearance: none;
+    width: 15px; /* Width of the handle */
+    height: 15px; /* Height of the handle */
+    background: rgb(218, 218, 218); /* Handle color */
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  #seekslider::-moz-range-thumb {
+    width: 15px; /* Width of the handle */
+    height: 15px; /* Height of the handle */
+    background: rgb(218, 218, 218); /* Handle color */
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  /* For IE */
+  #seekslider::-ms-thumb {
+    width: 15px; /* Width of the handle */
+    height: 15px; /* Height of the handle */
+    background: rgb(218, 218, 218); /* Handle color */
+
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  /* Make the track of the slider appear thinner */
+  #seekslider::-webkit-slider-runnable-track {
+    height: 15px; /* Height of the track */
+  }
+  
+  #seekslider::-moz-range-track {
+    height: 15px; /* Height of the track */
+  }
+  
+  #seekslider::-ms-track {
+    height: 15px; /* Height of the track */
+    /* You might need to adjust the coloring since IE sometimes has a different system */
+  }
+  
+  /* Focus styles */
+  #seekslider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for Chrome and Safari */
+  }
+  
+  #seekslider:focus::-moz-range-thumb {
+    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for Firefox */
+  }
+  
+  #seekslider:focus::-ms-thumb {
+    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for IE */
+  }
+  

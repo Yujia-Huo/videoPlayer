@@ -104,7 +104,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
-  d3.select("#movement").attr("transform", `translate(${xPos - 150}, 0)`); // Adjust y coordinate as needed
+  d3.select("#movement").attr("transform", `translate(${xPos}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
@@ -124,14 +124,13 @@ function seektimeupdate() {
     // Clear the previous content
     scriptSVG.selectAll("*").remove();
     // Call wrapText with the script content and desired width
-    wrapText(currentScript.text_content, 1000); // Replace 300 with your actual width
+    wrapText(currentScript.text_content, 300); // Replace 300 with your actual width
     setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
 
     // Call this function after setting the text content
   } else {
-
     scriptSVG.selectAll("*").remove();
-    scriptSVG.attr("height", 80); // Collapse the SVG if there's no content
+    // scriptSVG.attr("height", 80); // Collapse the SVG if there's no content
     // If there's no script content for the current time, keep the script SVG empty
     // This will effectively make the text disappear
   }
@@ -162,32 +161,6 @@ function seektimeupdate() {
     });
 
     // Additional setup, if required
-
-    var currentScene = sceneData.find(
-      (scene) =>
-        vid.currentTime >= parseFloat(scene["Start Time (seconds)"]) &&
-        vid.currentTime < parseFloat(scene["End Time (seconds)"])
-    );
-
-    var shotTextElement = document.getElementById("shot_type_text");
-    var videoElement = document.getElementById("my_video");
-
-    // if (currentScene) {
-    //   var sceneNumber = currentScene["Shot Number"];
-    //   var shotInfo = shotDataMap.get(sceneNumber);
-    //   if (shotInfo) {
-    //     var strokeSize = shotInfo.size || 4; // Default to 4 if size is not defined
-    //     // videoElement.style.border = `${strokeSize / 2}px solid ${
-    //     //   shotInfo.color
-    //     // }`;
-    //     shotTextElement.textContent = `Shot Type: ${shotInfo.type}`;
-    //     // shotTextElement.style.color = shotInfo.color;
-    //   }
-    // } else {
-    //   // videoElement.style.border = "none";
-    //   shotTextElement.textContent = "Shot Type: None";
-    //   // shotTextElement.style.color = "initial";
-    // }
 
     sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
@@ -272,7 +245,7 @@ function updateScriptBoxSize() {
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth;
-  var svgHeight = 300;
+  var svgHeight = 250;
   var svg = d3
     .select("#visualization")
     .attr("width", seekBarWidth)
@@ -282,7 +255,7 @@ function drawVisualization() {
     .append("image")
     .attr("id", "colorViz")
     .attr("x", 0) // The x position of the image within the SVG
-    .attr("y", 0) // The y position of the image within the SVG
+    .attr("y", 10) // The y position of the image within the SVG
     .attr("width", seekBarWidth) // The width of the image
     .attr("height", 80) // The height of the image
     .attr("xlink:href", "./combined_sorted_image.png") // The path to your PNG image
@@ -349,7 +322,7 @@ function drawVisualization() {
       const shotInfo = shotDataMap.get(d["Shot Number"]);
       const height = shotInfo ? shotInfo.size : 20; // Use size for height
 
-      const yOffset = (svgHeight - height) / 2; // Centers the rectangle
+      const yOffset = (svgHeight - height) / 2 + 20; // Centers the rectangle
       // Append a bar for each scene
       svg
         .append("rect")
@@ -372,7 +345,7 @@ function drawVisualization() {
 
       const defaultColor = "#9803fc"; // Default color
       const defaultHeight = 10; // Default height
-      const yOffset = (svgHeight - defaultHeight) / 2; // Adjust position to not overlap with other visual elements
+      const yOffset = (svgHeight - defaultHeight) / 2 + 20; // Adjust position to not overlap with other visual elements
 
       // Append a rectangle for each event in the new dataset
       svg
@@ -422,11 +395,11 @@ function drawMovements(svg, movements, xScale, svgHeight) {
     svg
       .append("line")
       .attr("x1", startX)
-      .attr("y1", svgHeight / 3.3) // Position the line in the middle of the SVG height
+      .attr("y1", 10) // Position the line in the middle of the SVG height
       .attr("x2", endX)
-      .attr("y2", svgHeight / 3.3) // Keep the line horizontal
+      .attr("y2", 10) // Keep the line horizontal
       .attr("stroke", movement.Type === "stat" ? "White" : "White") // Color the line differently if it's moving
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 8)
       .attr("stroke-dasharray", strokeDasharray);
   });
 }
@@ -466,22 +439,22 @@ var traceLayer = svg3.append("g").attr("id", "traceLayer");
 svg3
   .append("rect")
   .attr("id", "rectangle")
-  .attr("x", 130) // Starting x position
-  .attr("y", 150) // Starting y position
-  .attr("width", 40) // Width of the rectangle
-  .attr("height", 40) // Height of the rectangle
+  .attr("x", 100) // Starting x position
+  .attr("y", 120) // Starting y position
+  .attr("width", 30) // Width of the rectangle
+  .attr("height", 30) // Height of the rectangle
   .attr("fill", "none"); // Fill color of the rectangle
 
 var rectState = {
   // Initial state and current scene
-  x: 130,
-  y: 150,
+  x: 100,
+  y: 120,
   initialTranslateX: 0,
   initialTranslateY: 0,
   initialScaleX: 1,
   initialScaleY: 1,
-  width: 40,
-  height: 40,
+  width: 30,
+  height: 30,
   scaleX: 1,
   scaleY: 1,
   initialRotate: 0,
@@ -501,7 +474,7 @@ var textOffsetX = -80;
 var movementText = svg3
   .append("text")
   .attr("x", 10) // Initial X position, same as rectangle
-  .attr("y", 290) // Initial Y position, offset to be above the rectangle
+  .attr("y", svgHeight - 20) // Initial Y position, offset to be above the rectangle
   .attr("id", "movementText") // Assign an ID for easy selection later
   .style("font-size", "16px") // Set font size
   .style("fill", "white") // Set text color
@@ -516,8 +489,8 @@ function resetTransformationsForNewScene() {
   rectState.translateY = 0;
 
   // Optionally reset position
-  rectState.x = 130; // Or any scene-specific starting position
-  rectState.y = 150; // Or any scene-specific starting position
+  rectState.x = 100; // Or any scene-specific starting position
+  rectState.y = 120; // Or any scene-specific starting position
 
   // Apply reset transformations to the rectangle
   var rect = d3.select("#rectangle");
@@ -605,7 +578,7 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 50; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "out" ? 1 : -1;
       var currentTranslation =
@@ -665,13 +638,16 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
-      }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
+      rectState.scaleY
+    }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${rectState.translateY
-      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
-      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${
+      rectState.translateY
+    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
+      rectState.y + rectState.height / 2 + 20
+    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
@@ -710,6 +686,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get the checkbox and the SVG element
   var scriptCheckbox = document.getElementById("scriptVisability");
   var scriptviz = document.getElementById("script_container");
+  var scripthead = document.getElementById("scriptHeader");
 
   var movementCheckbox = document.getElementById("movementVisability");
   var movementviz = document.getElementById("movement");
@@ -718,8 +695,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function scriptUpdateVisibility() {
     if (scriptCheckbox.checked) {
       scriptviz.style.opacity = "1"; // Show the SVG
+      scripthead.style.opacity = "1"; // Show the SVG
     } else {
       scriptviz.style.opacity = "0"; // Hide the SVG
+      scripthead.style.opacity = "0"; // Show the SVG
     }
   }
 
