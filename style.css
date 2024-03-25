@@ -85,6 +85,9 @@ video {
     /* for the image, to maintain aspect ratio */
 }
 
+#visualization {
+    margin-left: 7px;
+}
 #seek-bar-container img {
     width: 100%;
     height: 70px;

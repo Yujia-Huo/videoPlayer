@@ -135,31 +135,7 @@ function seektimeupdate() {
     // This will effectively make the text disappear
   }
 
-  Promise.all([
-    d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
-    d3.csv("./data/shot_type.csv"), // Load shot type data
-    d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
-    d3.csv("./data/script_data.csv"), // Load scene data
-  ]).then(function ([sceneData, shotTypeData, colorData, scriptData]) {
-    // Create the color and size mapping
-    var shotTypeDetails = {};
-    colorData.forEach(function (d) {
-      shotTypeDetails[d["Shot Type"]] = { color: d["Color"], size: +d["size"] };
-    });
-
-    // Create a map for quick lookup of shot types to scene numbers
-    var shotDataMap = new Map();
-
-    // Map each scene to its shot type, color, and size
-    shotTypeData.forEach(function (d) {
-      var details = shotTypeDetails[d["Shot Type"]];
-      shotDataMap.set(d["Shot Number"], {
-        type: d["Shot Type"],
-        color: details.color,
-        size: details.size,
-      });
-    });
-
+  d3.csv("./data/sample_scene-Scenes.csv").then(function (sceneData) {
     // Additional setup, if required
 
     sceneData.forEach((d, i) => {
@@ -244,7 +220,7 @@ function updateScriptBoxSize() {
 
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
-  var seekBarWidth = document.getElementById("seekslider").offsetWidth;
+  var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
   var svgHeight = 250;
   var svg = d3
     .select("#visualization")
@@ -286,7 +262,7 @@ function drawVisualization() {
     // Process the color and size data into a mapping
     var shotTypeInfo = {};
     colorData.forEach(function (d) {
-      shotTypeInfo[d["Shot Type"]] = { color: d["Color"], size: +d["size"] };
+      shotTypeInfo[d["Shot Type"]] = { size: +d["size"] };
     });
 
     // Add color and size info to shotTypeData
@@ -322,7 +298,7 @@ function drawVisualization() {
       const shotInfo = shotDataMap.get(d["Shot Number"]);
       const height = shotInfo ? shotInfo.size : 20; // Use size for height
 
-      const yOffset = (svgHeight - height) / 2 + 20; // Centers the rectangle
+      const yOffset = (svgHeight - height) / 2 + 30; // Centers the rectangle
       // Append a bar for each scene
       svg
         .append("rect")
@@ -478,7 +454,7 @@ var movementText = svg3
   .attr("id", "movementText") // Assign an ID for easy selection later
   .style("font-size", "16px") // Set font size
   .style("fill", "white") // Set text color
-  .text("Movement: None"); // Initial text
+  .text("Movement: Stat"); // Initial text
 
 function resetTransformationsForNewScene() {
   // Reset transformation state for a new scene
@@ -586,6 +562,28 @@ function applyTransformation(movement, progress) {
 
       // Apply the translation based on progress from the initial state
       rectState.translateY = rectState.initialTranslateY + currentTranslation;
+      break;
+
+    case "Truck":
+      if (
+        rectState.currentScene !== movement.Scene ||
+        rectState.currentMovement !== movement.Movement
+      ) {
+        // Capture the initial translation state at the start of the movement
+        rectState.initialTranslateX = rectState.translateX;
+        rectState.initialTranslateY = rectState.translateY;
+        rectState.currentMovement = movement.Movement;
+      }
+
+      // Calculate the total intended translation based on the movement's Distance
+      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
+      var translationDirectionMultiplier =
+        movement.Direction === "left" ? -1 : 1; // Assuming 'left' means negative direction on the x-axis
+      var currentTranslation =
+        totalTranslation * translationDirectionMultiplier * progress;
+
+      // Apply the translation based on progress from the initial state
+      rectState.translateX = rectState.initialTranslateX + currentTranslation;
       break;
 
     case "Pan":
