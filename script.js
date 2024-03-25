@@ -564,7 +564,7 @@ function applyTransformation(movement, progress) {
       rectState.translateY = rectState.initialTranslateY + currentTranslation;
       break;
 
-    case "Truck":
+    case "truck":
       if (
         rectState.currentScene !== movement.Scene ||
         rectState.currentMovement !== movement.Movement
@@ -576,14 +576,14 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 2; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "left" ? -1 : 1; // Assuming 'left' means negative direction on the x-axis
       var currentTranslation =
         totalTranslation * translationDirectionMultiplier * progress;
 
       // Apply the translation based on progress from the initial state
-      rectState.translateX = rectState.initialTranslateX + currentTranslation;
+      rectState.translateX += currentTranslation; // Use += to continue from the current position rather than resetting
       break;
 
     case "Pan":
