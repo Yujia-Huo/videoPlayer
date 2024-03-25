@@ -321,7 +321,7 @@ function drawVisualization() {
 
       const defaultColor = "#9803fc"; // Default color
       const defaultHeight = 10; // Default height
-      const yOffset = (svgHeight - defaultHeight) / 2 + 20; // Adjust position to not overlap with other visual elements
+      const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
 
       // Append a rectangle for each event in the new dataset
       svg
