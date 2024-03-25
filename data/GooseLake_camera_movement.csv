@@ -7,6 +7,6 @@ start_time,end_time,Type,Distance,Direction,Shot
 48,53,Tilt,0,down,3
 53,68,stat,0,n,3
 68,71,truck,0.5,right,3
-71,76,Dolly,0.5,out,3
-76,81,pan,1,right,3
+71,76,Dolly,1,out,3
+76,81,Pan,1,right,3
 81,213.38,stat,0,n,3

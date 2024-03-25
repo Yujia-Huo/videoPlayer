@@ -30,7 +30,7 @@ function onDataLoaded() {
 
 d3.csv("./data/GooseLake_camera_movement.csv").then(function (data) {
   movements = data.map((d) => ({
-    Movement: +d.Movement,
+    // Movement: +d.Movement,
     start_time: +d.start_time,
     end_time: +d.end_time,
     Type: d.Type,
@@ -41,7 +41,7 @@ d3.csv("./data/GooseLake_camera_movement.csv").then(function (data) {
   onDataLoaded();
 });
 
-d3.csv("./data/gooseLake_shot_type.csv").then(function (data) {
+d3.csv("./data/GooseLake_script_data.csv").then(function (data) {
   scriptData = data.map((d) => ({
     start_time: +d.start_time,
     end_time: +d.end_time,
@@ -119,7 +119,7 @@ function seektimeupdate() {
     // This will effectively make the text disappear
   }
 
-  d3.csv("./data/GooseLake_camera_movement.csv").then(function (sceneData) {
+  d3.csv("./data/Gooselake_shot_data.csv").then(function (sceneData) {
     // Additional setup, if required
 
     sceneData.forEach((d, i) => {
@@ -255,6 +255,7 @@ function drawVisualization() {
       shot.size = info ? info.size : 20; // Default size if not found
     });
 
+    console.log(shotTypeInfo);
     // Create a map for quick lookup
     var shotDataMap = new Map(
       shotTypeData.map((shot) => [shot["Shot Number"], shot])
@@ -305,7 +306,7 @@ function drawVisualization() {
 
       const defaultColor = "#9803fc"; // Default color
       const defaultHeight = 10; // Default height
-      const yOffset = (svgHeight - defaultHeight) / 2 + 20; // Adjust position to not overlap with other visual elements
+      const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
 
       // Append a rectangle for each event in the new dataset
       svg
@@ -538,7 +539,7 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 20; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "out" ? 1 : -1;
       var currentTranslation =
@@ -548,7 +549,7 @@ function applyTransformation(movement, progress) {
       rectState.translateY = rectState.initialTranslateY + currentTranslation;
       break;
 
-    case "Truck":
+    case "truck":
       if (
         rectState.currentScene !== movement.Scene ||
         rectState.currentMovement !== movement.Movement
@@ -560,14 +561,14 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 2; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "left" ? -1 : 1; // Assuming 'left' means negative direction on the x-axis
       var currentTranslation =
         totalTranslation * translationDirectionMultiplier * progress;
 
       // Apply the translation based on progress from the initial state
-      rectState.translateX = rectState.initialTranslateX + currentTranslation;
+      rectState.translateX += currentTranslation; // Use += to continue from the current position rather than resetting
       break;
 
     case "Pan":
