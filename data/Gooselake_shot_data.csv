@@ -1,0 +1,4 @@
+Scene Number,Start Frame,Start Timecode,End Frame,End Timecode,Start Time (seconds),End Time (seconds)
+1,0,00:00:00.000,410,00:00:17.083,0.00,17.08
+2,410,00:00:17.083,522,00:00:21.750,17.08,21.75
+3,522,00:00:21.750,5121,00:03:33.375,21.75,213.38
