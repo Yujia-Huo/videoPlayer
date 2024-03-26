@@ -17,8 +17,9 @@ h1{
 
 div#video_controls_bar {
     /* background-color: rgb(0, 0, 0); */
-    margin-left: 10.5vw;
-    margin-right: 19vw;
+    /* margin-left: 10.5vw;
+    margin-right: 19vw; */
+    margin-top: 5vh;
 }
 
 #seekslider {
@@ -63,7 +64,7 @@ div#video_controls_bar {
     padding: 20px;
     /* Add some padding */
     margin-left: 10vw;
-    margin-right: 2vw;
+    margin-right:3vw;
     position: relative;
     /* Establishes a positioning context for absolute positioning inside */
 }
@@ -100,7 +101,7 @@ video {
 #movement {
     position: absolute;
     left: 0;
-    bottom: 30vh;
+    bottom: 0;
     /* Ensures the SVG is layered above the video */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -120,7 +121,7 @@ video {
 
 #script_container {
     position: absolute;
-    top: 50%;
+    top: 30%;
     /* Adjust these values as needed */
     left: 0;
     /* Adjust these values as needed */

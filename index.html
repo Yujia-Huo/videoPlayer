@@ -16,6 +16,7 @@
     <div id="film_title">
     <h1>Parasite (2019)</h1>
     </div>
+
     <div id="video_player_box">
         
         <div id="video_container">
@@ -27,58 +28,66 @@
                 <div id="location2_text"></div> <!-- This is the new text element -->
             </div>
             <!-- <div id="shot_type_text">Shot Type: None</div> -->
-            <video id='my_video' width="800" height="400" autoplay>
+            <video id='my_video' autoplay>
                 <source src="Parasite_opening.mp4" type="video/mp4">
             </video>
             <div id="script_container">
                 <svg width='300' height='220' id="script"></svg>
             </div>
+
+            <svg width='250' height='250' id="movement">Movement</svg>
+
+
+
+            <div id="video_controls_bar">
+                <button id="play/pausebutton">Pause</button>
+                <div id="seek-bar-container" style="position: relative;">
+                    <input id="seekslider" type="range" min="0" max="100" value="0" step="0.001">
+        
+                    <svg id="visualization"></svg>
+                    <!-- Visualization SVG -->
+                </div>
+                <span id="curtimetext">00:00</span>/<span id="durtimetext">00
+            </div>
+
+            
         </div>
-            <button id="infoBtn" style="background:black;border:1.5px solid white;">
-                <i class="fa-solid fa-circle-info"></i>
-            </button>
-            <button id="toggleOptionsBtn" style="background:black;border:1.5px solid white;">
-                <i class="fas fa-cog"></i> <!-- This is the gear icon -->
-            </button>
+
+
+        <button id="infoBtn" style="background:black;border:1.5px solid white;">
+            <i class="fa-solid fa-circle-info"></i>
+        </button>
+        <button id="toggleOptionsBtn" style="background:black;border:1.5px solid white;">
+            <i class="fas fa-cog"></i> <!-- This is the gear icon -->
+        </button>
             
 
-            <div id="optionsWindow">
-                <div id="checkboxes">
-                    <div>
-                        <label for="scriptVisability">Show script:</label>
-                        <input type="checkbox" id="scriptVisability" checked>
-                    </div>
-                    <div>
-                        <label for="movementVisability">Show Camera Movement Detail:</label>
-                        <input type="checkbox" id="movementVisability" checked>
-                    </div>
-
-                    <div>
-                        <label for="movementLineVisability">Show Camera Movement Timeline:</label>
-                        <input type="checkbox" id="movementLineVisability" checked>
-                    </div>
-
-                    <div>
-                        <label for="colorVisability">Show Color:</label>
-                        <input type="checkbox" id="colorVisability" checked>
-                    </div>
-                    <div>
-                        <label for="heightControl">Show Shot Type:</label>
-                        <input type="checkbox" id="heightControl" checked>
-                      </div>
+        <div id="optionsWindow">
+            <div id="checkboxes">
+                <div>
+                    <label for="scriptVisability">Show script:</label>
+                    <input type="checkbox" id="scriptVisability" checked>
                 </div>
-            </div>
-        <svg width='250' height='250' id="movement">Movement</svg>
-    </div>
-    <div id="video_controls_bar">
-        <button id="play/pausebutton">Pause</button>
-        <div id="seek-bar-container" style="position: relative;">
-            <input id="seekslider" type="range" min="0" max="100" value="0" step="0.001">
+                <div>
+                    <label for="movementVisability">Show Camera Movement Detail:</label>
+                    <input type="checkbox" id="movementVisability" checked>
+                </div>
 
-            <svg id="visualization"></svg>
-            <!-- Visualization SVG -->
+                <div>
+                    <label for="movementLineVisability">Show Camera Movement Timeline:</label>
+                    <input type="checkbox" id="movementLineVisability" checked>
+                </div>
+
+                <div>
+                    <label for="colorVisability">Show Color:</label>
+                    <input type="checkbox" id="colorVisability" checked>
+                </div>
+                <div>
+                    <label for="heightControl">Show Shot Type:</label>
+                    <input type="checkbox" id="heightControl" checked>
+                    </div>
+            </div>
         </div>
-        <span id="curtimetext">00:00</span>/<span id="durtimetext">00
     </div>
 
     <img id="infoImage" src="./wireframe.png" style="position: fix;">

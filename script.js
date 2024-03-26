@@ -104,7 +104,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
-  d3.select("#movement").attr("transform", `translate(${xPos + 250}, 0)`); // Adjust y coordinate as needed
+  d3.select("#movement").attr("transform", `translate(${xPos}, -350)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
