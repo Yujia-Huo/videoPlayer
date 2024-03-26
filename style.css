@@ -1,12 +1,24 @@
 body {
     font-family: "Saira", sans-serif;
     color: aliceblue;
+    background-color: rgb(10, 10, 10);
+    margin-left: 50px;
+}
+
+h1{
+    font-size: 34pt;
+    font-weight: 500;
+}
+
+#film_title{
+    margin-left: 30px;
 }
 
 
 div#video_controls_bar {
     /* background-color: rgb(0, 0, 0); */
-    margin-right: 200px;
+    margin-left: 10.5vw;
+    margin-right: 19vw;
 }
 
 #seekslider {
@@ -28,34 +40,30 @@ div#video_controls_bar {
     margin-bottom: 10px;
 }
 
-body {
-    background-color: rgb(10, 10, 10);
-    margin-left: 50px;
-}
-
 #video_player_box {
     /* background-color: rgb(0, 0, 0); */
     display: flex;
-    flex-wrap: wrap;
     /* Wrap the elements if not enough space */
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1900px;
+    /* justify-content: space-between;
+    align-items: flex-start; */
+    justify-content: center; /* Center everything horizontally */
+    align-items: start; 
+    max-width: 1920px;
     /* Set a max-width for the video player box */
     margin: 0px;
     /* Add some margin */
-    gap: 20px;
+    gap: 5px;
+    /* position: relative; */
 }
 
 #video_container {
-    flex: 1;
     /* Allow it to grow */
     text-align: left;
     /* Center video horizontally */
     padding: 20px;
     /* Add some padding */
-    margin-left: 5vw;
-    margin-right: 10vw;
+    margin-left: 10vw;
+    margin-right: 2vw;
     position: relative;
     /* Establishes a positioning context for absolute positioning inside */
 }
@@ -67,11 +75,6 @@ video {
     /* Maintain aspect ratio */
 }
 
-#visualizations_container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
 
 #seek-bar-container {
     width: 100%;
@@ -97,7 +100,7 @@ video {
 #movement {
     position: absolute;
     left: 0;
-    bottom: 25%;
+    bottom: 30vh;
     /* Ensures the SVG is layered above the video */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -108,7 +111,7 @@ video {
 #script {
     width: 320px;
     /* Your SVG width */
-    background-color: #9803fc2f;
+    background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     border-radius: 5px;
@@ -129,7 +132,7 @@ video {
 
 #scriptHeader {
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 0;
     display: flex;
     justify-content: flex-start;
@@ -149,7 +152,7 @@ video {
     left: 0;
     color: white;
     /* Set the text color */
-    background-color: #9803fc2f;
+    background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 3px;
@@ -167,7 +170,7 @@ video {
     left: 0;
     color: white;
     /* Set the text color */
-    background-color: #9803fc2f;
+    background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 3px;
@@ -187,7 +190,7 @@ video {
     left: 0;
     color: white;
     /* Set the text color */
-    background-color: #9803fc2f;
+    background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 3px;
@@ -207,7 +210,7 @@ video {
     left: 0;
     color: white;
     /* Set the text color */
-    background-color: #9803fc2f;
+    background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
     border: 1px solid #9803fc8d;
     padding: 3px;
@@ -305,3 +308,52 @@ foreignObject {
     box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for IE */
   }
   
+
+  #optionsWindow {
+    position: fixed; 
+    top: 18vh; 
+    right: 2vw; 
+    background-color: rgb(0, 0, 0);
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+
+#toggleOptionsBtn{
+    /* position: fixed; 
+    top: 10vh;
+    right: 17vw;  */
+    margin-top: 20px;
+    font-size: 24px; 
+    color: #ffffff; 
+    cursor: pointer;
+    padding:10px;
+    border-radius: 5px;
+}
+
+#infoBtn{
+    /* position: fixed; 
+    top: 10vh;
+    right: 17vw;  */
+    margin-top: 20px;
+    font-size: 24px; 
+    color: #ffffff; 
+    cursor: pointer;
+    padding:10px;
+    border-radius: 5px;
+}
+
+
+#infoImage {
+    position: fixed;
+    top: 10%;
+    left: 8%;
+    width: 75%;
+    height: 75%;
+    border: 1px solid #747474;
+    opacity: 0; /* Make image fully transparent */
+    visibility: hidden; /* Hide image */
+    transition: opacity 0.5s, visibility 0s 0.5s; /* Transition for opacity and delayed visibility change */
+}

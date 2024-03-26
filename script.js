@@ -104,7 +104,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
-  d3.select("#movement").attr("transform", `translate(${xPos}, 0)`); // Adjust y coordinate as needed
+  d3.select("#movement").attr("transform", `translate(${xPos + 250}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
@@ -287,6 +287,8 @@ function drawVisualization() {
       .domain([0, maxEndTime])
       .range([0, seekBarWidth]);
 
+    const shotsGroup = svg.append("g").attr("id", "shots-group");
+    const scriptBarGroup = svg.append("g").attr("id", "script-group");
     // Now draw the visualization using the xScale for the x-axis
     sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
@@ -300,9 +302,10 @@ function drawVisualization() {
 
       const yOffset = (svgHeight - height) / 2 + 30; // Centers the rectangle
       // Append a bar for each scene
-      svg
+      shotsGroup
         .append("rect")
         .attr("id", "shot-bar-" + i)
+        .attr("data-original-height", height)
         .attr("x", xOffset)
         .attr("y", yOffset)
         .attr("width", sceneWidth)
@@ -324,7 +327,7 @@ function drawVisualization() {
       const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
 
       // Append a rectangle for each event in the new dataset
-      svg
+      scriptBarGroup
         .append("rect")
         .attr("id", "script-bar-" + i)
         .attr("x", xOffset)
@@ -359,6 +362,8 @@ function drawVisualization() {
 
 function drawMovements(svg, movements, xScale, svgHeight) {
   // Loop through the movements data to draw lines
+  const movementLineGroup = svg.append("g").attr("id", "movement-group");
+
   movements.forEach(function (movement) {
     // Use the xScale to determine the start and end points on the x-axis
     var startX = xScale(movement.start_time);
@@ -368,7 +373,7 @@ function drawMovements(svg, movements, xScale, svgHeight) {
     var strokeDasharray = movement.Type === "stat" ? "0" : "5, 5"; // "5, 5" is a pattern of dashes
 
     // Draw the line on the SVG canvas
-    svg
+    movementLineGroup
       .append("line")
       .attr("x1", startX)
       .attr("y1", 10) // Position the line in the middle of the SVG height
@@ -688,6 +693,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var movementCheckbox = document.getElementById("movementVisability");
   var movementviz = document.getElementById("movement");
+  var movementLineCheckbox = document.getElementById("movementLineVisability");
+
+  var heightCheckbox = document.getElementById("heightControl");
 
   // Function to update the SVG's opacity
   function scriptUpdateVisibility() {
@@ -698,6 +706,22 @@ document.addEventListener("DOMContentLoaded", function () {
       scriptviz.style.opacity = "0"; // Hide the SVG
       scripthead.style.opacity = "0"; // Show the SVG
     }
+
+    var scriptBars = document.querySelectorAll("rect[id^='script-bar-']");
+
+    scriptBars.forEach(function (bar) {
+      var newHeight = scriptCheckbox.checked ? 10 : 0; // Change 20 to your data-driven height if applicable
+
+      // Adjust the y position to keep the bars vertically centered
+      var yOffset = (svgHeight - newHeight) / 2 + 30;
+
+      // If you want to add a transition, use D3 to select the bar and apply the transition
+      d3.select(bar)
+        .transition() // Start a transition
+        .duration(500) // Set the duration of the transition
+        .attr("height", newHeight) // Transition to the new height
+        .attr("y", yOffset); // Transition to the new y position
+    });
   }
 
   function movementUpdateVisibility() {
@@ -706,12 +730,102 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       movementviz.style.opacity = "0"; // Hide the SVG
     }
+
+    // Select all lines within the movement group
+    var movementLines = document.querySelectorAll("#movement-group line");
+
+    // Set the desired opacity based on the checkbox state
+    var opacityValue = movementCheckbox.checked ? 1 : 0; // full opacity or reduced opacity
+
+    // Update the opacity of each line
+    movementLines.forEach(function (line) {
+      // Use D3 if you're already using it in your project
+      d3.select(line).transition().duration(300).style("opacity", opacityValue);
+
+      // Or use plain JavaScript if not using D3
+      // line.style.transition = 'opacity 300ms ease-in-out';
+      // line.style.opacity = opacityValue;
+    });
+  }
+
+  function updateMovementLineOpacity() {
+    // Select all lines within the movement group
+    var movementLines = document.querySelectorAll("#movement-group line");
+
+    // Set the desired opacity based on the checkbox state
+    var opacityValue = movementLineCheckbox.checked ? 1 : 0; // full opacity or reduced opacity
+
+    // Update the opacity of each line
+    movementLines.forEach(function (line) {
+      // Use D3 if you're already using it in your project
+      d3.select(line).transition().duration(300).style("opacity", opacityValue);
+
+      // Or use plain JavaScript if not using D3
+      // line.style.transition = 'opacity 300ms ease-in-out';
+      // line.style.opacity = opacityValue;
+    });
+  }
+
+  function updateShotHeight() {
+    // Select all rectangles that represent shots
+    var shotRectangles = document.querySelectorAll("rect[id^='shot-bar-']");
+
+    shotRectangles.forEach(function (rect) {
+      var defaultHeight = 30; // Your default height
+      var originalHeight = rect.getAttribute("data-original-height");
+
+      // Determine the new height based on checkbox state
+      var newHeight =
+        heightCheckbox.checked && originalHeight
+          ? originalHeight
+          : defaultHeight;
+
+      // Adjust the y position to keep the bars vertically centered if needed
+      var yOffset = (svgHeight - newHeight) / 2 + 30;
+
+      // Select the rectangle with d3 and add a transition
+      d3.select(rect)
+        .transition() // Start a transition
+        .duration(500) // Set the duration of the transition (500ms)
+        .attr("height", newHeight) // Transition to the new height
+        .attr("y", yOffset); // Transition to the new y position
+    });
   }
 
   // Event listener for the checkbox
   scriptCheckbox.addEventListener("change", scriptUpdateVisibility);
   movementCheckbox.addEventListener("change", movementUpdateVisibility);
+  movementLineCheckbox.addEventListener("change", updateMovementLineOpacity);
+  heightCheckbox.addEventListener("change", updateShotHeight);
+
   // Initial visibility update
   scriptUpdateVisibility();
   movementUpdateVisibility();
+  updateShotHeight();
+  updateMovementLineOpacity();
+});
+
+document
+  .getElementById("toggleOptionsBtn")
+  .addEventListener("click", function () {
+    var optionsWindow = document.getElementById("optionsWindow");
+    if (optionsWindow.style.display === "none") {
+      optionsWindow.style.display = "block";
+    } else {
+      optionsWindow.style.display = "none";
+    }
+  });
+
+document.getElementById("infoBtn").addEventListener("click", function () {
+  var infoImage = document.getElementById("infoImage");
+  if (infoImage.style.opacity === "0") {
+    infoImage.style.opacity = "1";
+    infoImage.style.visibility = "visible";
+  } else {
+    infoImage.style.opacity = "0";
+    // Delay hiding the element until after the transition
+    setTimeout(() => {
+      infoImage.style.visibility = "hidden";
+    }, 500); // Match the duration of the opacity transition
+  }
 });

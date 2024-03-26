@@ -3,6 +3,7 @@
 
 <head>
     <script src="https://d3js.org/d3.v7.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,26 +13,13 @@
 </head>
 
 <body>
+    <div id="film_title">
+    <h1>Parasite (2019)</h1>
+    </div>
     <div id="video_player_box">
-
-        <div id="checkboxes">
-            <div>
-                <label for="scriptVisability">Show script:</label>
-                <input type="checkbox" id="scriptVisability" checked>
-            </div>
-
-            <div>
-                <label for="movementVisability">Show Camera Movement:</label>
-                <input type="checkbox" id="movementVisability" checked>
-            </div>
-
-            <div>
-                <label for="colorVisability">Show Color:</label>
-                <input type="checkbox" id="colorVisability" checked>
-            </div>
-        </div>
-
+        
         <div id="video_container">
+            
             <div id="scriptHeader">
                 <div id="set_text">Interior</div> <!-- This is the new text element -->
                 <div id="time">Day</div> <!-- This is the new text element -->
@@ -46,6 +34,40 @@
                 <svg width='300' height='220' id="script"></svg>
             </div>
         </div>
+            <button id="infoBtn" style="background:black;border:1.5px solid white;">
+                <i class="fa-solid fa-circle-info"></i>
+            </button>
+            <button id="toggleOptionsBtn" style="background:black;border:1.5px solid white;">
+                <i class="fas fa-cog"></i> <!-- This is the gear icon -->
+            </button>
+            
+
+            <div id="optionsWindow">
+                <div id="checkboxes">
+                    <div>
+                        <label for="scriptVisability">Show script:</label>
+                        <input type="checkbox" id="scriptVisability" checked>
+                    </div>
+                    <div>
+                        <label for="movementVisability">Show Camera Movement Detail:</label>
+                        <input type="checkbox" id="movementVisability" checked>
+                    </div>
+
+                    <div>
+                        <label for="movementLineVisability">Show Camera Movement Timeline:</label>
+                        <input type="checkbox" id="movementLineVisability" checked>
+                    </div>
+
+                    <div>
+                        <label for="colorVisability">Show Color:</label>
+                        <input type="checkbox" id="colorVisability" checked>
+                    </div>
+                    <div>
+                        <label for="heightControl">Show Shot Type:</label>
+                        <input type="checkbox" id="heightControl" checked>
+                      </div>
+                </div>
+            </div>
         <svg width='250' height='250' id="movement">Movement</svg>
     </div>
     <div id="video_controls_bar">
@@ -58,6 +80,8 @@
         </div>
         <span id="curtimetext">00:00</span>/<span id="durtimetext">00
     </div>
+
+    <img id="infoImage" src="./wireframe.png" style="position: fix;">
 
 
     <script src="./script.js"></script>
