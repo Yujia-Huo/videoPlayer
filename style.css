@@ -51,7 +51,7 @@ div#video_controls_bar {
     align-items: start; 
     max-width: 1920px;
     /* Set a max-width for the video player box */
-    margin: 0px;
+    margin-right: 10vw;
     /* Add some margin */
     gap: 5px;
     /* position: relative; */
@@ -352,7 +352,7 @@ foreignObject {
     top: 10%;
     left: 8%;
     width: 75%;
-    height: 75%;
+    height: auto;
     border: 1px solid #747474;
     opacity: 0; /* Make image fully transparent */
     visibility: hidden; /* Hide image */

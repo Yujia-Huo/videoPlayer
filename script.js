@@ -224,8 +224,16 @@ function drawVisualization() {
   var svgHeight = 250;
   var svg = d3
     .select("#visualization")
-    .attr("width", seekBarWidth)
-    .attr("height", svgHeight); // Set a fixed height for the SVG
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + svgHeight)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  window.addEventListener("resize", function () {
+    // Recalculate seekBarWidth and update scales or SVG elements as necessary
+    var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
+    // Update the viewBox or any other attributes that depend on size here
+  });
 
   svg
     .append("image")
