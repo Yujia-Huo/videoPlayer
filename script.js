@@ -11,7 +11,7 @@ function initializePlayer() {
   seekslider = document.getElementById("seekslider");
   durtimetext = document.getElementById("durtimetext");
   curtimetext = document.getElementById("curtimetext");
-  playbtn.addEventListener("click", playPause, false);
+  playbtn.addEventListener("click", playPause);
   seekslider.addEventListener("change", vidSeek, false);
   vid.addEventListener("timeupdate", seektimeupdate, false);
 }
@@ -70,14 +70,25 @@ d3.csv("./data/script_data.csv").then(function (data) {
 });
 
 function playPause() {
+  var vid = document.getElementById("my_video");
+  var playbtn = document.getElementById("play/pausebutton");
+  var playIcon = playbtn.querySelector("i");
+
   if (vid.paused) {
     vid.play();
-    playbtn.innerHTML = "Pause";
+    playIcon.classList.remove("fa-play");
+    playIcon.classList.add("fa-pause");
   } else {
     vid.pause();
-    playbtn.innerHTML = "Play";
+    playIcon.classList.remove("fa-pause");
+    playIcon.classList.add("fa-play");
   }
 }
+
+// Add event listener to the button
+document
+  .getElementById("play/pausebutton")
+  .addEventListener("click", playPause);
 
 function vidSeek() {
   var seekto = vid.duration * (seekslider.value / 100);
