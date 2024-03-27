@@ -19,6 +19,7 @@ function initializePlayer() {
 window.onload = function () {
   initializePlayer();
   drawVisualization();
+  seektimeupdate();
 };
 
 function onDataLoaded() {
