@@ -7,11 +7,11 @@ var xScale; // Ensure xScale is accessible in seektimeupdate
 
 function initializePlayer() {
   vid = document.getElementById("my_video");
-  playbtn = document.getElementById("play/pausebutton");
+  playbtn = document.getElementById("play_pausebutton");
   seekslider = document.getElementById("seekslider");
   durtimetext = document.getElementById("durtimetext");
   curtimetext = document.getElementById("curtimetext");
-  playbtn.addEventListener("click", playPause, false);
+  playbtn.addEventListener("click", playPause);
   seekslider.addEventListener("change", vidSeek, false);
   vid.addEventListener("timeupdate", seektimeupdate, false);
 }
@@ -70,12 +70,16 @@ d3.csv("./data/GooseLake_script_data.csv").then(function (data) {
 });
 
 function playPause() {
+  var playIcon = playbtn.querySelector("i");
+
   if (vid.paused) {
     vid.play();
-    playbtn.innerHTML = "Pause";
+    playIcon.classList.remove("fa-play");
+    playIcon.classList.add("fa-pause");
   } else {
     vid.pause();
-    playbtn.innerHTML = "Play";
+    playIcon.classList.remove("fa-pause");
+    playIcon.classList.add("fa-play");
   }
 }
 
@@ -396,18 +400,23 @@ function drawMovements(svg, movements, xScale, svgHeight) {
 
 //////////Camera Movement Visualization////////////////////////////////
 
-var svgWidth = +d3.select("#movement").attr("width");
-var svgHeight = +d3.select("#movement").attr("height");
+var svgWidth = 250;
+var svgHeight = 250;
 
 var bgRect = d3
   .select("#movement")
-  .insert("rect", ":first-child") // Ensure the rectangle is the first child of the SVG
-  .attr("width", svgWidth)
-  .attr("height", svgHeight)
-  .attr("fill", "black") // Set your desired background color here
-  .style("fill-opacity", 0.5); // Set the opacity here (range: 0 to 1)
+  .insert("rect", ":first-child")
+  .attr("width", "100%")
+  .attr("height", "100%")
+  .attr("fill", "black")
+  .style("fill-opacity", 0.5);
 
-var svg3 = d3.select("#movement");
+var svg3 = d3
+  .select("#movement")
+  .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .style("width", "15%") // These will now be relative to the container
+  .style("height", "auto"); // Height will be auto to maintain the aspect ratio
 
 d3.xml("./camera.svg").then((data) => {
   var externalSVG = data.documentElement; // Get the root element of the SVG file

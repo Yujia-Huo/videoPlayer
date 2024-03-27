@@ -14,7 +14,12 @@ h1{
     margin-left: 30px;
 }
 
-
+#play_pausebutton{
+    font-size: 24px; 
+    color: #ffffff; 
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0);
+}
 div#video_controls_bar {
     /* background-color: rgb(0, 0, 0); */
     /* margin-left: 10.5vw;
