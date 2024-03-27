@@ -1,0 +1,12 @@
+start_time,end_time,Type,Distance,Direction,Shot
+0,17.08,stat,0,n,1
+17.08,21.75,stat,0,n,2
+21.75,28,truck,0.5,right,3
+28,37,stat,0,n,3
+37,48,truck,1,right,3
+48,53,Tilt,0,down,3
+53,68,stat,0,n,3
+68,71,truck,0.5,right,3
+71,76,Dolly,1,out,3
+76,81,Pan,0.5,right,3
+81,213.38,stat,0,n,3

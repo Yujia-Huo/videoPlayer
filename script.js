@@ -29,7 +29,7 @@ function onDataLoaded() {
   initializePlayer();
 }
 
-d3.csv("./data/camera_movement_data.csv").then(function (data) {
+d3.csv("./data/GooseLake_camera_movement.csv").then(function (data) {
   movements = data.map((d) => ({
     Movement: +d.Movement,
     start_time: +d.start_time,
@@ -58,7 +58,7 @@ d3.csv("./data/color_data.csv").then(function (data) {
   // No need for an onDataLoaded call here unless you need to initialize something specific to color data
 });
 
-d3.csv("./data/script_data.csv").then(function (data) {
+d3.csv("./data/GooseLake_script_data.csv").then(function (data) {
   scriptData = data.map((d) => ({
     start_time: +d.start_time,
     end_time: +d.end_time,
@@ -136,7 +136,7 @@ function seektimeupdate() {
     // This will effectively make the text disappear
   }
 
-  d3.csv("./data/sample_scene-Scenes.csv").then(function (sceneData) {
+  d3.csv("./data/Gooselake_shot_data.csv").then(function (sceneData) {
     // Additional setup, if required
 
     sceneData.forEach((d, i) => {
@@ -243,7 +243,7 @@ function drawVisualization() {
     .attr("y", 10) // The y position of the image within the SVG
     .attr("width", seekBarWidth) // The width of the image
     .attr("height", 80) // The height of the image
-    .attr("xlink:href", "./combined_sorted_image.png") // The path to your PNG image
+    .attr("xlink:href", "./gooselake_combined_sorted_image.png") // The path to your PNG image
     .attr("preserveAspectRatio", "none") // This will stretch the image
     .attr("opacity", 1);
 
@@ -263,10 +263,10 @@ function drawVisualization() {
   drawMovements(svg, movements, xScale, svgHeight);
 
   Promise.all([
-    d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
-    d3.csv("./data/shot_type.csv"), // Load shot type data
+    d3.csv("./data/Gooselake_shot_data.csv"), // Load scene data
+    d3.csv("./data/gooseLake_shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
-    d3.csv("./data/script_data.csv"), // Load scene data
+    d3.csv("./data/GooseLake_script_data.csv"), // Load scene data
   ]).then(function ([sceneData, shotTypeData, colorData, scriptData]) {
     // Process the color and size data into a mapping
     var shotTypeInfo = {};
@@ -568,7 +568,7 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 2; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "out" ? 1 : -1;
       var currentTranslation =
