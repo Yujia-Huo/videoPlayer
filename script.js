@@ -29,7 +29,7 @@ function onDataLoaded() {
   initializePlayer();
 }
 
-d3.csv("./data/camera_movement_data.csv").then(function (data) {
+d3.csv("./data/platform_camera_movement.csv").then(function (data) {
   movements = data.map((d) => ({
     Movement: +d.Movement,
     start_time: +d.start_time,
@@ -58,16 +58,16 @@ d3.csv("./data/color_data.csv").then(function (data) {
   // No need for an onDataLoaded call here unless you need to initialize something specific to color data
 });
 
-d3.csv("./data/script_data.csv").then(function (data) {
-  scriptData = data.map((d) => ({
-    start_time: +d.start_time,
-    end_time: +d.end_time,
-    text_content: d.content,
-    location2: d.location_2,
-  }));
-  // Assuming onDataLoaded is a function that might use scriptData
-  onDataLoaded();
-});
+// d3.csv("./data/script_data.csv").then(function (data) {
+//   scriptData = data.map((d) => ({
+//     start_time: +d.start_time,
+//     end_time: +d.end_time,
+//     text_content: d.content,
+//     location2: d.location_2,
+//   }));
+//   // Assuming onDataLoaded is a function that might use scriptData
+//   onDataLoaded();
+// });
 
 function playPause() {
   if (vid.paused) {
@@ -115,28 +115,26 @@ function seektimeupdate() {
   );
 
   // Select the SVG element meant for displaying the script
-  var scriptSVG = d3.select("#script");
-  scriptSVG.attr("width", 600);
 
   // Ensure it's empty before appending new text content
   var setTextElement = document.getElementById("location2_text");
 
-  if (currentScript) {
-    // Clear the previous content
-    scriptSVG.selectAll("*").remove();
-    // Call wrapText with the script content and desired width
-    wrapText(currentScript.text_content, 300); // Replace 300 with your actual width
-    setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
+  // if (currentScript) {
+  //   // Clear the previous content
+  //   scriptSVG.selectAll("*").remove();
+  //   // Call wrapText with the script content and desired width
+  //   wrapText(currentScript.text_content, 300); // Replace 300 with your actual width
+  //   setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
 
-    // Call this function after setting the text content
-  } else {
-    scriptSVG.selectAll("*").remove();
-    // scriptSVG.attr("height", 80); // Collapse the SVG if there's no content
-    // If there's no script content for the current time, keep the script SVG empty
-    // This will effectively make the text disappear
-  }
+  //   // Call this function after setting the text content
+  // } else {
+  //   scriptSVG.selectAll("*").remove();
+  //   // scriptSVG.attr("height", 80); // Collapse the SVG if there's no content
+  //   // If there's no script content for the current time, keep the script SVG empty
+  //   // This will effectively make the text disappear
+  // }
 
-  d3.csv("./data/sample_scene-Scenes.csv").then(function (sceneData) {
+  d3.csv("./data/platform_shot_data.csv").then(function (sceneData) {
     // Additional setup, if required
 
     sceneData.forEach((d, i) => {
@@ -220,6 +218,15 @@ function updateScriptBoxSize() {
 }
 
 function drawVisualization() {
+  var scriptSVG = d3.select("#script");
+  scriptSVG.attr("width", 600);
+
+  scriptSVG
+    .append("text")
+    .style("fill", "white") // Set text color
+    .text("No script match current scene")
+    .attr("x", 10)
+    .attr("y", 30);
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
   var svgHeight = 250;
@@ -243,7 +250,7 @@ function drawVisualization() {
     .attr("y", 10) // The y position of the image within the SVG
     .attr("width", seekBarWidth) // The width of the image
     .attr("height", 80) // The height of the image
-    .attr("xlink:href", "./combined_sorted_image.png") // The path to your PNG image
+    .attr("xlink:href", "./platform_combined_sorted_image.png") // The path to your PNG image
     .attr("preserveAspectRatio", "none") // This will stretch the image
     .attr("opacity", 1);
 
@@ -263,8 +270,8 @@ function drawVisualization() {
   drawMovements(svg, movements, xScale, svgHeight);
 
   Promise.all([
-    d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
-    d3.csv("./data/shot_type.csv"), // Load shot type data
+    d3.csv("./data/platform_shot_data.csv"), // Load scene data
+    d3.csv("./data/Platform_shot_type.csv"), // Load shot type data
     d3.csv("./data/shot_type_reference.csv"), // Load shot type color reference data
     d3.csv("./data/script_data.csv"), // Load scene data
   ]).then(function ([sceneData, shotTypeData, colorData, scriptData]) {
@@ -325,29 +332,29 @@ function drawVisualization() {
         .attr("stroke-width", 1);
     });
 
-    scriptData.forEach((event, i) => {
-      const startTime = parseFloat(event["start_time"]);
-      const endTime = parseFloat(event["end_time"]);
-      const eventWidth = xScale(endTime - startTime);
-      const xOffset = xScale(startTime);
+    // scriptData.forEach((event, i) => {
+    //   const startTime = parseFloat(event["start_time"]);
+    //   const endTime = parseFloat(event["end_time"]);
+    //   const eventWidth = xScale(endTime - startTime);
+    //   const xOffset = xScale(startTime);
 
-      const defaultColor = "#9803fc"; // Default color
-      const defaultHeight = 10; // Default height
-      const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
+    //   const defaultColor = "#9803fc"; // Default color
+    //   const defaultHeight = 10; // Default height
+    //   const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
 
-      // Append a rectangle for each event in the new dataset
-      scriptBarGroup
-        .append("rect")
-        .attr("id", "script-bar-" + i)
-        .attr("x", xOffset)
-        .attr("y", yOffset)
-        .attr("width", eventWidth)
-        .attr("height", defaultHeight)
-        .attr("fill", defaultColor)
-        .attr("stroke", "black")
-        .attr("opacity", 0.75) // Slightly transparent
-        .attr("stroke-width", 1);
-    });
+    //   // Append a rectangle for each event in the new dataset
+    //   scriptBarGroup
+    //     .append("rect")
+    //     .attr("id", "script-bar-" + i)
+    //     .attr("x", xOffset)
+    //     .attr("y", yOffset)
+    //     .attr("width", eventWidth)
+    //     .attr("height", defaultHeight)
+    //     .attr("fill", defaultColor)
+    //     .attr("stroke", "black")
+    //     .attr("opacity", 0.75) // Slightly transparent
+    //     .attr("stroke-width", 1);
+    // });
 
     currentTimeLine = svg
       .append("line")
@@ -492,7 +499,7 @@ function resetTransformationsForNewScene() {
   camera.attr("transform", "");
   // Optionally, update position if changed
   camera.attr("x", rectState.x).attr("y", rectState.y);
-  d3.select("#movementText").text("Movement: None"); // Reset text
+  d3.select("#movementText").text("Movement: Stat"); // Reset text
 
   traceLayer.selectAll("*").remove(); // This line clears the traceLayer
 }
@@ -568,7 +575,7 @@ function applyTransformation(movement, progress) {
       }
 
       // Calculate the total intended translation based on the movement's Distance
-      var totalTranslation = movement.Distance * 40; // Adjust multiplier as needed for your scale
+      var totalTranslation = movement.Distance * 2; // Adjust multiplier as needed for your scale
       var translationDirectionMultiplier =
         movement.Direction === "out" ? 1 : -1;
       var currentTranslation =
