@@ -115,8 +115,6 @@ function seektimeupdate() {
   // );
 
   // Select the SVG element meant for displaying the script
-  var scriptSVG = d3.select("#script");
-  scriptSVG.attr("width", 600);
 
   // Ensure it's empty before appending new text content
   var setTextElement = document.getElementById("location2_text");
@@ -220,6 +218,16 @@ function updateScriptBoxSize() {
 }
 
 function drawVisualization() {
+  var scriptSVG = d3.select("#script");
+  scriptSVG.attr("width", 600);
+
+  scriptSVG
+    .append("text")
+    .style("fill", "white") // Set text color
+    .text("No script match current scene")
+    .attr("x", 10)
+    .attr("y", 30);
+
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
   var svgHeight = 250;
