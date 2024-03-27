@@ -8,5 +8,5 @@ start_time,end_time,Type,Distance,Direction,Shot
 53,68,stat,0,n,3
 68,71,truck,0.5,right,3
 71,76,Dolly,1,out,3
-76,81,Pan,0.3,right,3
+76,81,Pan,0.2,right,3
 81,213.38,stat,0,n,3
