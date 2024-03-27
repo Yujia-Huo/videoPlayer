@@ -816,8 +816,18 @@ document.addEventListener("DOMContentLoaded", function () {
 document
   .getElementById("toggleOptionsBtn")
   .addEventListener("click", function () {
+    var btn = this.getBoundingClientRect(); // Gets the position of the button
     var optionsWindow = document.getElementById("optionsWindow");
-    if (optionsWindow.style.display === "none") {
+
+    // Set the top and left properties to position the window below the button
+    optionsWindow.style.left = btn.left + "px";
+    optionsWindow.style.top = btn.bottom + window.scrollY + 10 + "px"; // Use scrollY for when the page is scrolled
+
+    // Toggle the display property to show or hide the options window
+    if (
+      optionsWindow.style.display === "none" ||
+      optionsWindow.style.display === ""
+    ) {
       optionsWindow.style.display = "block";
     } else {
       optionsWindow.style.display = "none";
