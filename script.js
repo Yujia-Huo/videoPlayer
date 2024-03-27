@@ -207,29 +207,6 @@ function wrapText(text, width) {
   // updateScriptBoxSize();
 }
 
-function updateScriptBoxSize() {
-  // Get the dimensions of the textDiv content
-  var textDiv = document.getElementById("textDiv"); // Make sure you have an ID for your text div
-  if (textDiv) {
-    // var width = textDiv.offsetWidth;
-    var height = textDiv.offsetHeight;
-
-    // Now set the SVG dimensions to fit the content
-    var scriptSVG = document.getElementById("script"); // Your SVG element
-    if (scriptSVG) {
-      // scriptSVG.setAttribute("width", width + 20); // You might want to add some padding
-      scriptSVG.setAttribute("height", height + 20);
-
-      // Also update the foreignObject dimensions if you're using it
-      var foreignObject = scriptSVG.querySelector("foreignObject");
-      if (foreignObject) {
-        // foreignObject.setAttribute("width", width);
-        foreignObject.setAttribute("height", height);
-      }
-    }
-  }
-}
-
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
@@ -407,18 +384,23 @@ function drawMovements(svg, movements, xScale, svgHeight) {
 
 //////////Camera Movement Visualization////////////////////////////////
 
-var svgWidth = +d3.select("#movement").attr("width");
-var svgHeight = +d3.select("#movement").attr("height");
+var svgWidth = 250;
+var svgHeight = 250;
 
 var bgRect = d3
   .select("#movement")
-  .insert("rect", ":first-child") // Ensure the rectangle is the first child of the SVG
-  .attr("width", svgWidth)
-  .attr("height", svgHeight)
-  .attr("fill", "black") // Set your desired background color here
-  .style("fill-opacity", 0.5); // Set the opacity here (range: 0 to 1)
+  .insert("rect", ":first-child")
+  .attr("width", "100%")
+  .attr("height", "100%")
+  .attr("fill", "black")
+  .style("fill-opacity", 0.5);
 
-var svg3 = d3.select("#movement");
+var svg3 = d3
+  .select("#movement")
+  .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight)
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .style("width", "15%") // These will now be relative to the container
+  .style("height", "auto"); // Height will be auto to maintain the aspect ratio
 
 d3.xml("./camera.svg").then((data) => {
   var externalSVG = data.documentElement; // Get the root element of the SVG file
