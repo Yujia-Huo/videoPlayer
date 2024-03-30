@@ -14,6 +14,7 @@ h2{
     font-size: 15pt;
     margin-top: 0px;
     font-weight: 500;
+    margin-bottom: 50px;
 }
 #film_title{
     margin-left: 30px;
@@ -147,7 +148,7 @@ video {
 
 
 #script {
-    width: 320px;
+    width: 500px;
     /* Your SVG width */
     background-color: #9803fc4a;
     /* Optional: adds a semi-transparent background */
@@ -158,7 +159,7 @@ video {
 
 #script_container {
     position: absolute;
-    top: 40%;
+    top: 23%;
     /* Adjust these values as needed */
     left: 0;
     /* Adjust these values as needed */
@@ -175,7 +176,7 @@ video {
     left: 0;
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 5px;
     margin-left: 20px;
     transition: opacity 0.5s ease-in-out;
@@ -234,7 +235,7 @@ video {
     border: 1px solid #9803fc8d;
     padding: 3px;
     border-radius: 5px;
-    width: 250px;
+    width: 180px;
 
 }
 
@@ -349,14 +350,30 @@ foreignObject {
   
 
   #optionsWindow {
+    display: hidden;
+    overflow: hidden;
+    margin-left: 10px;
     position: absolute;
-    display: none; /* Initially hidden */
+    width: 0; /* Initial width */
+    transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* Transition for width, padding, and opacity */
     background-color: rgb(0, 0, 0);
-    padding: 20px;
+    padding: 0; /* Start with no padding */
     border: 1px solid #ddd;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 
 }
+
+#optionsWindow .toggle-container {
+    opacity: 0; /* Hide content initially */
+    pointer-events: none; /* Disable interactions initially */
+    transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* Transition for width, padding, and opacity */
+  }
+  
+  #optionsWindow.open .toggle-container {
+    opacity: 1; /* Show content */
+    pointer-events: all; /* Enable interactions */
+    transition-delay: 0s; /* Reset delay for fade-in effect */
+  }
 
 
 #toggleOptionsBtn{

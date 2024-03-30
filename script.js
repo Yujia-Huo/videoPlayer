@@ -3,6 +3,10 @@ var movements = []; // This will hold the parsed data once it's loaded
 var colorData = []; // To hold color data
 var scriptData = []; // This will hold the script data once it's loaded
 var currentTimeLine;
+var scriptCurrentTimeLine;
+var colorCurrentTimeLine;
+var cameraCurrentTimeLine;
+
 var xScale; // Ensure xScale is accessible in seektimeupdate
 
 function initializePlayer() {
@@ -116,6 +120,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
+  scriptCurrentTimeLine.attr("x1", xPos).attr("x2", xPos);
   d3.select("#movement").attr("transform", `translate(${xPos - 100}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
@@ -127,7 +132,7 @@ function seektimeupdate() {
 
   // Select the SVG element meant for displaying the script
   var scriptSVG = d3.select("#script");
-  scriptSVG.attr("width", 600);
+  scriptSVG.attr("width", 500);
 
   // Ensure it's empty before appending new text content
   var setTextElement = document.getElementById("location2_text");
@@ -136,7 +141,7 @@ function seektimeupdate() {
     // Clear the previous content
     scriptSVG.selectAll("*").remove();
     // Call wrapText with the script content and desired width
-    wrapText(currentScript.text_content, 300); // Replace 300 with your actual width
+    wrapText(currentScript.text_content, 500); // Replace 300 with your actual width
     setTextElement.textContent = `${currentScript.location2}`; // Assuming 'set' is a property in your script data
 
     // Call this function after setting the text content
@@ -188,13 +193,13 @@ function wrapText(text, width) {
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", width)
-    .attr("height", 200); // Set height to a large enough value
+    .attr("height", 150); // Set height to a large enough value
 
   // Append a div to the foreign object
   var textDiv = foreignObject
     .append("xhtml:div")
     .attr("id", "textDiv")
-    .style("font-size", "18px")
+    .style("font-size", "12px")
     .style("color", "white")
     .style("padding", "5px") // Optional: adds padding inside the text box
     // You can add more styling as needed here
@@ -366,6 +371,16 @@ function drawVisualization() {
       .attr("y1", 0)
       .attr("x2", 0)
       .attr("y2", svgHeight)
+      .attr("stroke", "#a1a1a1") // Red line for visibility
+      .attr("stroke-width", 2);
+
+    scriptCurrentTimeLine = scriptlineSvg
+      .append("line")
+      .attr("id", "current-time-line")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", scriptSvgHeight)
       .attr("stroke", "#a1a1a1") // Red line for visibility
       .attr("stroke-width", 2);
   });
@@ -851,23 +866,30 @@ document.addEventListener("DOMContentLoaded", function () {
 document
   .getElementById("toggleOptionsBtn")
   .addEventListener("click", function () {
-    var btnRect = document
-      .getElementById("video_content")
-      .getBoundingClientRect();
+    var btnRect = document.getElementById("header").getBoundingClientRect();
     var optionsWindow = document.getElementById("optionsWindow");
 
-    // Set the top and left properties to position the window to the right of the video content
-    optionsWindow.style.position = "absolute"; // Make sure the optionsWindow is positioned absolutely
-    optionsWindow.style.left = btnRect.right + "px"; // Set left position to the right edge of the video content
-    optionsWindow.style.top = btnRect.top + window.scrollY + "px"; // Set top position to align with the top of the video content
+    // Set the initial top and left positions (if they are not already set by CSS)
+    optionsWindow.style.top = btnRect.top + 20 + window.scrollY + "px";
+    optionsWindow.style.left = btnRect.right + "px";
 
-    // Adjust for any additional offsets if needed
-    var additionalOffsetX = 10; // Adjust this value as needed for spacing from the video content
-    optionsWindow.style.left = btnRect.right + additionalOffsetX + "px";
+    if (!optionsWindow.classList.contains("open")) {
+      optionsWindow.style.visibility = "visible";
+      optionsWindow.style.width = "200px"; // Or whatever the full width should be
+      optionsWindow.style.padding = "20px"; // Or whatever the full width should be
+      optionsWindow.classList.add("open"); // Add the 'open' class to make content visible
+    }
+    // If the optionsWindow is open, close it
+    else {
+      optionsWindow.style.visibility = "hidden";
+      optionsWindow.style.width = "0"; // Close the window
+      optionsWindow.style.padding = "0"; // Or whatever the full width should be
 
-    // Toggle the display property to show or hide the options window
-    optionsWindow.style.display =
-      optionsWindow.style.display === "block" ? "none" : "block";
+      // Remove the 'open' class to hide content after a delay
+      setTimeout(function () {
+        optionsWindow.classList.remove("open");
+      }, 0); // Delay matches the transition duration
+    }
   });
 
 document.getElementById("infoBtn").addEventListener("click", function () {
