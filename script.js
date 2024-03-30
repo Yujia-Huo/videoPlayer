@@ -121,6 +121,8 @@ function seektimeupdate() {
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
   scriptCurrentTimeLine.attr("x1", xPos).attr("x2", xPos);
+  colorCurrentTimeLine.attr("x1", xPos).attr("x2", xPos);
+  movementCurrentTimeLine.attr("x1", xPos).attr("x2", xPos);
   d3.select("#movement").attr("transform", `translate(${xPos - 100}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
@@ -214,7 +216,7 @@ function wrapText(text, width) {
 
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
-  var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
+  var seekBarWidth = document.getElementById("seekslider").offsetWidth;
   var svgHeight = 140;
   var scriptSvgHeight = 50;
   var svg = d3
@@ -226,14 +228,14 @@ function drawVisualization() {
 
   var colorSvg = d3
     .select("#visualization_color")
-    .attr("viewBox", "0 0 " + seekBarWidth + " " + svgHeight)
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + 90)
     .attr("preserveAspectRatio", "xMinYMin meet")
     .style("width", "100%")
     .style("height", "100%");
 
   var movelineSvg = d3
     .select("#visualization_movementLine")
-    .attr("viewBox", "0 0 " + seekBarWidth + " " + 80)
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + 50)
     .attr("preserveAspectRatio", "xMinYMin meet")
     .style("width", "100%")
     .style("height", "100%");
@@ -381,6 +383,26 @@ function drawVisualization() {
       .attr("y1", 0)
       .attr("x2", 0)
       .attr("y2", scriptSvgHeight)
+      .attr("stroke", "#a1a1a1") // Red line for visibility
+      .attr("stroke-width", 2);
+
+    colorCurrentTimeLine = movelineSvg
+      .append("line")
+      .attr("id", "current-time-line")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", svgHeight)
+      .attr("stroke", "#a1a1a1") // Red line for visibility
+      .attr("stroke-width", 2);
+
+    movementCurrentTimeLine = colorSvg
+      .append("line")
+      .attr("id", "current-time-line")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", svgHeight)
       .attr("stroke", "#a1a1a1") // Red line for visibility
       .attr("stroke-width", 2);
   });
@@ -866,29 +888,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document
   .getElementById("toggleOptionsBtn")
   .addEventListener("click", function () {
-    var btnRect = document.getElementById("header").getBoundingClientRect();
-    var optionsWindow = document.getElementById("optionsWindow");
-
-    // Set the initial top and left positions (if they are not already set by CSS)
-    optionsWindow.style.top = btnRect.top + 20 + window.scrollY + "px";
-    optionsWindow.style.left = btnRect.right + "px";
-
-    if (!optionsWindow.classList.contains("open")) {
-      optionsWindow.style.visibility = "visible";
-      optionsWindow.style.width = "200px"; // Or whatever the full width should be
-      optionsWindow.style.padding = "20px"; // Or whatever the full width should be
-      optionsWindow.classList.add("open"); // Add the 'open' class to make content visible
-    }
-    // If the optionsWindow is open, close it
-    else {
-      optionsWindow.style.visibility = "hidden";
-      optionsWindow.style.width = "0"; // Close the window
-      optionsWindow.style.padding = "0"; // Or whatever the full width should be
-
-      // Remove the 'open' class to hide content after a delay
-      setTimeout(function () {
-        optionsWindow.classList.remove("open");
-      }, 0); // Delay matches the transition duration
+    var infoImage = document.getElementById("optionsWindow");
+    var videoplayer = document.getElementById("video_player_box");
+    if (infoImage.style.opacity === "1") {
+      infoImage.style.opacity = "0";
+      // infoImage.style.visibility = "hidden";
+    } else {
+      infoImage.style.opacity = "1";
+      // infoImage.style.width = "400px";
+      // Delay hiding the element until after the transition
     }
   });
 

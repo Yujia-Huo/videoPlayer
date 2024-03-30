@@ -21,6 +21,12 @@ h2{
 }
 
 
+#bodyLayout{
+  display: flex;
+  flex-direction: row;
+
+
+}
 div#video_controls_bar {
     /* background-color: rgb(0, 0, 0); */
     /* margin-left: 10.5vw;
@@ -50,12 +56,12 @@ div#video_controls_bar {
 #video_player_box {
     
 
-    max-width: 1920px;
+    max-width: 1520px;
     /* Set a max-width for the video player box */
     /* Add some margin */
 
-    margin-left: 0vw;
-    margin-right:20vw;
+    margin-left: 3vw;
+    padding-right:5vw;
     gap: 5px;
     /* position: relative; */
 }
@@ -78,8 +84,8 @@ video {
 
 #video_content{
     position: relative;
-    margin-left: 230px;
-    margin-right: 80px;
+    /* margin-left: 80px;
+    margin-right: 80px; */
 }
 
 #timecode_container{
@@ -89,21 +95,45 @@ video {
 
 
 .svg-container {
-    margin-right: 80px;
+    margin-right: 88px;
     display: flex;
     align-items: center; /* This ensures vertical centering of SVG and label */
     justify-content: space-between; /* This positions the SVG and label on opposite ends */
     margin-bottom: 0px; /* Or any space you want between each SVG-label pair */
 }
 
+
+#video-container {
+  margin-right: 88px;
+  display: flex;
+  align-items: flex-start; /* This ensures vertical centering of SVG and label */
+  justify-content: space-between; /* This positions the SVG and label on opposite ends */
+  margin-bottom: 0px; /* Or any space you want between each SVG-label pair */
+}
+
 .svg-label {
     text-align: right;
-    width:250px;
+    width:240px;
     margin-right: 30px;
     white-space: nowrap; /* Keeps the label on a single line */
 }
 
+#script-label-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: right;
+    width:240px;
+    margin-right: 30px;
+    white-space: nowrap; /* Keeps the label on a single line */
+}
 
+.script-label{
+  text-align: right;
+  width:200px;
+  margin-top:5px;
+  margin-bottom:10px;
+}
 #timebar{
     display: flex;
     align-items: center; /* This ensures vertical centering of SVG and label */
@@ -113,26 +143,20 @@ video {
 
 #play_container{
     text-align: right;
-    width:250px;
+    width:245px;
     margin-right: 30px; /* Adds some space between the SVG and the label */
     white-space: nowrap; /* Keeps the label on a single line */
 }
 
 
 #visualization_scriptLine{
-    border: 1px solid #ccc;
+    border: 1px solid #686868;
     border-radius: 5px;
 }
 #seekslider,
 #visualization {
     width: 100%;
     height: auto;
-    /* for the image, to maintain aspect ratio */
-}
-
-#seek-bar-container img {
-    width: 100%;
-    height: 70px;
     /* for the image, to maintain aspect ratio */
 }
 
@@ -350,54 +374,47 @@ foreignObject {
   
 
   #optionsWindow {
-    display: hidden;
-    overflow: hidden;
+    visibility:"visible";
     margin-left: 10px;
-    position: absolute;
-    width: 0; /* Initial width */
+    width:400px; /* Initial width */
     transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* Transition for width, padding, and opacity */
     background-color: rgb(0, 0, 0);
-    padding: 0; /* Start with no padding */
-    border: 1px solid #ddd;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-
+    padding: 20px; /* Start with no padding */
+    border-left: 1px solid #ddd;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1)
 }
-
-#optionsWindow .toggle-container {
-    opacity: 0; /* Hide content initially */
-    pointer-events: none; /* Disable interactions initially */
-    transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* Transition for width, padding, and opacity */
-  }
-  
-  #optionsWindow.open .toggle-container {
-    opacity: 1; /* Show content */
-    pointer-events: all; /* Enable interactions */
-    transition-delay: 0s; /* Reset delay for fade-in effect */
-  }
 
 
 #toggleOptionsBtn{
     /* position: fixed; 
     top: 10vh;
     right: 17vw;  */
+    background:black;
+    border: none;
     margin-top: 20px;
-    font-size: 24px; 
+    font-size: 15px; 
     color: #ffffff; 
-    cursor: pointer;
+    /* cursor: pointer; */
     padding:10px;
     border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 #infoBtn{
     /* position: fixed; 
     top: 10vh;
     right: 17vw;  */
+    background:black;
     margin-top: 20px;
-    font-size: 24px; 
+    font-size: 15px; 
     color: #ffffff; 
-    cursor: pointer;
+    border: none;
+    /* cursor: pointer; */
     padding:10px;
     border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 
@@ -448,7 +465,7 @@ foreignObject {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #636363;
     transition: .4s;
     border-radius: 20px; /* Rounded borders for the switch */
   }
@@ -473,6 +490,6 @@ foreignObject {
   
   /* Change switch background color when it's checked */
   .checkbox:checked + .switch {
-    background-color: #2196F3;
+    background-color: #a6a68d;
   }
   
