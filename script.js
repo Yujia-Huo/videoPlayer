@@ -7,7 +7,7 @@ var xScale; // Ensure xScale is accessible in seektimeupdate
 
 function initializePlayer() {
   vid = document.getElementById("my_video");
-  playbtn = document.getElementById("play/pausebutton");
+  playbtn = document.getElementById("play_pausebutton");
   seekslider = document.getElementById("seekslider");
   durtimetext = document.getElementById("durtimetext");
   curtimetext = document.getElementById("curtimetext");
@@ -71,7 +71,7 @@ d3.csv("./data/script_data.csv").then(function (data) {
 
 function playPause() {
   var vid = document.getElementById("my_video");
-  var playbtn = document.getElementById("play/pausebutton");
+  var playbtn = document.getElementById("play_pausebutton");
   var playIcon = playbtn.querySelector("i");
 
   if (vid.paused) {
@@ -87,7 +87,7 @@ function playPause() {
 
 // Add event listener to the button
 document
-  .getElementById("play/pausebutton")
+  .getElementById("play_pausebutton")
   .addEventListener("click", playPause);
 
 function vidSeek() {
@@ -116,7 +116,7 @@ function seektimeupdate() {
   var xPos = xScale(vid.currentTime); // Use xScale to get the new x position
 
   currentTimeLine.attr("x1", xPos).attr("x2", xPos);
-  d3.select("#movement").attr("transform", `translate(${xPos}, -350)`); // Adjust y coordinate as needed
+  d3.select("#movement").attr("transform", `translate(${xPos - 100}, 0)`); // Adjust y coordinate as needed
   // Update the position of the current time indicator line
 
   // Determine the script content to display based on the current video time
@@ -210,10 +210,32 @@ function wrapText(text, width) {
 function drawVisualization() {
   // Assuming the seekslider is already in the DOM and has a defined width
   var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
-  var svgHeight = 250;
+  var svgHeight = 140;
+  var scriptSvgHeight = 50;
   var svg = d3
     .select("#visualization")
     .attr("viewBox", "0 0 " + seekBarWidth + " " + svgHeight)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  var colorSvg = d3
+    .select("#visualization_color")
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + svgHeight)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  var movelineSvg = d3
+    .select("#visualization_movementLine")
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + 80)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  var scriptlineSvg = d3
+    .select("#visualization_scriptLine")
+    .attr("viewBox", "0 0 " + seekBarWidth + " " + scriptSvgHeight)
     .attr("preserveAspectRatio", "xMinYMin meet")
     .style("width", "100%")
     .style("height", "100%");
@@ -224,7 +246,7 @@ function drawVisualization() {
     // Update the viewBox or any other attributes that depend on size here
   });
 
-  svg
+  colorSvg
     .append("image")
     .attr("id", "colorViz")
     .attr("x", 0) // The x position of the image within the SVG
@@ -248,7 +270,7 @@ function drawVisualization() {
 
   xScale = d3.scaleLinear().domain([0, maxEndTime]).range([0, seekBarWidth]);
 
-  drawMovements(svg, movements, xScale, svgHeight);
+  drawMovements(movelineSvg, movements, xScale);
 
   Promise.all([
     d3.csv("./data/sample_scene-Scenes.csv"), // Load scene data
@@ -285,7 +307,7 @@ function drawVisualization() {
       .range([0, seekBarWidth]);
 
     const shotsGroup = svg.append("g").attr("id", "shots-group");
-    const scriptBarGroup = svg.append("g").attr("id", "script-group");
+    const scriptBarGroup = scriptlineSvg.append("g").attr("id", "script-group");
     // Now draw the visualization using the xScale for the x-axis
     sceneData.forEach((d, i) => {
       const startTime = parseFloat(d["Start Time (seconds)"]);
@@ -297,7 +319,7 @@ function drawVisualization() {
       const shotInfo = shotDataMap.get(d["Shot Number"]);
       const height = shotInfo ? shotInfo.size : 20; // Use size for height
 
-      const yOffset = (svgHeight - height) / 2 + 30; // Centers the rectangle
+      const yOffset = (svgHeight - height) / 2; // Centers the rectangle
       // Append a bar for each scene
       shotsGroup
         .append("rect")
@@ -320,8 +342,8 @@ function drawVisualization() {
       const xOffset = xScale(startTime);
 
       const defaultColor = "#9803fc"; // Default color
-      const defaultHeight = 10; // Default height
-      const yOffset = (svgHeight - defaultHeight) / 2 + 30; // Adjust position to not overlap with other visual elements
+      const defaultHeight = 30; // Default height
+      const yOffset = (scriptSvgHeight - defaultHeight) / 2; // Adjust position to not overlap with other visual elements
 
       // Append a rectangle for each event in the new dataset
       scriptBarGroup
@@ -357,7 +379,7 @@ function drawVisualization() {
   }
 }
 
-function drawMovements(svg, movements, xScale, svgHeight) {
+function drawMovements(svg, movements, xScale) {
   // Loop through the movements data to draw lines
   const movementLineGroup = svg.append("g").attr("id", "movement-group");
 
@@ -373,11 +395,11 @@ function drawMovements(svg, movements, xScale, svgHeight) {
     movementLineGroup
       .append("line")
       .attr("x1", startX)
-      .attr("y1", 10) // Position the line in the middle of the SVG height
+      .attr("y1", 30) // Position the line in the middle of the SVG height
       .attr("x2", endX)
-      .attr("y2", 10) // Keep the line horizontal
+      .attr("y2", 30) // Keep the line horizontal
       .attr("stroke", movement.Type === "stat" ? "White" : "White") // Color the line differently if it's moving
-      .attr("stroke-width", 8)
+      .attr("stroke-width", 40)
       .attr("stroke-dasharray", strokeDasharray);
   });
 }
@@ -807,25 +829,45 @@ document.addEventListener("DOMContentLoaded", function () {
   updateMovementLineOpacity();
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  const switches = document.querySelectorAll(".checkbox"); // Get all switches
+
+  switches.forEach((sw) => {
+    sw.addEventListener("change", function () {
+      // Get the target class from the switch's data attribute
+      const targetClass = this.getAttribute("data-visibility-switch");
+      const targetDivs = document.querySelectorAll(
+        `[data-visibility-target="${targetClass}"]`
+      );
+
+      // Toggle visibility for all divs with the matching data-visibility-target attribute
+      targetDivs.forEach((div) => {
+        div.style.display = this.checked ? "flex" : "none"; // Adjust as needed for your layout
+      });
+    });
+  });
+});
+
 document
   .getElementById("toggleOptionsBtn")
   .addEventListener("click", function () {
-    var btn = this.getBoundingClientRect(); // Gets the position of the button
+    var btnRect = document
+      .getElementById("video_content")
+      .getBoundingClientRect();
     var optionsWindow = document.getElementById("optionsWindow");
 
-    // Set the top and left properties to position the window below the button
-    optionsWindow.style.left = btn.left + "px";
-    optionsWindow.style.top = btn.bottom + window.scrollY + 10 + "px"; // Use scrollY for when the page is scrolled
+    // Set the top and left properties to position the window to the right of the video content
+    optionsWindow.style.position = "absolute"; // Make sure the optionsWindow is positioned absolutely
+    optionsWindow.style.left = btnRect.right + "px"; // Set left position to the right edge of the video content
+    optionsWindow.style.top = btnRect.top + window.scrollY + "px"; // Set top position to align with the top of the video content
+
+    // Adjust for any additional offsets if needed
+    var additionalOffsetX = 10; // Adjust this value as needed for spacing from the video content
+    optionsWindow.style.left = btnRect.right + additionalOffsetX + "px";
 
     // Toggle the display property to show or hide the options window
-    if (
-      optionsWindow.style.display === "none" ||
-      optionsWindow.style.display === ""
-    ) {
-      optionsWindow.style.display = "block";
-    } else {
-      optionsWindow.style.display = "none";
-    }
+    optionsWindow.style.display =
+      optionsWindow.style.display === "block" ? "none" : "block";
   });
 
 document.getElementById("infoBtn").addEventListener("click", function () {
