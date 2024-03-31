@@ -84,6 +84,7 @@ video {
 
 #video_content{
     position: relative;
+    margin-left: 25px;
     /* margin-left: 80px;
     margin-right: 80px; */
 }
@@ -119,18 +120,14 @@ video {
 }
 
 #script-label-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     text-align: right;
     width:240px;
-    margin-right: 30px;
     white-space: nowrap; /* Keeps the label on a single line */
 }
 
 .script-label{
   text-align: right;
-  width:200px;
+  width:195px;
   margin-top:5px;
   margin-bottom:10px;
 }
@@ -490,6 +487,6 @@ foreignObject {
   
   /* Change switch background color when it's checked */
   .checkbox:checked + .switch {
-    background-color: #a6a68d;
+    background-color: #c3b68d;
   }
   

@@ -869,6 +869,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const switches = document.querySelectorAll(".checkbox"); // Get all switches
 
+  // When the page loads, store the current display style for each target div
+  const allTargetDivs = document.querySelectorAll("[data-visibility-target]");
+  allTargetDivs.forEach((div) => {
+    // Store the current display value, defaulting to "block" if it's not set
+    let currentDisplay = getComputedStyle(div).display;
+    if (currentDisplay === "none") currentDisplay = "block"; // Adjust default if needed
+    div.setAttribute("data-original-display", currentDisplay);
+  });
+
   switches.forEach((sw) => {
     sw.addEventListener("change", function () {
       // Get the target class from the switch's data attribute
@@ -879,7 +888,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Toggle visibility for all divs with the matching data-visibility-target attribute
       targetDivs.forEach((div) => {
-        div.style.display = this.checked ? "flex" : "none"; // Adjust as needed for your layout
+        if (this.checked) {
+          // Use the stored original display style when showing the div
+          let originalDisplay =
+            div.getAttribute("data-original-display") || "block"; // Default to "block" if not set
+          div.style.display = originalDisplay;
+        } else {
+          // Hide the div
+          div.style.display = "none";
+        }
       });
     });
   });
