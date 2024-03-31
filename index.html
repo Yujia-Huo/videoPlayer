@@ -13,81 +13,132 @@
 </head>
 
 <body>
-    <div id="film_title">
-    <h1>Parasite (2019)</h1>
-    </div>
 
-    <div id="video_player_box">
-        
-        <div id="video_container">
-            
-            <div id="scriptHeader">
-                <div id="set_text">Interior</div> <!-- This is the new text element -->
-                <div id="time">Day</div> <!-- This is the new text element -->
-                <div id="location_text">SEMI-BASEMENT</div> <!-- This is the new text element -->
-                <div id="location2_text"></div> <!-- This is the new text element -->
-            </div>
-            <!-- <div id="shot_type_text">Shot Type: None</div> -->
-            <video id='my_video'>
-                <source src="Parasite_opening.mp4" type="video/mp4">
-            </video>
-            <div id="script_container">
-                <svg width='300' height='220' id="script"></svg>
-            </div>
+    <div id="bodyLayout">
+        <div id="video_player_box">
 
-            <svg id="movement">Movement</svg>
-
-
-
-            <div id="video_controls_bar">
-                <button id="play/pausebutton"><i class="fas fa-play"></i></button>
-                <div id="seek-bar-container" style="position: relative;">
-                    <input id="seekslider" type="range" min="0" max="100" value="0" step="0.001">
-        
-                    <svg id="visualization"></svg>
-                    <!-- Visualization SVG -->
+            <div id="header">
+                <div id="film_title">
+                    <h1>Parasite (2019)</h1>
                 </div>
-                <span id="curtimetext">00:00</span>/<span id="durtimetext">00
+
+                <div id="controls_container">
+                    <button id="infoBtn">
+                        <p>Introduction</p>
+                    </button>
+                    <button id="toggleOptionsBtn">
+                        <p>Setting</p>
+                    </button>
+                </div>
+            </div>
+            
+                <div class="svg-container" id="scriptViz_container" data-visibility-target="scriptViz">
+                    <div class="svg-label">Script</div> <!-- Label for Color Visualization SVG -->
+                    <svg id="visualization_scriptLine"></svg>
+                </div>
+                
+                <div id="video-container">
+
+                    <div id="script-label-container">
+                        <div class="script-label" data-visibility-target="scriptViz" >Script Header </div>
+                        <div class="script-label" data-visibility-target="scriptViz" >Script Actionline </div>
+                    </div>
+                    <div id="video_content">
+                        <div id="scriptHeader" data-visibility-target="scriptViz">
+                            <div id="set_text">Interior</div> <!-- This is the new text element -->
+                            <div id="time">Day</div> <!-- This is the new text element -->
+                            <div id="location_text">SEMI-BASEMENT</div> <!-- This is the new text element -->
+                            <div id="location2_text"></div> <!-- This is the new text element -->
+                        </div>
+                        <!-- <div id="shot_type_text">Shot Type: None</div> -->
+                        <video id='my_video'>
+                            <source src="Parasite_opening.mp4" type="video/mp4">
+                        </video>
+                        <div id="script_container" data-visibility-target="scriptViz">
+                            <svg width='800' height='80' id="script"></svg>
+                        </div>
+
+                        <svg id="movement" data-visibility-target="cameraMovement">Movement</svg>
+                    </div>
+                </div>
+
+            <div id="timebar">
+                <div id="play_container">
+                    <button id="play_pausebutton"><i class="fas fa-play"></i></button>
+                </div>
+                <input id="seekslider" type="range" min="0" max="100" value="0" step="0.001">
+                <div id="timecode_container">
+                    <span id="curtimetext">00:00</span>/<span id="durtimetext">00
+                </div>
+            </div>
+            <div class="svg-container" id="camMov_container" data-visibility-target="cameraMovement">
+                <div class="svg-label">Camera Movement</div> <!-- Label for Movement Line SVG -->
+                <svg id="visualization_movementLine"></svg>
+            </div>
+            <div class="svg-container" id="shot_container">
+                <div class="svg-label">Shot & Shot Type</div> <!-- Label for Visualization SVG -->
+                <svg id="visualization"></svg>
+            </div>
+            <div class="svg-container"id="color_container" data-visibility-target="color">
+                <div class="svg-label">Color</div> <!-- Label for Color Visualization SVG -->
+                <svg id="visualization_color"></svg>
             </div>
             
         </div>
 
 
-        <button id="infoBtn" style="background:black;border:1.5px solid white;">
-            <i class="fa-solid fa-circle-info"></i>
-        </button>
-        <button id="toggleOptionsBtn" style="background:black;border:1.5px solid white;">
-            <i class="fas fa-cog"></i> <!-- This is the gear icon -->
-        </button>
-            
+
 
         <div id="optionsWindow">
+            <h2>Setting</h2>
+
+
+            <p>Show/Hide</p>
             <div id="checkboxes">
-                <div>
-                    <label for="scriptVisability">Show script:</label>
-                    <input type="checkbox" id="scriptVisability" checked>
-                </div>
-                <div>
-                    <label for="movementVisability">Show Camera Movement Detail:</label>
-                    <input type="checkbox" id="movementVisability" checked>
-                </div>
 
-                <div>
-                    <label for="movementLineVisability">Show Camera Movement Timeline:</label>
-                    <input type="checkbox" id="movementLineVisability" checked>
-                </div>
 
-                <div>
-                    <label for="colorVisability">Show Color:</label>
-                    <input type="checkbox" id="colorVisability" checked>
-                </div>
-                <div>
-                    <label for="heightControl">Show Shot Type:</label>
-                    <input type="checkbox" id="heightControl" checked>
+                <div class="toggle-container">
+                    <label for="scriptVisibility">Script</label>
+                    <div class="toggle-switch">
+                    <input type="checkbox" id="scriptVisibility" checked class="checkbox" data-visibility-switch="scriptViz">
+                    <label for="scriptVisibility" class="switch"></label>
                     </div>
+                </div>
+
+
+
+                <div class="toggle-container">
+                    <label for="movementVisability">Camera Movement</label>   
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="movementVisability" checked class="checkbox" data-visibility-switch="cameraMovement">
+                        <label for="movementVisability" class="switch"></label>
+                    </div>
+                </div>
+
+
+                <div class="toggle-container">
+                    <label for="colorVisability">Color</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="colorVisability" checked class="checkbox" data-visibility-switch="color">
+                        <label for="colorVisability" class="switch"></label>
+                    </div>
+                </div>
+
+
+                <div class="toggle-container">
+                    <label for="heightControl">Shot Type</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="heightControl" checked class="checkbox">
+                        <label for="heightControl" class="switch"></label>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </div>
+
+
 
     <img id="infoImage" src="./wireframe.png" style="position: fix;">
 
