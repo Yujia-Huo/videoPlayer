@@ -1,497 +1,554 @@
 body {
-    font-family: "Saira", sans-serif;
-    color: aliceblue;
-    background-color: rgb(10, 10, 10);
-    margin-left: 50px;
+  font-family: "Saira", sans-serif;
+  color: aliceblue;
+  background-color: rgb(10, 10, 10);
+  margin-left: 50px;
 }
 
-h1{
-    font-size: 20pt;
-    font-weight: 500;
+h1 {
+  font-size: 20pt;
+  font-weight: 500;
 }
 
-h2{
-    font-size: 15pt;
-    margin-top: 0px;
-    font-weight: 500;
-    margin-bottom: 50px;
+h2 {
+  font-size: 15pt;
+  margin-top: 0px;
+  font-weight: 500;
+  margin-bottom: 50px;
 }
-#film_title{
-    margin-left: 30px;
+
+#film_title {
+  margin-left: 30px;
 }
 
 
-#bodyLayout{
+#bodyLayout {
   display: flex;
   flex-direction: row;
 
 
 }
+
 div#video_controls_bar {
-    /* background-color: rgb(0, 0, 0); */
-    /* margin-left: 10.5vw;
+  /* background-color: rgb(0, 0, 0); */
+  /* margin-left: 10.5vw;
     margin-right: 19vw; */
-    margin-top: 2vh;
+  margin-top: 2vh;
 }
 
 #seekslider {
-    width: 100%;
+  width: 100%;
 }
 
 #curtimetext {
-    color: aliceblue;
+  color: aliceblue;
 
 }
 
 #durtimetext {
-    color: aliceblue;
+  color: aliceblue;
 
 }
 
 #shot_type_text {
-    color: aliceblue;
-    margin-bottom: 10px;
+  color: aliceblue;
+  margin-bottom: 10px;
 }
 
 #video_player_box {
-    
 
-    max-width: 1520px;
-    /* Set a max-width for the video player box */
-    /* Add some margin */
 
-    margin-left: 3vw;
-    padding-right:5vw;
-    gap: 5px;
-    /* position: relative; */
+  max-width: 1520px;
+  /* Set a max-width for the video player box */
+  /* Add some margin */
+
+  margin-left: 3vw;
+  padding-right: 5vw;
+  gap: 5px;
+  /* position: relative; */
 }
 
 
-#header{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-right: 80px;
-        margin-left: 210px;
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 80px;
+  margin-left: 210px;
 }
 
 video {
-    width: 100%;
-    /* Make video responsive */
-    height: auto;
-    /* Maintain aspect ratio */
+  width: 100%;
+  /* Make video responsive */
+  height: auto;
+  /* Maintain aspect ratio */
 }
 
-#video_content{
-    position: relative;
-    margin-left: 25px;
-    /* margin-left: 80px;
+#video_content {
+  position: relative;
+  margin-left: 25px;
+  /* margin-left: 80px;
     margin-right: 80px; */
 }
 
-#timecode_container{
-    width:50px;
-    margin-left: 30px;
+#timecode_container {
+  width: 50px;
+  margin-left: 30px;
 }
 
 
 .svg-container {
-    margin-right: 88px;
-    display: flex;
-    align-items: center; /* This ensures vertical centering of SVG and label */
-    justify-content: space-between; /* This positions the SVG and label on opposite ends */
-    margin-bottom: 0px; /* Or any space you want between each SVG-label pair */
+  margin-right: 88px;
+  display: flex;
+  align-items: center;
+  /* This ensures vertical centering of SVG and label */
+  justify-content: space-between;
+  /* This positions the SVG and label on opposite ends */
+  margin-bottom: 0px;
+  /* Or any space you want between each SVG-label pair */
 }
 
 
 #video-container {
   margin-right: 88px;
   display: flex;
-  align-items: flex-start; /* This ensures vertical centering of SVG and label */
-  justify-content: space-between; /* This positions the SVG and label on opposite ends */
-  margin-bottom: 0px; /* Or any space you want between each SVG-label pair */
+  align-items: flex-start;
+  /* This ensures vertical centering of SVG and label */
+  justify-content: space-between;
+  /* This positions the SVG and label on opposite ends */
+  margin-bottom: 0px;
+  /* Or any space you want between each SVG-label pair */
 }
 
 .svg-label {
-    text-align: right;
-    width:240px;
-    margin-right: 30px;
-    white-space: nowrap; /* Keeps the label on a single line */
-}
-
-#script-label-container{
-    text-align: right;
-    width:240px;
-    white-space: nowrap; /* Keeps the label on a single line */
-}
-
-.script-label{
   text-align: right;
-  width:195px;
-  margin-top:5px;
-  margin-bottom:10px;
-}
-#timebar{
-    display: flex;
-    align-items: center; /* This ensures vertical centering of SVG and label */
-    justify-content: space-between; /* This positions the SVG and label on opposite ends */
-    margin-bottom: 10px; /* Or any space you want between each SVG-label pair */
+  width: 240px;
+  margin-right: 30px;
+  white-space: nowrap;
+  /* Keeps the label on a single line */
 }
 
-#play_container{
-    text-align: right;
-    width:245px;
-    margin-right: 30px; /* Adds some space between the SVG and the label */
-    white-space: nowrap; /* Keeps the label on a single line */
+#script-label-container {
+  text-align: right;
+  width: 240px;
+  white-space: nowrap;
+  /* Keeps the label on a single line */
 }
 
-#play_pausebutton{
-  background:black;
-    font-size: 15px; 
-    color: #ffffff; 
-    border: none;
+.script-label {
+  text-align: right;
+  width: 195px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
-#visualization_scriptLine{
-    border: 1px solid #686868;
-    border-radius: 5px;
+
+#timebar {
+  display: flex;
+  align-items: center;
+  /* This ensures vertical centering of SVG and label */
+  justify-content: space-between;
+  /* This positions the SVG and label on opposite ends */
+  margin-bottom: 10px;
+  /* Or any space you want between each SVG-label pair */
 }
+
+#play_container {
+  text-align: right;
+  width: 245px;
+  margin-right: 30px;
+  /* Adds some space between the SVG and the label */
+  white-space: nowrap;
+  /* Keeps the label on a single line */
+}
+
+#play_pausebutton {
+  background: black;
+  font-size: 15px;
+  color: #ffffff;
+  border: none;
+}
+
+#visualization_scriptLine {
+  border: 1px solid #686868;
+  border-radius: 5px;
+}
+
 #seekslider,
 #visualization {
-    width: 100%;
-    height: auto;
-    /* for the image, to maintain aspect ratio */
+  width: 100%;
+  height: auto;
+  /* for the image, to maintain aspect ratio */
 }
 
 #movement {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    /* Ensures the SVG is layered above the video */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: opacity 0.5s ease-in-out;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* Ensures the SVG is layered above the video */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: opacity 0.5s ease-in-out;
 }
 
 
 #script {
-    width: 500px;
-    /* Your SVG width */
-    background-color: #9803fc4a;
-    /* Optional: adds a semi-transparent background */
-    border: 1px solid #9803fc8d;
-    border-radius: 5px;
+  width: 500px;
+  /* Your SVG width */
+  background-color: #9803fc4a;
+  /* Optional: adds a semi-transparent background */
+  border: 1px solid #9803fc8d;
+  border-radius: 5px;
 
 }
 
 #script_container {
-    position: absolute;
-    top: 23%;
-    /* Adjust these values as needed */
-    left: 0;
-    /* Adjust these values as needed */
-    margin-bottom: 20px;
-    margin-left: 20px;
-    transform: translateY(-50%);
-    transition: opacity 0.5s ease-in-out;
+  position: absolute;
+  top: 23%;
+  /* Adjust these values as needed */
+  left: 0;
+  /* Adjust these values as needed */
+  margin-bottom: 20px;
+  margin-left: 20px;
+  transform: translateY(-50%);
+  transition: opacity 0.5s ease-in-out;
 }
 
 #scriptHeader {
-    font-size: 8pt;
-    position: absolute;
-    top: 2%;
-    left: 0;
-    display: flex;
-    justify-content: flex-start;
-    gap: 5px;
-    margin-bottom: 5px;
-    margin-left: 20px;
-    transition: opacity 0.5s ease-in-out;
+  font-size: 8pt;
+  position: absolute;
+  top: 2%;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  transition: opacity 0.5s ease-in-out;
 }
 
 #set_text {
-    text-align: center;
-    flex-grow: 0;
-    flex-shrink: 0;
-    /* Prevents items from shrinking below their set width */
-    top: -20px;
-    /* Adjust as necessary to position above the SVG */
-    left: 0;
-    color: white;
-    /* Set the text color */
-    background-color: #9803fc4a;
-    /* Optional: adds a semi-transparent background */
-    border: 1px solid #9803fc8d;
-    padding: 3px;
-    border-radius: 5px;
-    width: 50px;
+  text-align: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  /* Prevents items from shrinking below their set width */
+  top: -20px;
+  /* Adjust as necessary to position above the SVG */
+  left: 0;
+  color: white;
+  /* Set the text color */
+  background-color: #9803fc4a;
+  /* Optional: adds a semi-transparent background */
+  border: 1px solid #9803fc8d;
+  padding: 3px;
+  border-radius: 5px;
+  width: 50px;
 }
 
 #location_text {
-    text-align: center;
-    flex-grow: 0;
-    flex-shrink: 0;
-    /* Prevents items from shrinking below their set width */
-    top: -20px;
-    /* Adjust as necessary to position above the SVG */
-    left: 0;
-    color: white;
-    /* Set the text color */
-    background-color: #9803fc4a;
-    /* Optional: adds a semi-transparent background */
-    border: 1px solid #9803fc8d;
-    padding: 3px;
-    border-radius: 5px;
-    width: 100px;
+  text-align: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  /* Prevents items from shrinking below their set width */
+  top: -20px;
+  /* Adjust as necessary to position above the SVG */
+  left: 0;
+  color: white;
+  /* Set the text color */
+  background-color: #9803fc4a;
+  /* Optional: adds a semi-transparent background */
+  border: 1px solid #9803fc8d;
+  padding: 3px;
+  border-radius: 5px;
+  width: 100px;
 
 }
 
 #location2_text {
-    text-align: center;
-    flex-grow: 0;
-    flex-shrink: 0;
-    /* Prevents items from shrinking below their set width */
+  text-align: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  /* Prevents items from shrinking below their set width */
 
-    top: -20px;
-    /* Adjust as necessary to position above the SVG */
-    left: 0;
-    color: white;
-    /* Set the text color */
-    background-color: #9803fc4a;
-    /* Optional: adds a semi-transparent background */
-    border: 1px solid #9803fc8d;
-    padding: 3px;
-    border-radius: 5px;
-    width: 180px;
+  top: -20px;
+  /* Adjust as necessary to position above the SVG */
+  left: 0;
+  color: white;
+  /* Set the text color */
+  background-color: #9803fc4a;
+  /* Optional: adds a semi-transparent background */
+  border: 1px solid #9803fc8d;
+  padding: 3px;
+  border-radius: 5px;
+  width: 180px;
 
 }
 
 #time {
-    text-align: center;
-    flex-grow: 0;
-    top: -20px;
-    flex-shrink: 0;
-    /* Prevents items from shrinking below their set width */
+  text-align: center;
+  flex-grow: 0;
+  top: -20px;
+  flex-shrink: 0;
+  /* Prevents items from shrinking below their set width */
 
-    /* Adjust as necessary to position above the SVG */
-    left: 0;
-    color: white;
-    /* Set the text color */
-    background-color: #9803fc4a;
-    /* Optional: adds a semi-transparent background */
-    border: 1px solid #9803fc8d;
-    padding: 3px;
-    border-radius: 5px;
-    width: 50px;
+  /* Adjust as necessary to position above the SVG */
+  left: 0;
+  color: white;
+  /* Set the text color */
+  background-color: #9803fc4a;
+  /* Optional: adds a semi-transparent background */
+  border: 1px solid #9803fc8d;
+  padding: 3px;
+  border-radius: 5px;
+  width: 50px;
 
 }
 
 #script,
 foreignObject {
-    transition: width 0.5s, height 0.5s;
-    /* Adjust the time as needed */
+  transition: width 0.5s, height 0.5s;
+  /* Adjust the time as needed */
 }
 
 #checkboxes {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #colorViz {
-    transition: opacity 0.5s ease-in-out;
-    /* Animate opacity changes */
+  transition: opacity 0.5s ease-in-out;
+  /* Animate opacity changes */
 }
 
 
 /* General styles for all browsers */
 #seekslider {
-    -webkit-appearance: none; /* Override default look for Chrome and Safari */
-    width: 100%; /* Full-width */
-    height: 5px; /* Specifying the height of the track */
-    background: grey; /* Background color for the track */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (cross-browser) */
-    transition: opacity 0.2s; /* Transition for when slider is hovered or focused */
-  }
-  
-  /* Mouse-over effect */
-  #seekslider:hover {
-    opacity: 1; /* Full opacity when hovered */
-  }
-  
-  /* The slider handle (cross-browser) */
-  #seekslider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look for Chrome and Safari */
-    appearance: none;
-    width: 15px; /* Width of the handle */
-    height: 15px; /* Height of the handle */
-    background: rgb(218, 218, 218); /* Handle color */
-    border-radius: 50%; /* Makes it a circle */
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  #seekslider::-moz-range-thumb {
-    width: 15px; /* Width of the handle */
-    height: 15px; /* Height of the handle */
-    background: rgb(218, 218, 218); /* Handle color */
-    border-radius: 50%; /* Makes it a circle */
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  /* For IE */
-  #seekslider::-ms-thumb {
-    width: 15px; /* Width of the handle */
-    height: 15px; /* Height of the handle */
-    background: rgb(218, 218, 218); /* Handle color */
+  -webkit-appearance: none;
+  /* Override default look for Chrome and Safari */
+  width: 100%;
+  /* Full-width */
+  height: 5px;
+  /* Specifying the height of the track */
+  background: grey;
+  /* Background color for the track */
+  outline: none;
+  /* Remove outline */
+  opacity: 0.7;
+  /* Set transparency (cross-browser) */
+  transition: opacity 0.2s;
+  /* Transition for when slider is hovered or focused */
+}
 
-    border-radius: 50%; /* Makes it a circle */
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  /* Make the track of the slider appear thinner */
-  #seekslider::-webkit-slider-runnable-track {
-    height: 15px; /* Height of the track */
-  }
-  
-  #seekslider::-moz-range-track {
-    height: 15px; /* Height of the track */
-  }
-  
-  #seekslider::-ms-track {
-    height: 15px; /* Height of the track */
-    /* You might need to adjust the coloring since IE sometimes has a different system */
-  }
-  
-  /* Focus styles */
-  #seekslider:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for Chrome and Safari */
-  }
-  
-  #seekslider:focus::-moz-range-thumb {
-    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for Firefox */
-  }
-  
-  #seekslider:focus::-ms-thumb {
-    box-shadow: 0 0 1px #ffffff; /* Adding focus shadow for IE */
-  }
-  
+/* Mouse-over effect */
+#seekslider:hover {
+  opacity: 1;
+  /* Full opacity when hovered */
+}
 
-  #optionsWindow {
-    visibility:"visible";
-    margin-left: 10px;
-    width:400px; /* Initial width */
-    transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease; /* Transition for width, padding, and opacity */
-    background-color: rgb(0, 0, 0);
-    padding: 20px; /* Start with no padding */
-    border-left: 1px solid #ddd;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1)
+/* The slider handle (cross-browser) */
+#seekslider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /* Override default look for Chrome and Safari */
+  appearance: none;
+  width: 15px;
+  /* Width of the handle */
+  height: 15px;
+  /* Height of the handle */
+  background: rgb(218, 218, 218);
+  /* Handle color */
+  border-radius: 50%;
+  /* Makes it a circle */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+
+#seekslider::-moz-range-thumb {
+  width: 15px;
+  /* Width of the handle */
+  height: 15px;
+  /* Height of the handle */
+  background: rgb(218, 218, 218);
+  /* Handle color */
+  border-radius: 50%;
+  /* Makes it a circle */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+
+/* For IE */
+#seekslider::-ms-thumb {
+  width: 15px;
+  /* Width of the handle */
+  height: 15px;
+  /* Height of the handle */
+  background: rgb(218, 218, 218);
+  /* Handle color */
+
+  border-radius: 50%;
+  /* Makes it a circle */
+  cursor: pointer;
+  /* Cursor on hover */
+}
+
+/* Make the track of the slider appear thinner */
+#seekslider::-webkit-slider-runnable-track {
+  height: 15px;
+  /* Height of the track */
+}
+
+#seekslider::-moz-range-track {
+  height: 15px;
+  /* Height of the track */
+}
+
+#seekslider::-ms-track {
+  height: 15px;
+  /* Height of the track */
+  /* You might need to adjust the coloring since IE sometimes has a different system */
+}
+
+/* Focus styles */
+#seekslider:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 1px #ffffff;
+  /* Adding focus shadow for Chrome and Safari */
+}
+
+#seekslider:focus::-moz-range-thumb {
+  box-shadow: 0 0 1px #ffffff;
+  /* Adding focus shadow for Firefox */
+}
+
+#seekslider:focus::-ms-thumb {
+  box-shadow: 0 0 1px #ffffff;
+  /* Adding focus shadow for IE */
 }
 
 
-#toggleOptionsBtn{
-    /* position: fixed; 
-    top: 10vh;
-    right: 17vw;  */
-    background:black;
-    border: none;
-    margin-top: 20px;
-    font-size: 15px; 
-    color: #ffffff; 
-    /* cursor: pointer; */
-    padding:10px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
+#optionsWindow {
+  visibility: "visible";
+  margin-left: 10px;
+  width: 400px;
+  /* Initial width */
+  transition: width 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
+  /* Transition for width, padding, and opacity */
+  background-color: rgb(0, 0, 0);
+  padding: 20px;
+  /* Start with no padding */
+  border-left: 1px solid #ddd;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
 }
 
-#infoBtn{
-    /* position: fixed; 
+
+#toggleOptionsBtn {
+  /* position: fixed; 
     top: 10vh;
     right: 17vw;  */
-    background:black;
-    margin-top: 20px;
-    font-size: 15px; 
-    color: #ffffff; 
-    border: none;
-    /* cursor: pointer; */
-    padding:10px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
+  background: black;
+  border: none;
+  margin-top: 20px;
+  font-size: 15px;
+  color: #ffffff;
+  /* cursor: pointer; */
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+#infoBtn {
+  /* position: fixed; 
+    top: 10vh;
+    right: 17vw;  */
+  background: black;
+  margin-top: 20px;
+  font-size: 15px;
+  color: #ffffff;
+  border: none;
+  /* cursor: pointer; */
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
 }
 
 
 #infoImage {
-    position: fixed;
-    top: 10%;
-    left: 8%;
-    width: 75%;
-    height: auto;
-    border: 1px solid #747474;
-    opacity: 0; /* Make image fully transparent */
-    visibility: hidden; /* Hide image */
-    transition: opacity 0.5s, visibility 0s 0.5s; /* Transition for opacity and delayed visibility change */
+  position: fixed;
+  top: 10%;
+  left: 8%;
+  width: 75%;
+  height: auto;
+  border: 1px solid #747474;
+  opacity: 0;
+  /* Make image fully transparent */
+  visibility: hidden;
+  /* Hide image */
+  transition: opacity 0.5s, visibility 0s 0.5s;
+  /* Transition for opacity and delayed visibility change */
 }
 
 
 
 /* Container for the label and the switch */
 .toggle-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  /* Style for the label */
-  .toggle-label {
-    margin-right: 200px;
-  }
-  
-  /* Hide the default checkbox input */
-  .checkbox {
-    display: none;
-  }
-  
-  /* Style for the pseudo-switch */
-  .toggle-switch {
-    position: relative;
-    width: 40px;  /* Width of the switch */
-    height: 20px; /* Height of the switch */
-  }
-  
-  /* Style for the background of the switch */
-  .switch {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #636363;
-    transition: .4s;
-    border-radius: 20px; /* Rounded borders for the switch */
-  }
-  
-  /* Style for the knob of the switch */
-  .switch:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%; /* Round shape for the knob */
-  }
-  
-  /* Move the knob to the right on checked */
-  .checkbox:checked + .switch:before {
-    transform: translateX(20px);
-  }
-  
-  /* Change switch background color when it's checked */
-  .checkbox:checked + .switch {
-    background-color: #c3b68d;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Style for the label */
+.toggle-label {
+  margin-right: 200px;
+}
+
+/* Hide the default checkbox input */
+.checkbox {
+  display: none;
+}
+
+/* Style for the pseudo-switch */
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  /* Width of the switch */
+  height: 20px;
+  /* Height of the switch */
+}
+
+/* Style for the background of the switch */
+.switch {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #636363;
+  transition: .4s;
+  border-radius: 20px;
+  /* Rounded borders for the switch */
+}
+
+/* Style for the knob of the switch */
+.switch:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  /* Round shape for the knob */
+}
+
+/* Move the knob to the right on checked */
+.checkbox:checked+.switch:before {
+  transform: translateX(20px);
+}
+
+/* Change switch background color when it's checked */
+.checkbox:checked+.switch {
+  background-color: #236fae;
+}

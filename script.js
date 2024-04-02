@@ -6,7 +6,6 @@ var currentTimeLine;
 var scriptCurrentTimeLine;
 var colorCurrentTimeLine;
 var cameraCurrentTimeLine;
-
 var xScale; // Ensure xScale is accessible in seektimeupdate
 
 function initializePlayer() {
@@ -23,7 +22,6 @@ function initializePlayer() {
 window.onload = function () {
   initializePlayer();
   drawVisualization();
-  seektimeupdate();
 };
 
 function onDataLoaded() {
@@ -702,16 +700,13 @@ function getTransformationString() {
     // Adjusted transformation for "Boom"
     var centerX = rectState.x + rectState.width / 2 + rectState.translateX;
     var centerY = rectState.y + rectState.height / 2 + rectState.translateY;
-    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${
-      rectState.scaleY
-    }) translate(${-centerX}, ${-centerY})`;
+    transform = `translate(${centerX}, ${centerY}) scale(${rectState.scaleX}, ${rectState.scaleY
+      }) translate(${-centerX}, ${-centerY})`;
   } else {
     // Default transformation for "Dolly", "Pan", and others
-    transform = `translate(${rectState.translateX}, ${
-      rectState.translateY
-    }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${
-      rectState.y + rectState.height / 2 + 20
-    }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
+    transform = `translate(${rectState.translateX}, ${rectState.translateY
+      }) rotate(${rectState.rotate}, ${rectState.x + rectState.width / 2}, ${rectState.y + rectState.height / 2 + 20
+      }) scale(${rectState.scaleX}, ${rectState.scaleY})`;
   }
   return transform;
 }
