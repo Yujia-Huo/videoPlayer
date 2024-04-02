@@ -1,0 +1,7 @@
+start_time,end_time,Type,Distance,Direction,Shot
+0,22.4,Dolly,1,In,1
+22.4,31.87,Tilt,0.5,Up,2
+31.87,36.06,stat,0,n,3
+36.06,48.47,stat,0,n,4
+48.47,60.69,stat,0,n,5
+60.69,72.82,stat,0,n,6
