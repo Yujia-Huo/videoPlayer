@@ -245,6 +245,16 @@ function drawVisualization() {
     .style("width", "100%")
     .style("height", "100%");
 
+  var scriptSVG = d3.select("#script");
+  scriptSVG.attr("width", 600);
+
+  scriptSVG
+    .append("text")
+    .style("fill", "white") // Set text color
+    .text("No script match current scene")
+    .attr("x", 10)
+    .attr("y", 30);
+
   window.addEventListener("resize", function () {
     // Recalculate seekBarWidth and update scales or SVG elements as necessary
     var seekBarWidth = document.getElementById("seekslider").offsetWidth - 15;
