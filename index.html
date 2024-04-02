@@ -31,36 +31,36 @@
                     </button>
                 </div>
             </div>
-            
-                <div class="svg-container" id="scriptViz_container" data-visibility-target="scriptViz">
-                    <div class="svg-label">Script</div> <!-- Label for Color Visualization SVG -->
-                    <svg id="visualization_scriptLine"></svg>
-                </div>
-                
-                <div id="video-container">
 
-                    <div id="script-label-container">
-                        <div class="script-label" data-visibility-target="scriptViz" >Script Header </div>
-                        <div class="script-label" data-visibility-target="scriptViz" >Script Actionline </div>
-                    </div>
-                    <div id="video_content">
-                        <div id="scriptHeader" data-visibility-target="scriptViz">
-                            <div id="set_text">Interior</div> <!-- This is the new text element -->
-                            <div id="time">Day</div> <!-- This is the new text element -->
-                            <div id="location_text">SEMI-BASEMENT</div> <!-- This is the new text element -->
-                            <div id="location2_text"></div> <!-- This is the new text element -->
-                        </div>
-                        <!-- <div id="shot_type_text">Shot Type: None</div> -->
-                        <video id='my_video'>
-                            <source src="Parasite_opening.mp4" type="video/mp4">
-                        </video>
-                        <div id="script_container" data-visibility-target="scriptViz">
-                            <svg width='800' height='80' id="script"></svg>
-                        </div>
+            <div class="svg-container" id="scriptViz_container" data-visibility-target="scriptViz">
+                <div class="svg-label">Script</div> <!-- Label for Color Visualization SVG -->
+                <svg id="visualization_scriptLine"></svg>
+            </div>
 
-                        <svg id="movement" data-visibility-target="cameraMovement">Movement</svg>
-                    </div>
+            <div id="video-container">
+
+                <div id="script-label-container">
+                    <div class="script-label" data-visibility-target="scriptViz">Script Header </div>
+                    <div class="script-label" data-visibility-target="scriptViz">Script Actionline </div>
                 </div>
+                <div id="video_content">
+                    <div id="scriptHeader" data-visibility-target="scriptViz">
+                        <div id="set_text">Interior</div> <!-- This is the new text element -->
+                        <div id="time">Day</div> <!-- This is the new text element -->
+                        <div id="location_text">SEMI-BASEMENT</div> <!-- This is the new text element -->
+                        <div id="location2_text"></div> <!-- This is the new text element -->
+                    </div>
+                    <!-- <div id="shot_type_text">Shot Type: None</div> -->
+                    <video id='my_video'>
+                        <source src="Parasite_opening.mp4" type="video/mp4">
+                    </video>
+                    <div id="script_container" data-visibility-target="scriptViz">
+                        <svg width='800' height='80' id="script"></svg>
+                    </div>
+
+                    <svg id="movement" data-visibility-target="cameraMovement">Movement</svg>
+                </div>
+            </div>
 
             <div id="timebar">
                 <div id="play_container">
@@ -79,11 +79,11 @@
                 <div class="svg-label">Shot & Shot Type</div> <!-- Label for Visualization SVG -->
                 <svg id="visualization"></svg>
             </div>
-            <div class="svg-container"id="color_container" data-visibility-target="color">
+            <div class="svg-container" id="color_container" data-visibility-target="color">
                 <div class="svg-label">Color</div> <!-- Label for Color Visualization SVG -->
                 <svg id="visualization_color"></svg>
             </div>
-            
+
         </div>
 
 
@@ -100,17 +100,19 @@
                 <div class="toggle-container">
                     <label for="scriptVisibility">Script</label>
                     <div class="toggle-switch">
-                    <input type="checkbox" id="scriptVisibility" checked class="checkbox" data-visibility-switch="scriptViz">
-                    <label for="scriptVisibility" class="switch"></label>
+                        <input type="checkbox" id="scriptVisibility" checked class="checkbox"
+                            data-visibility-switch="scriptViz">
+                        <label for="scriptVisibility" class="switch"></label>
                     </div>
                 </div>
 
 
 
                 <div class="toggle-container">
-                    <label for="movementVisability">Camera Movement</label>   
+                    <label for="movementVisability">Camera Movement</label>
                     <div class="toggle-switch">
-                        <input type="checkbox" id="movementVisability" checked class="checkbox" data-visibility-switch="cameraMovement">
+                        <input type="checkbox" id="movementVisability" checked class="checkbox"
+                            data-visibility-switch="cameraMovement">
                         <label for="movementVisability" class="switch"></label>
                     </div>
                 </div>
@@ -119,7 +121,8 @@
                 <div class="toggle-container">
                     <label for="colorVisability">Color</label>
                     <div class="toggle-switch">
-                        <input type="checkbox" id="colorVisability" checked class="checkbox" data-visibility-switch="color">
+                        <input type="checkbox" id="colorVisability" checked class="checkbox"
+                            data-visibility-switch="color">
                         <label for="colorVisability" class="switch"></label>
                     </div>
                 </div>
